@@ -1,0 +1,29 @@
+/*
+   ========================================================================
+   I18NMANAGER.JS - GESTOR DE INTERNACIONALIZAÇÃO
+   Gerencia traduções e troca de idioma dinamicamente.
+   ========================================================================
+*/
+
+window.I18nManager = {
+    lang: localStorage.getItem('domino_lang') || 'pt',
+    dicts: {
+        'pt': { 'start_title': 'domino', 'play': 'Jogar', 'settings': 'Configurações' },
+        'en': { 'start_title': 'domino', 'play': 'Play', 'settings': 'Settings' },
+        'es': { 'start_title': 'domino', 'play': 'Jugar', 'settings': 'Ajustes' }
+    },
+
+    setLang: (l) => {
+        window.I18nManager.lang = l;
+        localStorage.setItem('domino_lang', l);
+        window.I18nManager.apply();
+    },
+
+    apply: () => {
+        const dict = window.I18nManager.dicts[window.I18nManager.lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (dict[key]) el.innerText = dict[key];
+        });
+    }
+};

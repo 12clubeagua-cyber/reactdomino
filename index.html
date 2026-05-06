@@ -1,20 +1,271 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Domino Master</title>
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-    <script>
-      window.onerror = function(msg, url, line, col, error) {
-        alert("Erro detectado: " + msg + "\nLinha: " + line);
-        return false;
-      };
-    </script>
-    <script type="module" crossorigin src="/reactdomino/assets/index-W2TJHqyG.js"></script>
-    <link rel="stylesheet" crossorigin href="/reactdomino/assets/index-BM042CUd.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<!-- Declara que este documento é um HTML5 válido -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Jogue domino online contra bots ou amigos. O melhor simulador de domino feito pelo Felipe W.">
+  <title>domino Felipe W.</title>
+  
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      let refreshing = false;
+      
+      // Escuta quando um novo Service Worker assume o controle
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload(); // Recarrega com os arquivos novos
+        }
+      });
+  
+      // Registra o Service Worker
+      navigator.serviceWorker.register('sw.js').then(reg => {
+          // Checa se há atualizações silenciosamente
+          reg.onupdatefound = () => {
+              const installingWorker = reg.installing;
+              installingWorker.onstatechange = () => {
+                  if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      console.log('Nova atualização encontrada. Recarregando...');
+                  }
+              };
+          };
+      }).catch(err => console.error("Erro no Service Worker:", err));
+    }
+  </script>
+  
+  <!-- Biblioteca PeerJS para o modo multiplayer -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  
+  <!-- Arquivo de Estilo corrigido -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body role="document">
+
+<!-- CONTÊINER DA TELA INICIAL (Lobby) -->
+<main id="start-screen" role="main">
+  <h1 class="start-logo">domino</h1>
+  <div class="start-sub">Felipe W.</div>
+
+  <!-- PASSO 1: Escolha do Modo de Jogo -->
+  <section class="start-step active" id="step-mode" aria-label="Seleção de modo">
+    <div class="start-options">
+      <h2 class="start-label">Modo de Jogo</h2>
+      <button class="start-btn" id="btn-continue" onclick="loadMatchState()" style="display:none; background:var(--gold); color:var(--bg);">
+        Continuar <span>Partida Salva</span>
+      </button>
+      <button class="start-btn" onclick="selectMode('offline')" aria-label="Modo Um Jogador, contra bots">
+        Um Jogador <span>Vs Bots</span>
+      </button>
+      <button class="start-btn" onclick="selectMode('host')" aria-label="Criar sala multiplayer">
+        Criar Sala <span>Multiplayer Wi-Fi</span>
+      </button>
+      <button class="start-btn" onclick="selectMode('client')" aria-label="Entrar em uma sala existente">
+        Entrar na Sala <span>Conectar Wi-Fi</span>
+      </button>
+      <button class="start-btn" onclick="changeName()">Alterar Nome</button>
+      <button class="start-btn" onclick="window.AccessibilityManager.toggleHighContrast()">Acessibilidade: Alto Contraste</button>
+    </div>
+  </section>
+
+  <!-- PASSO 2: Escolha da Dificuldade -->
+  <div class="start-step" id="step-diff">
+    <div class="start-options">
+      <div class="start-label">Dificuldade dos bots</div>
+      <button class="start-btn" id="btn-easy" onclick="selectDiff('easy')">
+        Facil <span>nivel 1</span>
+      </button>
+      <button class="start-btn selected" id="btn-normal" onclick="selectDiff('normal')">
+        Normal <span>nivel 2</span>
+      </button>
+      <button class="start-btn" id="btn-hard" onclick="selectDiff('hard')">
+        Dificil <span>nivel 3</span>
+      </button>
+    </div>
+    <button class="step-back" onclick="goToStep('step-mode')"> Voltar</button>
+  </div>
+
+  <!-- PASSO 3: Escolha do Objetivo da Partida -->
+  <div class="start-step" id="step-goal">
+    <div class="start-options">
+      <div class="start-label">Objetivo da partida</div>
+      <button class="start-btn" onclick="selectGoal(3)">Meta: 3 Vitorias</button>
+      <button class="start-btn" onclick="selectGoal(5)">Meta: 5 Vitorias</button>
+      <button class="start-btn" onclick="selectGoal(10)">Meta: 10 Vitorias</button>
+    </div>
+    <button class="step-back" onclick="goToStep('step-diff')"> Voltar</button>
+  </div>
+
+  <!-- PASSO 4A: Sala de Espera do HOST -->
+  <div class="start-step" id="step-lobby-host">
+    <div class="start-options">
+      <div class="start-label">Sala Criada! Passe o codigo:</div>
+      <div class="code-display" id="host-code-display">GERANDO...</div>
+      <div class="player-list" id="host-player-list">
+        <div class="player-item">Voce (Host)</div>
+      </div>
+      <div class="start-sub" id="host-status">Aguardando conexoes... (0/3)</div>
+      <button class="start-btn" onclick="startMatch()" id="btn-start-multi" style="justify-content:center; background:var(--gold); color:var(--bg); border:none; display:none;">
+        INICIAR JOGO
+      </button>
+    </div>
+    <button class="step-back" onclick="cancelHosting()"> Cancelar e Voltar</button>
+  </div>
+
+  <!-- PASSO 4B: Tela de Conexão do CLIENTE -->
+  <div class="start-step" id="step-lobby-client">
+    <div class="start-options">
+      <div class="start-label">Entrar em uma Sala</div>
+      <input type="text" id="join-code-input" class="input-code" placeholder="CODIGO">
+      <button class="start-btn" onclick="connectToHost()" id="btn-connect" style="justify-content:center;">CONECTAR</button>
+      <div class="start-sub" id="client-status" style="margin-top:10px; color:var(--gold);"></div>
+      <div class="player-list" id="client-player-list"></div>
+    </div>
+    <button class="step-back" onclick="goToStep('step-mode')"> Voltar</button>
+  </div>
+</div>
+
+<!-- CABEÇALHO DO JOGO -->
+<div id="header">
+  <header id="header" role="banner">
+    <div class="score-block" aria-label="Placar da sua dupla">
+      <span class="score-name" id="label-team-a">Sua dupla</span>
+      <span class="score-val" id="scoreA">0</span>
+    </div>
+    <div id="game-status" aria-live="polite">domino Master</div>
+    <div class="score-block right" aria-label="Placar dos oponentes">
+      <span class="score-name" id="label-team-b">Oponentes</span>
+      <span class="score-val" id="scoreB">0</span>
+    </div>
+  </header>
+
+  <div id="game-area" role="application">
+    <button id="btn-exit" onclick="exitGame()" aria-label="Sair do jogo">Sair</button>
+    <button id="btn-hint" onclick="window.HintManager.showHint()" style="position:fixed; bottom:20px; left:20px; z-index:1000;" aria-label="Pedir Dica">💡</button>
+    <button id="btn-chat" onclick="showQuickChatPanel()" style="position:fixed; bottom:20px; right:20px; z-index:1000;" aria-label="Chat rapido">💬</button>
+    <section id="hand-2" class="hand" aria-label="Mão do oponente 2"></section>
+    <div id="mid-row">
+      <section id="hand-1" class="hand hand-side" aria-label="Mão do oponente 1"></section> 
+
+      <section id="board-container" role="region" aria-label="Tabuleiro de jogo">
+        <div id="snake"></div>
+      </section>
+
+      <section id="hand-3" class="hand hand-side" aria-label="Mão do oponente 3"></section> 
+    </div>
+
+    <section id="hand-0" class="hand" aria-label="Sua mão"></section> 
+
+  
+  <!-- Seletor de Lado -->
+  <div id="side-picker">
+    <button class="btn-side" onclick="executeMove(0)"> Cima</button>
+    <button class="btn-side btn-cancel" onclick="cancelMove()"> Cancelar</button>
+    <button class="btn-side" onclick="executeMove(1)">Baixo </button>
+  </div>
+</div>
+
+<!-- OVERLAYS DE CONEXÃO -->
+<div id="reconnect-overlay" style="display:none">
+    <div id="reconnect-box">
+        <div class="reconnect-spinner"></div>
+        <div id="reconnect-title">conexao perdida</div>
+        <div id="reconnect-msg">Tentando reconectar... (1/5)</div>
+        <button onclick="cancelReconnect()">Desistir</button>
+    </div>
+</div>
+
+<!-- SCRIPTS (A ordem abaixo garante o funcionamento da câmera e interações) -->
+<!-- 1. Dados e Configurações -->
+<script src="eventscheduler.js" defer></script>
+<script src="newsmanager.js" defer></script>
+<script src="uianimator.js" defer></script>
+<script src="rematchmanager.js" defer></script>
+<script src="eliteachievementmanager.js" defer></script>
+<script src="snapshotmanager.js" defer></script>
+<script src="accessibilitysuite.js" defer></script>
+<script src="mutatorengine.js" defer></script>
+<script src="scenarioeditor.js" defer></script>
+<script src="powerupspawner.js" defer></script>
+<script src="rewardchestmanager.js" defer></script>
+<script src="crosssyncrewardmanager.js" defer></script>
+<script src="rewardengine.js" defer></script>
+<script src="socialfeedmanager.js" defer></script>
+<script src="newsmanager.js" defer></script>
+<script src="eventscheduler.js" defer></script>
+<script src="uianimator.js" defer></script>
+<script src="rematchmanager.js" defer></script>
+<script src="eliteachievementmanager.js" defer></script>
+<script src="snapshotmanager.js" defer></script>
+<script src="accessibilitysuite.js" defer></script>
+<script src="mutatorengine.js" defer></script>
+<script src="scenarioeditor.js" defer></script>
+<script src="powerupspawner.js" defer></script>
+<script src="rewardchestmanager.js" defer></script>
+<script src="crosssyncrewardmanager.js" defer></script>
+<script src="rewardengine.js" defer></script>
+<script src="socialfeedmanager.js" defer></script>
+<script src="newsmanager.js" defer></script>
+<script src="eventscheduler.js" defer></script>
+<script src="uianimator.js" defer></script>
+<script src="rematchmanager.js" defer></script>
+<script src="eliteachievementmanager.js" defer></script>
+<script src="snapshotmanager.js" defer></script>
+<script src="accessibilitysuite.js" defer></script>
+<script src="mutatorengine.js" defer></script>
+<script src="scenarioeditor.js" defer></script>
+<script src="powerupspawner.js" defer></script>
+<script src="tournamentmanager.js" defer></script>
+<script src="accessibilitymanager.js" defer></script>
+<script src="notificationmanager.js" defer></script>
+<script src="eventscheduler.js" defer></script>
+<script src="newsmanager.js" defer></script>
+<script src="spectatormanager.js" defer></script>
+<script src="socialmanager.js" defer></script>
+<script src="tournamentmanager.js" defer></script>
+<script src="streakmanager.js" defer></script>
+<script src="challengemanager.js" defer></script>
+<script src="resourcemanager.js" defer></script>
+<script src="campaignengine.js" defer></script>
+<script src="telemetryengine.js" defer></script>
+<script src="tournamenthub.js" defer></script>
+<script src="cinematicengine.js" defer></script>
+<script src="analytics.js" defer></script>
+<script src="achievements.js" defer></script>
+<script src="replaymanager.js" defer></script>
+<script src="config.js" defer></script>
+<script src="state.js" defer></script>
+<script src="names.js" defer></script>
+<script src="utils.js" defer></script>
+
+<!-- 2. Matemática do Jogo e IA -->
+<script src="logic.js" defer></script>
+<script src="dealer.js" defer></script>
+<script src="referee.js" defer></script>
+<script src="bots.js" defer></script>
+
+<!-- 3. Visual e Câmera (Carregados antes dos renderizadores) -->
+<script src="audio.js" defer></script>
+<script src="animations.js" defer></script>
+<script src="renderer.js" defer></script>
+
+<!-- 4. Interface e Hub (Coordena os anteriores) -->
+<script src="dashboard.js" defer></script>
+<script src="flowui.js" defer></script>
+<script src="identity.js" defer></script>
+<script src="ui.js" defer></script>
+
+<!-- 5. Rede e Input -->
+<script src="network.js" defer></script>
+<script src="seats.js" defer></script>
+<script src="multiplayer.js" defer></script>
+<script src="input.js" defer></script>
+<script src="lobby.js" defer></script>
+
+<!-- 6. O Motor Principal (Sempre por último) -->
+<script src="game.js" defer></script>
+
+</body>
 </html>

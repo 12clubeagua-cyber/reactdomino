@@ -1,0 +1,102 @@
+/* 
+   ========================================================================
+   STYLE.CSS - MODERN DESIGN SYSTEM (THEMABLE)
+   ======================================================================== 
+*/
+
+:root {
+  /* Default: Dark Theme */
+  --bg-dark: #0a120e;
+  --glass-bg: rgba(22, 35, 24, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --gold: #ffcc33;
+  --gold-glow: rgba(255, 204, 51, 0.3);
+  --text-main: #f0ede0;
+  --text-dim: #a8b4a8;
+  --tile-bg: #fdfcf0;
+  --tile-border: #c8c4a0;
+  --pip: #1a1a2e;
+}
+
+[data-theme='light'] {
+  --bg-dark: #f0f0f0;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --gold: #d4af37;
+  --text-main: #222;
+  --text-dim: #555;
+  --tile-bg: #fff;
+  --tile-border: #999;
+}
+
+[data-theme='vintage'] {
+  --bg-dark: #3e2723;
+  --glass-bg: rgba(62, 39, 35, 0.7);
+  --gold: #d7ccc8;
+  --text-main: #fff3e0;
+  --text-dim: #d7ccc8;
+  --tile-bg: #fffbf0;
+  --tile-border: #8d6e63;
+}
+
+/* ... keep the rest of the styles ... */
+
+html, body {
+  height: 100%; width: 100%; margin: 0; padding: 0;
+  overflow: hidden; position: fixed; overscroll-behavior: none;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Skins de Mesa */
+.table-felt { background-color: #2e7d32 !important; box-shadow: inset 0 0 100px rgba(0,0,0,0.5); }
+.table-wood { background-color: #5d4037 !important; background-image: repeating-linear-gradient(90deg, #5d4037, #5d4037 10px, #4e342e 10px, #4e342e 20px); }
+.table-marble { background-color: #cfd8dc !important; background-image: radial-gradient(#b0bec5 1px, transparent 1px); background-size: 20px 20px; }
+
+#header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 20px; height: 60px; box-sizing: border-box;
+  background: var(--glass-bg); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.score-val { color: var(--gold); font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; }
+#game-status { color: var(--text-dim); font-size: clamp(0.7rem, 2vw, 0.9rem); letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; }
+
+/* Buttons */
+.start-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  padding: 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.start-btn:active { transform: scale(0.98); background: var(--glass-border); }
+
+/* Tile Styling */
+.tile {
+  background: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  display: flex; position: absolute;
+  transition: transform 0.2s ease-out;
+}
+
+.tile.playable {
+  border: 3px solid var(--gold) !important;
+  box-shadow: 0 0 20px var(--gold-glow);
+  transform: translateY(-8px) scale(1.05);
+}
+
+.hand {
+  padding: var(--spacing);
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
+  margin: 4px;
+}
+
