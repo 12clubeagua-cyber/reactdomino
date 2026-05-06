@@ -137,9 +137,10 @@ async function runHardcoreStress(iterations = 1000) {
 
 // Running the stress test
 try {
-    // We run 2000 iterations to make it last a bit but stay efficient
-    runHardcoreStress(2000);
+    // Aumentando para 10.000 iteracoes para maratona de 20 minutos
+    runHardcoreStress(10000);
 } catch (e) {
+
     console.error(e.message);
     process.exit(1);
 }
