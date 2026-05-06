@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v94'; // Incrementado para v94: Correcao da visibilidade dos baloes de chat rapido e emotes
+const CACHE_NAME = 'domino-felipe-v95'; // Incrementado para v95: Remocao do sistema de tutorial
 
 const ASSETS = [
   '/',
@@ -70,8 +70,6 @@ const ASSETS = [
   '/tournamenthub.js',
   '/tournamentmanager.js',
   '/trainingengine.js',
-  '/tutorialmanager.js',
-  '/ui.js',
   '/uianimator.js',
   '/utils.js'
 ];
