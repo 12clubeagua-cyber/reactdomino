@@ -178,93 +178,89 @@
 </div>
 
 <!-- SCRIPTS (A ordem abaixo garante o funcionamento da câmera e interações) -->
-<!-- 1. Dados e Configurações -->
-<script src="eventscheduler.js" defer></script>
-<script src="newsmanager.js" defer></script>
-<script src="uianimator.js" defer></script>
-<script src="rematchmanager.js" defer></script>
-<script src="eliteachievementmanager.js" defer></script>
-<script src="snapshotmanager.js" defer></script>
-<script src="accessibilitysuite.js" defer></script>
-<script src="mutatorengine.js" defer></script>
-<script src="scenarioeditor.js" defer></script>
-<script src="powerupspawner.js" defer></script>
-<script src="rewardchestmanager.js" defer></script>
-<script src="crosssyncrewardmanager.js" defer></script>
-<script src="rewardengine.js" defer></script>
-<script src="socialfeedmanager.js" defer></script>
-<script src="newsmanager.js" defer></script>
-<script src="eventscheduler.js" defer></script>
-<script src="uianimator.js" defer></script>
-<script src="rematchmanager.js" defer></script>
-<script src="eliteachievementmanager.js" defer></script>
-<script src="snapshotmanager.js" defer></script>
-<script src="accessibilitysuite.js" defer></script>
-<script src="mutatorengine.js" defer></script>
-<script src="scenarioeditor.js" defer></script>
-<script src="powerupspawner.js" defer></script>
-<script src="rewardchestmanager.js" defer></script>
-<script src="crosssyncrewardmanager.js" defer></script>
-<script src="rewardengine.js" defer></script>
-<script src="socialfeedmanager.js" defer></script>
-<script src="newsmanager.js" defer></script>
-<script src="eventscheduler.js" defer></script>
-<script src="uianimator.js" defer></script>
-<script src="rematchmanager.js" defer></script>
-<script src="eliteachievementmanager.js" defer></script>
-<script src="snapshotmanager.js" defer></script>
-<script src="accessibilitysuite.js" defer></script>
-<script src="mutatorengine.js" defer></script>
-<script src="scenarioeditor.js" defer></script>
-<script src="powerupspawner.js" defer></script>
-<script src="tournamentmanager.js" defer></script>
-<script src="accessibilitymanager.js" defer></script>
-<script src="notificationmanager.js" defer></script>
-<script src="eventscheduler.js" defer></script>
-<script src="newsmanager.js" defer></script>
-<script src="spectatormanager.js" defer></script>
-<script src="socialmanager.js" defer></script>
-<script src="tournamentmanager.js" defer></script>
-<script src="streakmanager.js" defer></script>
-<script src="challengemanager.js" defer></script>
-<script src="resourcemanager.js" defer></script>
-<script src="campaignengine.js" defer></script>
-<script src="telemetryengine.js" defer></script>
-<script src="tournamenthub.js" defer></script>
-<script src="cinematicengine.js" defer></script>
-<script src="analytics.js" defer></script>
-<script src="achievements.js" defer></script>
-<script src="replaymanager.js" defer></script>
+<!-- 1. Dados e Configurações Base -->
 <script src="config.js" defer></script>
 <script src="state.js" defer></script>
 <script src="names.js" defer></script>
 <script src="utils.js" defer></script>
 
-<!-- 2. Matemática do Jogo e IA -->
+<!-- 2. Gestores e Engines (Extensões do Jogo) -->
+<script src="accessibilitymanager.js" defer></script>
+<script src="accessibilitysuite.js" defer></script>
+<script src="achievements.js" defer></script>
+<script src="analytics.js" defer></script>
+<script src="campaignengine.js" defer></script>
+<script src="challengemanager.js" defer></script>
+<script src="cinematicengine.js" defer></script>
+<script src="cloudreplaymanager.js" defer></script>
+<script src="cloudsyncmanager.js" defer></script>
+<script src="coopmanager.js" defer></script>
+<script src="crosssyncrewardmanager.js" defer></script>
+<script src="dailyboardengine.js" defer></script>
+<script src="eliteachievementmanager.js" defer></script>
+<script src="eventscheduler.js" defer></script>
+<script src="exportmanager.js" defer></script>
+<script src="ghostengine.js" defer></script>
+<script src="hintmanager.js" defer></script>
+<script src="historymanager.js" defer></script>
+<script src="i18nmanager.js" defer></script>
+<script src="mutatorengine.js" defer></script>
+<script src="newsmanager.js" defer></script>
+<script src="notificationmanager.js" defer></script>
+<script src="powersaver.js" defer></script>
+<script src="powerupengine.js" defer></script>
+<script src="powerupspawner.js" defer></script>
+<script src="prestigemanager.js" defer></script>
+<script src="progressionmanager.js" defer></script>
+<script src="puzzleengine.js" defer></script>
+<script src="rankmanager.js" defer></script>
+<script src="rematchmanager.js" defer></script>
+<script src="replaymanager.js" defer></script>
+<script src="resourcemanager.js" defer></script>
+<script src="rewardchestmanager.js" defer></script>
+<script src="rewardengine.js" defer></script>
+<script src="scenarioeditor.js" defer></script>
+<script src="snapshotmanager.js" defer></script>
+<script src="socialfeedmanager.js" defer></script>
+<script src="socialmanager.js" defer></script>
+<script src="spectatormanager.js" defer></script>
+<script src="streakmanager.js" defer></script>
+<script src="streakrewarder.js" defer></script>
+<script src="tableskinmanager.js" defer></script>
+<script src="telemetryengine.js" defer></script>
+<script src="thememanager.js" defer></script>
+<script src="tileskinmanager.js" defer></script>
+<script src="tournamenthub.js" defer></script>
+<script src="tournamentmanager.js" defer></script>
+<script src="trainingengine.js" defer></script>
+<script src="tutorialmanager.js" defer></script>
+<script src="uianimator.js" defer></script>
+
+<!-- 3. Matemática do Jogo e IA -->
 <script src="logic.js" defer></script>
 <script src="dealer.js" defer></script>
 <script src="referee.js" defer></script>
 <script src="bots.js" defer></script>
 
-<!-- 3. Visual e Câmera (Carregados antes dos renderizadores) -->
+<!-- 4. Visual e Câmera -->
 <script src="audio.js" defer></script>
 <script src="animations.js" defer></script>
 <script src="renderer.js" defer></script>
 
-<!-- 4. Interface e Hub (Coordena os anteriores) -->
+<!-- 5. Interface e Hub (Coordena os anteriores) -->
 <script src="dashboard.js" defer></script>
 <script src="flowui.js" defer></script>
 <script src="identity.js" defer></script>
 <script src="ui.js" defer></script>
 
-<!-- 5. Rede e Input -->
+<!-- 6. Rede e Input -->
 <script src="network.js" defer></script>
 <script src="seats.js" defer></script>
 <script src="multiplayer.js" defer></script>
 <script src="input.js" defer></script>
 <script src="lobby.js" defer></script>
 
-<!-- 6. O Motor Principal (Sempre por último) -->
+<!-- 7. O Motor Principal (Sempre por último) -->
 <script src="game.js" defer></script>
 
 </body>
