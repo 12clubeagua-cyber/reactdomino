@@ -137,8 +137,8 @@ window.processTurn = function() {
     turnRetryCount = 0;
 
     let moves = [];
-    if (typeof getMoves === 'function') {
-        moves = getMoves(window.STATE.hands[cur]);
+    if (typeof window.getMoves === 'function') {
+        moves = window.getMoves(window.STATE.hands[cur]);
     }
 
     // --- LOGICA DO BOT ---
@@ -169,7 +169,7 @@ window.processTurn = function() {
     if (isLocal) {
         if (netMode === 'client' || (netMode === 'host' && cur === myIdx) || netMode === 'offline') {
             if (typeof window.Dashboard !== 'undefined') window.Dashboard.setMessage('SUA VEZ', 'active');
-            if (typeof highlight === 'function') highlight(moves); // Ativa as pecas
+            if (typeof window.highlight === 'function') window.highlight(moves); // Ativa as pecas
             
             // Notifica se a pagina estiver oculta
             if (document.hidden) {
@@ -194,7 +194,7 @@ window.play = function(pIdx, tIdx, side) {
     const netMode = window.netMode || 'offline';
     const myIdx = window.myPlayerIdx || 0;
     
-    // Feedback tatil: Se for a minha vez, vibra levemente
+    // Feedback tatil
     if (pIdx === myIdx && typeof window.HapticEngine !== 'undefined') {
         window.HapticEngine.vibrate('click');
     }
@@ -212,34 +212,48 @@ window.play = function(pIdx, tIdx, side) {
         return;
     }
 
+    const tile = window.STATE.hands[pIdx][tIdx];
+    if (!tile) return;
+
+    const normalizedSide = (side === 'any' || side === 'both') ? 0 : side;
+
+    let placement = null;
+    if (typeof window.calculateTilePlacement === 'function') {
+        placement = window.calculateTilePlacement(tile, normalizedSide);
+    }
+
+    if (!placement) {
+        console.error("Erro critico: Falha no calculo de posicionamento. Jogada abortada para evitar perda de peca.");
+        return;
+    }
+
+    // Agora sim, removemos a peca da mao
+    window.STATE.hands[pIdx].splice(tIdx, 1);
+    window.STATE.handSize[pIdx]--;
+    
     window.STATE.playerPassed.fill(false);
     window.STATE.passCount = 0;
     window.STATE.lastPlayed = pIdx;
 
-    const tile = window.STATE.hands[pIdx].splice(tIdx, 1)[0];
-    window.STATE.handSize[pIdx]--;
-    
-    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawHands === 'function') window.Renderer.drawHands(); 
-
-    const normalizedSide = (side === 'any') ? 0 : side;
-    
-    let placement = null;
-    if (typeof calculateTilePlacement === 'function') placement = calculateTilePlacement(tile, normalizedSide);
-
-    if (placement) {
-        if (!window.STATE.positions.length) {
-            window.STATE.extremes = [tile[0], tile[1]];
-        } else {
-            window.STATE.extremes[normalizedSide] = placement.vOther;
-        }
-        window.STATE.positions.push(placement.nP);
+    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawHands === 'function') {
+        window.Renderer.drawHands(); 
     }
+
+    // O calculateTilePlacement ja atualizou extremes internamente via updateExtremes
+    if (!window.STATE.positions.length) {
+        window.STATE.extremes = [tile[0], tile[1]];
+    } else {
+        window.STATE.extremes[normalizedSide] = placement.vOther;
+    }
+    window.STATE.positions.push(placement.nP);
 
     if (typeof window.updateCamera === 'function') window.updateCamera();
 
-    if (typeof window.Network !== 'undefined') window.Network.sync({ type: 'animate_play', pIdx, nP: placement ? placement.nP : null, tIdx });
+    if (typeof window.Network !== 'undefined') {
+        window.Network.sync({ type: 'animate_play', pIdx, nP: placement.nP, tIdx });
+    }
 
-    if (typeof window.animateTile === 'function' && placement) {
+    if (typeof window.animateTile === 'function') {
         window.animateTile(pIdx, placement.nP, () => window._completePlay(pIdx));
     } else {
         window._completePlay(pIdx);

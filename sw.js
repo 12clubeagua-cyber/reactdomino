@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v110'; // v110: Saneamento de assets inexistentes e refatoracao de bots
+const CACHE_NAME = 'domino-felipe-v111'; // v111: Akita Audit - Fixed Tile Leak and Global Scope consistency
 
 const ASSETS = [
   '/',
