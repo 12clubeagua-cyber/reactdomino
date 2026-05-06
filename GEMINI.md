@@ -46,6 +46,9 @@
 - **Visibilidade de Pips:** Destaque `.playable` usa bordas douradas e sombras, sem brilhos internos.
 - **Vazamento de Dados (Blind Hands):** Nunca envie o `window.STATE` completo se contiver maos privadas. Use `getPublicState`.
 - **Renderizacao Defensiva:** `Renderer.drawBoard` deve limpar pecas antigas (`.tile:not(.moving-proxy)`) para evitar fantasmas.
+- **Seguranca de Acesso a Objetos:** Sempre verifique a existencia de uma chave (ex: `Achievements.list[id]`) antes de acessar suas propriedades para evitar erros de 'undefined'.
+- **Estado de Atributos DOM:** Ao desativar recursos via atributos `data-*`, defina o valor como vazio ou remova-o explicitamente em vez de apenas ignorar a atualizacao.
+- **Regressao e Auditoria:** Bugs complexos devem ser validados com scripts de teste unitario dedicados (`tests/*.test.js`) sob o Protocolo Akita.
 
 # PROTOCOLO DE EXPANSAO E VALIDACAO
 - **Ciclo de Evolucao:** Estabilidade (v6+) -> Expansao Funcional Autonoma.
