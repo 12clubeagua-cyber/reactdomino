@@ -36,9 +36,6 @@
     }
   </script>
   
-  <!-- Biblioteca PeerJS para o modo multiplayer -->
-  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-  
   <!-- Arquivo de Estilo corrigido -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -57,16 +54,9 @@
         Continuar <span>Partida Salva</span>
       </button>
       <button class="start-btn" onclick="selectMode('offline')" aria-label="Modo Um Jogador, contra bots">
-        Um Jogador <span>Vs Bots</span>
-      </button>
-      <button class="start-btn" onclick="selectMode('host')" aria-label="Criar sala multiplayer">
-        Criar Sala <span>Multiplayer Wi-Fi</span>
-      </button>
-      <button class="start-btn" onclick="selectMode('client')" aria-label="Entrar em uma sala existente">
-        Entrar na Sala <span>Conectar Wi-Fi</span>
+        Jogar <span>Vs Bots</span>
       </button>
       <button class="start-btn" onclick="changeName()">Alterar Nome</button>
-      <button class="start-btn" onclick="window.AccessibilityManager.toggleHighContrast()">Acessibilidade: Alto Contraste</button>
     </div>
   </section>
 
@@ -96,34 +86,6 @@
       <button class="start-btn" onclick="selectGoal(10)">Meta: 10 Vitorias</button>
     </div>
     <button class="step-back" onclick="goToStep('step-diff')"> Voltar</button>
-  </div>
-
-  <!-- PASSO 4A: Sala de Espera do HOST -->
-  <div class="start-step" id="step-lobby-host">
-    <div class="start-options">
-      <div class="start-label">Sala Criada! Passe o codigo:</div>
-      <div class="code-display" id="host-code-display">GERANDO...</div>
-      <div class="player-list" id="host-player-list">
-        <div class="player-item">Voce (Host)</div>
-      </div>
-      <div class="start-sub" id="host-status">Aguardando conexoes... (0/3)</div>
-      <button class="start-btn" onclick="startMatch()" id="btn-start-multi" style="justify-content:center; background:var(--gold); color:var(--bg); border:none; display:none;">
-        INICIAR JOGO
-      </button>
-    </div>
-    <button class="step-back" onclick="cancelHosting()"> Cancelar e Voltar</button>
-  </div>
-
-  <!-- PASSO 4B: Tela de Conexao do CLIENTE -->
-  <div class="start-step" id="step-lobby-client">
-    <div class="start-options">
-      <div class="start-label">Entrar em uma Sala</div>
-      <input type="text" id="join-code-input" class="input-code" placeholder="CODIGO">
-      <button class="start-btn" onclick="connectToHost()" id="btn-connect" style="justify-content:center;">CONECTAR</button>
-      <div class="start-sub" id="client-status" style="margin-top:10px; color:var(--gold);"></div>
-      <div class="player-list" id="client-player-list"></div>
-    </div>
-    <button class="step-back" onclick="goToStep('step-mode')"> Voltar</button>
   </div>
 </main>
 
@@ -165,16 +127,6 @@
   </div>
 </div>
 
-<!-- OVERLAYS DE CONEXAO -->
-<div id="reconnect-overlay" style="display:none">
-    <div id="reconnect-box">
-        <div class="reconnect-spinner"></div>
-        <div id="reconnect-title">conexao perdida</div>
-        <div id="reconnect-msg">Tentando reconectar... (1/5)</div>
-        <button onclick="cancelReconnect()">Desistir</button>
-    </div>
-</div>
-
 <!-- SCRIPTS (A ordem abaixo garante o funcionamento da camera e interacoes) -->
 <!-- 1. Dados e Configuracoes Base -->
 <script src="config.js" defer></script>
@@ -182,50 +134,7 @@
 <script src="names.js" defer></script>
 <script src="utils.js" defer></script>
 
-<!-- 2. Gestores e Engines (Extensoes do Jogo) -->
-<script src="accessibilitymanager.js" defer></script>
-<script src="accessibilitysuite.js" defer></script>
-<script src="achievements.js" defer></script>
-<script src="analytics.js" defer></script>
-<script src="campaignengine.js" defer></script>
-<script src="challengemanager.js" defer></script>
-<script src="cloudsyncmanager.js" defer></script>
-<script src="coopmanager.js" defer></script>
-<script src="crosssyncrewardmanager.js" defer></script>
-<script src="dailyboardengine.js" defer></script>
-<script src="eliteachievementmanager.js" defer></script>
-<script src="eventscheduler.js" defer></script>
-<script src="historymanager.js" defer></script>
-<script src="i18nmanager.js" defer></script>
-<script src="mutatorengine.js" defer></script>
-<script src="newsmanager.js" defer></script>
-<script src="notificationmanager.js" defer></script>
-<script src="powersaver.js" defer></script>
-<script src="powerupengine.js" defer></script>
-<script src="powerupspawner.js" defer></script>
-<script src="prestigemanager.js" defer></script>
-<script src="progressionmanager.js" defer></script>
-<script src="puzzleengine.js" defer></script>
-<script src="rankmanager.js" defer></script>
-<script src="rematchmanager.js" defer></script>
-<script src="resourcemanager.js" defer></script>
-<script src="rewardchestmanager.js" defer></script>
-<script src="rewardengine.js" defer></script>
-<script src="scenarioeditor.js" defer></script>
-<script src="snapshotmanager.js" defer></script>
-<script src="socialfeedmanager.js" defer></script>
-<script src="socialmanager.js" defer></script>
-<script src="spectatormanager.js" defer></script>
-<script src="streakmanager.js" defer></script>
-<script src="streakrewarder.js" defer></script>
-<script src="tableskinmanager.js" defer></script>
-<script src="telemetryengine.js" defer></script>
-<script src="thememanager.js" defer></script>
-<script src="tileskinmanager.js" defer></script>
-<script src="tournamenthub.js" defer></script>
-<script src="tournamentmanager.js" defer></script>
-<script src="trainingengine.js" defer></script>
-
+<!-- 2. Gestores e Engines (Removidos para simplificacao) -->
 
 <!-- 3. Matematica do Jogo e IA -->
 <script src="logic.js" defer></script>
@@ -234,7 +143,6 @@
 <script src="bots.js" defer></script>
 
 <!-- 4. Visual e Camera -->
-<script src="audio.js" defer></script>
 <script src="animations.js" defer></script>
 <script src="renderer.js" defer></script>
 
@@ -244,10 +152,7 @@
 <script src="identity.js" defer></script>
 <script src="ui.js" defer></script>
 
-<!-- 6. Rede e Input -->
-<script src="network.js" defer></script>
-<script src="seats.js" defer></script>
-<script src="multiplayer.js" defer></script>
+<!-- 6. Input e Lobby -->
 <script src="input.js" defer></script>
 <script src="lobby.js" defer></script>
 

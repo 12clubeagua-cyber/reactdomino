@@ -31,11 +31,6 @@ window.startRound = function() {
         window.Dashboard.setMessage("EMBARALHANDO...");
     }
 
-    // Sincroniza inicio do embaralhamento no Multiplayer
-    if (typeof window.Network !== 'undefined' && typeof window.Network.sync === 'function') {
-        window.Network.sync({ type: 'shuffle_start' });
-    }
-
     // Inicia imediatamente sem animacao ou som
     window.dealAndStart();
 };
@@ -75,9 +70,7 @@ window.dealAndStart = function() {
     window.STATE.isBlocked = false;
     window.STATE.isShuffling = false;
 
-    // Sincronizacao e Renderizacao Inicial Segura
-    if (typeof window.Network !== 'undefined') window.Network.syncState();
-    
+    // Renderizacao Inicial Segura
     if (typeof window.Renderer !== 'undefined') {
         if (typeof window.Renderer.drawHands === 'function') window.Renderer.drawHands();
         if (typeof window.Renderer.drawBoard === 'function') window.Renderer.drawBoard(); 
@@ -101,34 +94,15 @@ window.processTurn = function() {
     window.STATE.lastTurnTime = Date.now();
     
     const cur = window.STATE.current;
-    const netMode = window.netMode || 'offline';
     const myIdx = window.myPlayerIdx || 0;
     
     // Determina se o turno pertence ao jogador local
-    let isLocal = false;
-    if (netMode === 'offline') {
-        isLocal = (cur === myIdx);
-    } else if (netMode === 'host') {
-        isLocal = (cur === myIdx || (window.connectedClients && window.connectedClients.some(c => c.assignedIdx === cur)));
-    } else {
-        isLocal = (cur === myIdx);
-    }
-
-    // Calcula tempo com base no modo sobrevivencia se ativo
-    let timeLimit = (window.STATE.turnTime || 15) * 1000;
-    if (window.STATE.gameMode === 'survival' && typeof window.SurvivalEngine !== 'undefined') {
-        const dynamicSeconds = window.SurvivalEngine.getDynamicTurnTime(window.STATE.turnTime || 15, window.STATE.roundCount || 0);
-        timeLimit = dynamicSeconds * 1000;
-    }
+    const isLocal = (cur === myIdx);
 
     if (window.STATE.turnTimer) clearTimeout(window.STATE.turnTimer);
     
-    // Apenas o HOST (ou Offline) gerencia o timer de auto-pass
-    // REMOVIDO: Limite de tempo para jogadores reais. O timer agora so existe para Bots.
-    const isBot = !isLocal && netMode !== 'client';
-    if (isBot) {
-        // O timer para o Bot e definido mais abaixo na secao --- LOGICA DO BOT ---
-    }
+    // Apenas o sistema local gerencia o timer de auto-pass
+    const isBot = !isLocal;
 
     // Fallback para evitar travamentos em caso de dessincronizacao
     if (!window.STATE.hands[cur]) {
@@ -147,7 +121,7 @@ window.processTurn = function() {
     }
 
     // --- LOGICA DO BOT ---
-    if (!isLocal && netMode !== 'client') {
+    if (!isLocal) {
         window.STATE.isBlocked = true;
         
         const botName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(cur) : `Bot ${cur}`;
@@ -207,29 +181,15 @@ window.processTurn = function() {
             window.Dashboard.setMessage(`${pName} NAO TEM PECA`, 'pass');
         }
         
-        if (netMode !== 'client') {
-            const passDelay = (window.CONFIG?.GAME?.PASS_DISPLAY_TIME) || 1000;
-            window.STATE.turnTimer = setTimeout(() => window.doPass(cur), passDelay);
-        }
+        const passDelay = (window.CONFIG?.GAME?.PASS_DISPLAY_TIME) || 1000;
+        window.STATE.turnTimer = setTimeout(() => window.doPass(cur), passDelay);
         return;
     }
 
     // --- LOGICA DO JOGADOR LOCAL COM PECAS ---
     if (isLocal) {
-        if (netMode === 'client' || (netMode === 'host' && cur === myIdx) || netMode === 'offline') {
-            if (typeof window.Dashboard !== 'undefined') window.Dashboard.setMessage('SUA VEZ', 'active');
-            if (typeof highlight === 'function') highlight(moves); // Ativa as pecas
-            
-            // Notifica se a pagina estiver oculta
-            if (document.hidden) {
-                window.NotificationManager.notify("Sua vez!", "E a hora de jogar sua peca.");
-            }
-        } else {
-            if (typeof window.Dashboard !== 'undefined') {
-                const pName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(cur) : `Jogador ${cur}`;
-                window.Dashboard.setMessage(`${pName} JOGANDO...`);
-            }
-        }
+        if (typeof window.Dashboard !== 'undefined') window.Dashboard.setMessage('SUA VEZ', 'active');
+        if (typeof highlight === 'function') highlight(moves); // Ativa as pecas
     }
 };
 
@@ -240,32 +200,6 @@ window.processTurn = function() {
 window.play = function(pIdx, tIdx, side) {
     if (window.STATE.isOver) return;
     
-    // Rastreia tempo de jogada
-    if (window.STATE.lastTurnTime) {
-        const moveTime = Date.now() - window.STATE.lastTurnTime;
-        window.Analytics.recordMove(pIdx, moveTime);
-        // Gatilho: Jogada sob 2 segundos (2000ms)
-        if (pIdx === (window.myPlayerIdx ?? 0) && moveTime < 2000) {
-            window.Achievements.unlock('SPEEDY');
-        }
-    }
-    
-    const netMode = window.netMode || 'offline';
-    const myIdx = window.myPlayerIdx || 0;
-    
-    // Feedback tatil: Se for a minha vez, vibra levemente
-    if (pIdx === myIdx && typeof window.HapticEngine !== 'undefined') {
-        window.HapticEngine.vibrate('click');
-    }
-
-    if (netMode === 'client') {
-        if (pIdx === myIdx) {
-            window.STATE.isBlocked = true;
-            if (typeof window.Network !== 'undefined') window.Network.request({ type: 'play_request', tIdx, side });
-        }
-        return;
-    }
-
     if (window.STATE.current !== pIdx) {
         console.warn("Jogada fora de turno.");
         return;
@@ -296,8 +230,6 @@ window.play = function(pIdx, tIdx, side) {
 
     if (typeof window.updateCamera === 'function') window.updateCamera();
 
-    if (typeof window.Network !== 'undefined') window.Network.sync({ type: 'animate_play', pIdx, nP: placement ? placement.nP : null, tIdx });
-
     if (typeof window.animateTile === 'function' && placement) {
         window.animateTile(pIdx, placement.nP, () => window._completePlay(pIdx));
     } else {
@@ -320,7 +252,6 @@ window._completePlay = function(pIdx) {
         window.endRound('win', pIdx);
     } else {
         window.STATE.current = (window.STATE.current + 1) % 4;
-        if (typeof window.Network !== 'undefined') window.Network.syncState();
         window.processTurn();
     }
 };
@@ -338,15 +269,9 @@ window.doPass = function(pIdx) {
 
     window.STATE.playerPassed[pIdx] = true;
     window.STATE.passCount++;
-
-    if (typeof playPass === 'function') playPass(); 
     
     if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.flashPass === 'function') {
         window.Renderer.flashPass(pIdx); 
-    }
-    
-    if (typeof window.Network !== 'undefined') {
-        window.Network.sync({ type: 'animate_pass', pIdx });
     }
 
     if (window.STATE.passCount >= 4) {
@@ -357,7 +282,6 @@ window.doPass = function(pIdx) {
         
         setTimeout(() => {
             window.STATE.current = (window.STATE.current + 1) % 4;
-            if (typeof window.Network !== 'undefined') window.Network.syncState();
             window.processTurn();
         }, passDelay);
     }
@@ -395,25 +319,13 @@ window.endRound = function(reason, winnerIdx) {
 
     if (result.winTeam !== -1) {
         window.STATE.scores[result.winTeam]++;
-        // Gatilho: XP com multiplicador de Streak e Conquista
-        if (myIdx % 2 === result.winTeam) {
-            window.Achievements.unlock('FIRST_WIN');
-            const multiplier = window.StreakManager.getMultiplier();
-            window.ProgressionManager.addXp(Math.round(50 * multiplier));
-        }
-    }
-
-    if (typeof window.Network !== 'undefined') {
-        window.Network.sync({ type: 'end_round', ...result, hands: window.STATE.hands });
-        window.Network.syncState();
     }
 
     if (typeof window.FlowUI !== 'undefined' && typeof window.FlowUI.endRound === 'function') {
         window.FlowUI.endRound(result.winTeam, winnerIdx, result.msg, result.detail);
     }
-};
+    };
 
-window.exitGame = function() {
-    window.ResourceManager.cleanup();
+    window.exitGame = function() {
     window.location.reload();
-};
+    };

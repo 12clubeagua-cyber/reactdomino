@@ -21,7 +21,6 @@ window.showQuickChatPanel = function() {
             btn.className = 'btn-side';
             btn.innerText = msg;
             btn.onclick = () => {
-                window.Network.request({ type: 'quick_chat', pIdx: window.myPlayerIdx, message: msg });
                 window.Dashboard.showQuickChat(window.myPlayerIdx, msg);
                 panel.style.display = 'none';
             };

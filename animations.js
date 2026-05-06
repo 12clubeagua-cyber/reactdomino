@@ -4,28 +4,6 @@
    ======================================================================== 
 */
 
-/**
- * HAPTIC ENGINE (FEEDBACK TATIL)
- */
-window.HapticEngine = {
-    patterns: {
-        success: [30, 50, 30],
-        error: [100, 30, 100],
-        win: [100, 50, 100, 50, 100],
-        click: [10]
-    },
-
-    vibrate: function(type) {
-        if (!navigator.vibrate) return;
-        const pattern = window.HapticEngine.patterns[type] || [20];
-        try {
-            navigator.vibrate(pattern);
-        } catch (e) {
-            console.warn("Haptic feedback error:", e);
-        }
-    }
-};
-
 window.Animations = {
     _cache: {},
     _getEl: function(id) {
@@ -164,7 +142,6 @@ window.animateTile = function(pIdx, targetData, onComplete) {
             requestAnimationFrame(step); // Continua a animacao
         } else {
             // Animacao terminou
-            if (typeof window.playClack === 'function') window.playClack(); // Som de batida
             
             // E crucial chamar o onComplete (que desenha a peca real) ANTES de remover o proxy
             if (typeof onComplete === 'function') onComplete();
