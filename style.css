@@ -316,3 +316,13 @@ html, body {
     from { background: rgba(192, 57, 43, 0.4); }
     to { background: rgba(192, 57, 43, 0.95); box-shadow: inset 0 0 40px rgba(0,0,0,0.7); }
 }
+
+.hand-win-blink {
+  animation: winBlink 0.8s infinite alternate;
+  border-radius: 8px;
+}
+
+@keyframes winBlink {
+  from { background: rgba(255, 204, 51, 0.1); box-shadow: 0 0 10px rgba(255, 204, 51, 0.2); }
+  to { background: rgba(255, 204, 51, 0.4); box-shadow: 0 0 20px rgba(255, 204, 51, 0.6); }
+}
