@@ -30,28 +30,6 @@ window.Dashboard = {
     },
 
     /**
-     * Exibe o painel de estatísticas de fim de rodada.
-     */
-    showMatchStats: function(stats) {
-        let panel = window.Dashboard._getEl('stats-panel');
-        if (!panel) {
-            panel = document.createElement('div');
-            panel.id = 'stats-panel';
-            panel.className = 'glass';
-            panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2000; padding:20px; display:flex; flex-direction:column; gap:10px; min-width: 250px;';
-            document.body.appendChild(panel);
-            window.Dashboard._cache['stats-panel'] = panel;
-        }
-        panel.innerHTML = `
-            <div style="text-align:center; font-weight:bold; font-size: 1.2rem;">Resumo da Partida</div>
-            <div>Pontos: ${stats.points}</div>
-            <div>Eficacia Media: ${stats.avgMoveTime}ms/jogada</div>
-            <button class="btn-side" onclick="document.getElementById('stats-panel').style.display='none'">Fechar</button>
-        `;
-        panel.style.display = 'flex';
-    },
-
-    /**
      * Exibe o painel de votação para ações sociais.
      */
     showVotePanel: function(action, callback) {

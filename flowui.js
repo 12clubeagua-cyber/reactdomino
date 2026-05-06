@@ -1,32 +1,21 @@
-/* 
-   ========================================================================
-   FLOWUI.JS - O CERIMONIALISTA (VERSÃO BLINDADA)
-   Gerencia fluxos de encerramento, transições de rodadas e diálogos.
-   ======================================================================== 
-*/
-
+/**
+ * FlowUI.js
+ * Gerencia o fluxo visual e logico de transicao entre estados (Lobby -> Game -> Round End).
+ */
 window.FlowUI = {
+
+    init: function() {
+        console.log("FlowUI: Sistema de fluxo inicializado.");
+    },
+
     /**
-     * Limpa a interface para preparar o início de uma nova rodada.
-     * Resolve o erro: FlowUI.resetForNewRound is not a function.
+     * Limpa a UI para uma nova rodada.
      */
-    resetForNewRound: function() {
-        // 1. Esconde qualquer overlay de resultado que esteja visível
-        const resArea = document.getElementById('result-area');
-        if (resArea) resArea.style.display = 'none';
-
-        // 2. Limpa o destaque de vitória das mãos dos jogadores
-        for (let i = 0; i < 4; i++) {
-            const handEl = document.getElementById(`hand-${i}`);
-            if (handEl) {
-                handEl.classList.remove('active-turn');
-            }
-        }
-
-        // 3. Garante que o seletor de lado (Cima/Baixo) seja fechado
-        const picker = document.getElementById('side-picker');
-        if (picker) picker.style.display = 'none';
-
+    clearForNewRound: function() {
+        // Remove overlays de fim de rodada se existirem
+        const overlay = document.getElementById('round-overlay');
+        if (overlay) overlay.remove();
+        
         console.log("FlowUI: Interface limpa para nova rodada.");
     },
 
@@ -39,13 +28,6 @@ window.FlowUI = {
             window.Renderer.drawHands(true);
         }
 
-        // --- NOVO: Gatilho de Estatísticas ---
-        const stats = {
-            points: window.STATE.scores.reduce((a, b) => a + b, 0),
-            avgMoveTime: window.Analytics.getSummary()[window.myPlayerIdx ?? 0]
-        };
-        setTimeout(() => window.Dashboard.showMatchStats(stats), 1500);
-        
         // 3. Atualiza o placar no Dashboard
         if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.updateScore === 'function') {
             window.Dashboard.updateScore();
@@ -54,11 +36,6 @@ window.FlowUI = {
         // 4. Grava na Persistencia
         if (winTeam !== -1) {
             window.FlowUI.saveMatchState();
-        }
-
-        // 3. Atualiza o placar no Dashboard
-        if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.updateScore === 'function') {
-            window.Dashboard.updateScore();
         }
 
         // 7. Verifica se a partida inteira acabou
@@ -76,73 +53,83 @@ window.FlowUI = {
         },
 
     /**
-     * Salva o estado atual da partida no localStorage para persistencia.
-     */
-    saveMatchState: function() {
-        const stateToSave = {
-            scores: window.STATE.scores,
-            targetScore: window.STATE.targetScore,
-            difficulty: window.STATE.difficulty
-        };
-        window.safeSetStorage('domino_match_state', stateToSave);
-    },
-
-    /**
-     * Diálogo de confirmação para sair.
-     */
-    exitGame: function() {
-        if (confirm("Deseja mesmo sair e encerrar a partida?")) {
-            window.location.reload();
-        }
-    },
-
-    /**
-     * Encerramento definitivo da partida.
-     * @private
-     */
-    _handleMatchEnd: function(target) {        const myIdx = window.myPlayerIdx || 0;
-        const scoreA = (window.STATE && window.STATE.scores) ? window.STATE.scores[0] : 0;
-        
-        const isMyTeamWinner = (scoreA >= target) 
-            ? (myIdx % 2 === 0) 
-            : (myIdx % 2 === 1);
-            
-        const finalMsg = isMyTeamWinner 
-            ? "🏆 VOCÊS VENCERAM A PARTIDA!" 
-            : "FIM DE JOGO: VITÓRIA DOS OPONENTES";
-
-        if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.setMessage === 'function') {
-            window.Dashboard.setMessage(finalMsg, 'active');
-        }
-        
-        // Reinicia o jogo após 8 segundos para dar tempo de ver o placar final
-        setTimeout(() => window.location.reload(), 8000);
-    },
-
-    /**
-     * Contador regressivo para a próxima rodada.
-     * @private
+     * Inicia contagem regressiva para proxima rodada.
      */
     _startNextRoundCountdown: function(msg) {
-        let timeLeft = 3;
+        const overlay = document.createElement('div');
+        overlay.id = 'round-overlay';
+        overlay.className = 'glass';
+        overlay.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; padding:30px; text-align:center; border: 2px solid var(--accent);';
+        
+        overlay.innerHTML = `
+            <h2 style="color:var(--accent); margin-bottom:10px;">${msg}</h2>
+            <div id="countdown-text" style="font-size:1.5rem; font-weight:bold;">Nova rodada em 5s...</div>
+        `;
+        document.body.appendChild(overlay);
+
+        let count = 5;
         const timer = setInterval(() => {
-            const statusMsg = `${msg} - Próxima rodada em ${timeLeft}s`;
+            count--;
+            const txt = document.getElementById('countdown-text');
+            if (txt) txt.innerText = `Nova rodada em ${count}s...`;
             
-            if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.setMessage === 'function') {
-                window.Dashboard.setMessage(statusMsg, 'active');
-            }
-            
-            timeLeft--;
-            
-            if (timeLeft < 0) {
+            if (count <= 0) {
                 clearInterval(timer);
-                // Chama o motor do jogo para iniciar nova rodada de forma segura
-                if (typeof window.startRound === 'function') {
-                    window.startRound();
-                } else {
-                    console.error('FlowUI: startRound não foi encontrado globalmente.');
+                // O Host ou o sistema local inicia a nova rodada
+                if (window.Network && window.Network.isHost) {
+                    window.Game.startNewRound();
+                } else if (!window.STATE.isMultiplayer) {
+                    window.Game.startNewRound();
                 }
             }
         }, 1000);
+    },
+
+    /**
+     * Lida com o fim da partida (Vitoria Final).
+     */
+    _handleMatchEnd: function(target) {
+        const scoreA = window.STATE.scores[0];
+        const scoreB = window.STATE.scores[1];
+        const winTeam = scoreA >= target ? 0 : 1;
+        
+        const overlay = document.createElement('div');
+        overlay.id = 'round-overlay';
+        overlay.className = 'glass';
+        overlay.style.cssText = 'position:fixed; inset:0; z-index:2000; display:flex; flex-direction:column; align-items:center; justify-content:center; background: rgba(0,0,0,0.8);';
+        
+        const names = window.NameManager ? window.NameManager.getAll() : {};
+        let winners = "";
+        if (winTeam === 0) {
+            winners = `${names[0] || 'J1'} e ${names[2] || 'J3'}`;
+        } else {
+            winners = `${names[1] || 'J2'} e ${names[3] || 'J4'}`;
+        }
+
+        overlay.innerHTML = `
+            <h1 style="color:var(--accent); font-size:3rem; margin-bottom:20px;">VITORIA!</h1>
+            <p style="font-size:1.5rem; margin-bottom:30px;">A dupla <b>${winners}</b> venceu a partida!</p>
+            <div style="font-size:2rem; margin-bottom:40px;">${scoreA} x ${scoreB}</div>
+            <button class="btn-side" style="padding:15px 40px; font-size:1.2rem;" onclick="location.reload()">VOLTAR AO LOBBY</button>
+        `;
+        document.body.appendChild(overlay);
+        
+        // Limpa estado salvo
+        localStorage.removeItem('domino_match_state');
+    },
+
+    /**
+     * Salva o estado atual para persistencia.
+     */
+    saveMatchState: function() {
+        if (!window.STATE) return;
+        const data = {
+            scores: window.STATE.scores,
+            targetScore: window.STATE.targetScore,
+            isMultiplayer: window.STATE.isMultiplayer,
+            names: window.NameManager ? window.NameManager.getAll() : {}
+        };
+        localStorage.setItem('domino_match_state', JSON.stringify(data));
     }
+
 };

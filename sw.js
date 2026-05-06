@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v103'; // v103: Musica procedural estilo Stardew Valley
+const CACHE_NAME = 'domino-felipe-v104'; // v104: Remocao do resumo de rodada
 
 const ASSETS = [
   '/',
