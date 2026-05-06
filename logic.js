@@ -60,6 +60,7 @@ window.calculateTilePlacement = function(tile, side) {
         ];
     }
 
+
     // --- CASO A: Primeira Peca da Mesa (Centro 0,0) ---
     if (!window.STATE.positions.length) {
         const nP = { x: 0, y: 0, v1: tile[0], v2: tile[1], isV: !isD };
