@@ -115,11 +115,11 @@ window.processTurn = function() {
 
     if (window.STATE.turnTimer) clearTimeout(window.STATE.turnTimer);
     
-    // Apenas o HOST (ou Offline) gerencia o timer de auto-pass para evitar dessincronia
-    if (window.netMode !== 'client') {
-        window.STATE.turnTimer = setTimeout(() => {
-            window.doPass(window.STATE.current);
-        }, timeLimit);
+    // Apenas o HOST (ou Offline) gerencia o timer de auto-pass
+    // REMOVIDO: Limite de tempo para jogadores reais. O timer agora só existe para Bots.
+    const isBot = !isLocal && netMode !== 'client';
+    if (isBot) {
+        // O timer para o Bot é definido mais abaixo na seção --- LOGICA DO BOT ---
     }
 
     const cur = window.STATE.current;
