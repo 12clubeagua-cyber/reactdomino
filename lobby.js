@@ -106,7 +106,7 @@ window.loadMatchState = function() {
         window.startMatch();
     } catch (e) {
         console.warn("Erro ao carregar partida:", e);
-        try { localStorage.removeItem('domino_match_state'); } catch(ex) {}
+        try { window.safeSetStorage('domino_match_state', null); } catch(ex) {}
     }
 };
 

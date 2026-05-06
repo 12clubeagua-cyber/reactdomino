@@ -11,13 +11,13 @@ window.Achievements = {
         'SPEEDY': { name: 'Velocista', desc: 'Jogou em menos de 2 segundos!' }
     },
     
-    unlocked: JSON.parse(localStorage.getItem('domino_achievements') || '{}'),
+    unlocked: window.safeGetStorage('domino_achievements', {}),
 
     unlock: (id) => {
         if (window.Achievements.unlocked[id]) return;
         
         window.Achievements.unlocked[id] = true;
-        localStorage.setItem('domino_achievements', JSON.stringify(window.Achievements.unlocked));
+        window.safeSetStorage('domino_achievements', window.Achievements.unlocked);
         
         // Exibe feedback visual
         const achievement = window.Achievements.list[id];

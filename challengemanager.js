@@ -16,13 +16,13 @@ window.ChallengeManager = {
 
     init: function() {
         const today = new Date().toDateString();
-        const data = JSON.parse(localStorage.getItem(window.ChallengeManager.STORAGE_KEY) || '{}');
+        const data = window.safeGetStorage(window.ChallengeManager.STORAGE_KEY, {});
         
         if (data.date !== today) {
             // Gera novo desafio
             const random = window.ChallengeManager.challenges[Math.floor(Math.random() * window.ChallengeManager.challenges.length)];
             const newData = { date: today, id: random.id, progress: 0, target: random.target, completed: false };
-            localStorage.setItem(window.ChallengeManager.STORAGE_KEY, JSON.stringify(newData));
+            window.safeSetStorage(window.ChallengeManager.STORAGE_KEY, newData);
             return newData;
         }
         return data;
@@ -38,7 +38,7 @@ window.ChallengeManager = {
                     window.Dashboard.setMessage("DESAFIO DIARIO CONCLUIDO!", "active");
                 }
             }
-            localStorage.setItem(window.ChallengeManager.STORAGE_KEY, JSON.stringify(data));
+            window.safeSetStorage(window.ChallengeManager.STORAGE_KEY, data);
         }
     }
 };

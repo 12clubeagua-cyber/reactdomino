@@ -6,7 +6,7 @@
 */
 
 window.I18nManager = {
-    lang: localStorage.getItem('domino_lang') || 'pt',
+    lang: window.safeGetStorage('domino_lang', 'pt'),
     dicts: {
         'pt': { 'start_title': 'domino', 'play': 'Jogar', 'settings': 'Configurações' },
         'en': { 'start_title': 'domino', 'play': 'Play', 'settings': 'Settings' },
@@ -15,7 +15,7 @@ window.I18nManager = {
 
     setLang: (l) => {
         window.I18nManager.lang = l;
-        localStorage.setItem('domino_lang', l);
+        window.safeSetStorage('domino_lang', l);
         window.I18nManager.apply();
     },
 

@@ -9,7 +9,7 @@ window.SpectatorManager = {
     isSpectator: false,
 
     enable: function() {
-        this.isSpectator = true;
+        window.SpectatorManager.isSpectator = true;
         // Oculta a interface de jogador (mão) e exibe apenas a mesa
         const hand0 = document.getElementById('hand-0');
         if (hand0) hand0.style.display = 'none';

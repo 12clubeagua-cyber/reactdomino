@@ -8,7 +8,7 @@ window.TableSkinManager = {
     skins: ['default', 'table-felt', 'table-wood', 'table-marble'],
     
     init: function() {
-        const savedSkin = localStorage.getItem('domino_skin') || 'default';
+        const savedSkin = window.safeGetStorage('domino_skin', 'default');
         window.TableSkinManager.apply(savedSkin);
     },
 
@@ -23,11 +23,11 @@ window.TableSkinManager = {
         if (skin !== 'default') {
             area.classList.add(skin);
         }
-        localStorage.setItem('domino_skin', skin);
+        window.safeSetStorage('domino_skin', skin);
     },
 
     promptChange: function() {
-        const choice = prompt("Escolha a skin da mesa (default, table-felt, table-wood, table-marble):", localStorage.getItem('domino_skin') || 'default');
+        const choice = prompt("Escolha a skin da mesa (default, table-felt, table-wood, table-marble):", window.safeGetStorage('domino_skin', 'default'));
         if (choice && window.TableSkinManager.skins.includes(choice)) {
             window.TableSkinManager.apply(choice);
         }

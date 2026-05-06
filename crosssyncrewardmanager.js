@@ -10,11 +10,11 @@ window.CrossSyncRewardManager = {
 
     checkAndReward: () => {
         const deviceId = window.navigator.userAgent + window.screen.width;
-        const devices = JSON.parse(localStorage.getItem(window.CrossSyncRewardManager.STORAGE_KEY) || '[]');
+        const devices = window.safeGetStorage(window.CrossSyncRewardManager.STORAGE_KEY, []);
         
         if (!devices.includes(deviceId)) {
             devices.push(deviceId);
-            localStorage.setItem(window.CrossSyncRewardManager.STORAGE_KEY, JSON.stringify(devices));
+            window.safeSetStorage(window.CrossSyncRewardManager.STORAGE_KEY, devices);
             
             // Recompensa de Pioneer
             window.ProgressionManager.addXp(250);

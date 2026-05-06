@@ -7,23 +7,23 @@
 
 window.AccessibilityManager = {
     init: function() {
-        const settings = JSON.parse(localStorage.getItem('domino_a11y') || '{}');
+        const settings = window.safeGetStorage('domino_a11y', {});
         if (settings.highContrast) document.documentElement.setAttribute('data-a11y', 'high-contrast');
         if (settings.fontSize) document.documentElement.style.fontSize = settings.fontSize + 'px';
     },
 
     toggleHighContrast: function() {
-        const settings = JSON.parse(localStorage.getItem('domino_a11y') || '{}');
+        const settings = window.safeGetStorage('domino_a11y', {});
         settings.highContrast = !settings.highContrast;
         document.documentElement.setAttribute('data-a11y', settings.highContrast ? 'high-contrast' : '');
-        localStorage.setItem('domino_a11y', JSON.stringify(settings));
+        window.safeSetStorage('domino_a11y', settings);
     },
 
     setFontSize: function(size) {
-        const settings = JSON.parse(localStorage.getItem('domino_a11y') || '{}');
+        const settings = window.safeGetStorage('domino_a11y', {});
         settings.fontSize = size;
         document.documentElement.style.fontSize = size + 'px';
-        localStorage.setItem('domino_a11y', JSON.stringify(settings));
+        window.safeSetStorage('domino_a11y', settings);
     }
 };
 

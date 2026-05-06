@@ -69,9 +69,10 @@ window.chooseBotMove = function(botIdx, moves) {
         scoredMoves.forEach(m => m.weight += (Math.random() * 40 - 20));
     }
 
-    // Ordena do maior peso para o menor
-    scoredMoves.sort((a, b) => b.weight - a.weight);
-    return scoredMoves[0] || moves[0];
+    // Encontra o movimento com maior peso (Otimizado: reduce em vez de sort)
+    if (scoredMoves.length === 0) return moves[0];
+    
+    return scoredMoves.reduce((prev, current) => (prev.weight > current.weight) ? prev : current);
 };
 
 /**

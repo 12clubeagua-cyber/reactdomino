@@ -13,76 +13,76 @@ window.AudioManager = {
     bgmGain: null,
 
     init: function() {
-        if (this.isInitialized) return;
+        if (window.AudioManager.isInitialized) return;
         const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        this.ctx = new AudioContextClass();
+        window.AudioManager.ctx = new AudioContextClass();
         
         // Canais de audio
-        this.sfxGain = this.ctx.createGain();
-        this.bgmGain = this.ctx.createGain();
+        window.AudioManager.sfxGain = window.AudioManager.ctx.createGain();
+        window.AudioManager.bgmGain = window.AudioManager.ctx.createGain();
         
-        this.sfxGain.connect(this.ctx.destination);
-        this.bgmGain.connect(this.ctx.destination);
+        window.AudioManager.sfxGain.connect(window.AudioManager.ctx.destination);
+        window.AudioManager.bgmGain.connect(window.AudioManager.ctx.destination);
         
         // Aplica volumes salvos
-        this.sfxGain.gain.value = parseFloat(localStorage.getItem('domino_sfx_vol') || 0.5);
-        this.bgmGain.gain.value = parseFloat(localStorage.getItem('domino_bgm_vol') || 0.3);
+        window.AudioManager.sfxGain.gain.value = parseFloat(window.safeGetStorage('domino_sfx_vol', 0.5));
+        window.AudioManager.bgmGain.gain.value = parseFloat(window.safeGetStorage('domino_bgm_vol', 0.3));
         
-        this.isInitialized = true;
+        window.AudioManager.isInitialized = true;
     },
 
     resume: function() {
-        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+        if (window.AudioManager.ctx && window.AudioManager.ctx.state === 'suspended') window.AudioManager.ctx.resume();
     },
 
     setVolumes: function(sfx, bgm) {
-        if (!this.isInitialized) this.init();
-        this.sfxGain.gain.value = sfx;
-        this.bgmGain.gain.value = bgm;
-        localStorage.setItem('domino_sfx_vol', sfx);
-        localStorage.setItem('domino_bgm_vol', bgm);
+        if (!window.AudioManager.isInitialized) window.AudioManager.init();
+        window.AudioManager.sfxGain.gain.value = sfx;
+        window.AudioManager.bgmGain.gain.value = bgm;
+        window.safeSetStorage('domino_sfx_vol', sfx);
+        window.safeSetStorage('domino_bgm_vol', bgm);
     },
 
     playTone: function(freq, dur, type = 'triangle') {
-        if (!this.isInitialized) this.init();
-        this.resume();
+        if (!window.AudioManager.isInitialized) window.AudioManager.init();
+        window.AudioManager.resume();
 
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        const osc = window.AudioManager.ctx.createOscillator();
+        const gain = window.AudioManager.ctx.createGain();
 
         osc.type = type;
-        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(freq, window.AudioManager.ctx.currentTime);
         
-        gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+        gain.gain.setValueAtTime(0.3, window.AudioManager.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, window.AudioManager.ctx.currentTime + dur);
 
         osc.connect(gain);
-        gain.connect(this.sfxGain); // Conecta ao canal SFX
+        gain.connect(window.AudioManager.sfxGain); // Conecta ao canal SFX
 
         osc.start();
-        osc.stop(this.ctx.currentTime + dur);
+        osc.stop(window.AudioManager.ctx.currentTime + dur);
     },
 
     startBGM: function(intensity = 'calm') {
-        if (!this.isInitialized) this.init();
-        this.resume();
+        if (!window.AudioManager.isInitialized) window.AudioManager.init();
+        window.AudioManager.resume();
 
-        if (this.bgmNode) this.bgmNode.stop();
+        if (window.AudioManager.bgmNode) window.AudioManager.bgmNode.stop();
 
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        const osc = window.AudioManager.ctx.createOscillator();
+        const gain = window.AudioManager.ctx.createGain();
 
         osc.type = 'sine';
         const baseFreq = intensity === 'calm' ? 110 : 165;
-        osc.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(baseFreq, window.AudioManager.ctx.currentTime);
         
-        gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.1, window.AudioManager.ctx.currentTime);
 
         osc.connect(gain);
-        gain.connect(this.bgmGain); // Conecta ao canal BGM
+        gain.connect(window.AudioManager.bgmGain); // Conecta ao canal BGM
 
         osc.start();
-        this.bgmNode = osc;
+        window.AudioManager.bgmNode = osc;
     }
 };
 

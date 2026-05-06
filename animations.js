@@ -51,7 +51,7 @@ window.HapticEngine = {
 
     vibrate: function(type) {
         if (!navigator.vibrate) return;
-        const pattern = this.patterns[type] || [20];
+        const pattern = window.HapticEngine.patterns[type] || [20];
         try {
             navigator.vibrate(pattern);
         } catch (e) {
@@ -63,8 +63,8 @@ window.HapticEngine = {
 window.Animations = {
     _cache: {},
     _getEl: function(id) {
-        if (!this._cache[id]) this._cache[id] = document.getElementById(id);
-        return this._cache[id];
+        if (!window.Animations._cache[id]) window.Animations._cache[id] = document.getElementById(id);
+        return window.Animations._cache[id];
     }
 };
 

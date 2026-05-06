@@ -9,7 +9,7 @@ window.RewardChestManager = {
     STORAGE_KEY: 'domino_daily_chest',
 
     canClaim: () => {
-        const lastClaim = localStorage.getItem(window.RewardChestManager.STORAGE_KEY);
+        const lastClaim = window.safeGetStorage(window.RewardChestManager.STORAGE_KEY, null);
         const today = new Date().toDateString();
         return lastClaim !== today;
     },
@@ -17,7 +17,7 @@ window.RewardChestManager = {
     claim: () => {
         if (!window.RewardChestManager.canClaim()) return;
         
-        localStorage.setItem(window.RewardChestManager.STORAGE_KEY, new Date().toDateString());
+        window.safeSetStorage(window.RewardChestManager.STORAGE_KEY, new Date().toDateString());
         
         const xpReward = 100;
         window.ProgressionManager.addXp(xpReward);

@@ -10,12 +10,12 @@ window.PowerSaver = {
     
     toggle: () => {
         window.PowerSaver.active = !window.PowerSaver.active;
-        localStorage.setItem('domino_power_saver', window.PowerSaver.active);
+        window.safeSetStorage('domino_power_saver', window.PowerSaver.active);
         window.Dashboard.setMessage(`Modo Eco: ${window.PowerSaver.active ? 'Ligado' : 'Desligado'}`, 'active');
     },
 
     init: () => {
-        window.PowerSaver.active = localStorage.getItem('domino_power_saver') === 'true';
+        window.PowerSaver.active = window.safeGetStorage('domino_power_saver', false);
     }
 };
 

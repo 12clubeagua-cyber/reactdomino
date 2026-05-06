@@ -10,8 +10,8 @@ window.Dashboard = {
     _nameMap: null,
 
     _getEl: function(id) {
-        if (!this._cache[id]) this._cache[id] = document.getElementById(id);
-        return this._cache[id];
+        if (!window.Dashboard._cache[id]) window.Dashboard._cache[id] = document.getElementById(id);
+        return window.Dashboard._cache[id];
     },
 
     /**
@@ -22,10 +22,10 @@ window.Dashboard = {
         const names = window.NameManager.getAll();
         const myIdx = window.myPlayerIdx ?? 0;
         
-        this._nameMap = {};
+        window.Dashboard._nameMap = {};
         Object.keys(names).forEach(idx => {
             const i = parseInt(idx);
-            this._nameMap[`JOGADOR ${i + 1}`] = (i === myIdx) ? "VOCÊ" : names[idx];
+            window.Dashboard._nameMap[`JOGADOR ${i + 1}`] = (i === myIdx) ? "VOCÊ" : names[idx];
         });
     },
 
@@ -33,14 +33,14 @@ window.Dashboard = {
      * Exibe o painel de estatísticas de fim de rodada.
      */
     showMatchStats: function(stats) {
-        let panel = this._getEl('stats-panel');
+        let panel = window.Dashboard._getEl('stats-panel');
         if (!panel) {
             panel = document.createElement('div');
             panel.id = 'stats-panel';
             panel.className = 'glass';
             panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2000; padding:20px; display:flex; flex-direction:column; gap:10px; min-width: 250px;';
             document.body.appendChild(panel);
-            this._cache['stats-panel'] = panel;
+            window.Dashboard._cache['stats-panel'] = panel;
         }
         panel.innerHTML = `
             <div style="text-align:center; font-weight:bold; font-size: 1.2rem;">Resumo da Partida</div>
@@ -56,14 +56,14 @@ window.Dashboard = {
      * Exibe o painel de votação para ações sociais.
      */
     showVotePanel: function(action, callback) {
-        let panel = this._getEl('vote-panel');
+        let panel = window.Dashboard._getEl('vote-panel');
         if (!panel) {
             panel = document.createElement('div');
             panel.id = 'vote-panel';
             panel.className = 'glass';
             panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2000; padding:20px; display:flex; flex-direction:column; gap:10px;';
             document.body.appendChild(panel);
-            this._cache['vote-panel'] = panel;
+            window.Dashboard._cache['vote-panel'] = panel;
         }
         panel.innerHTML = `<div style="text-align:center; font-weight:bold;">Votar: ${action}?</div>`;
         
@@ -90,7 +90,7 @@ window.Dashboard = {
     showQuickChat: function(pIdx, message) {
         const localIdx = window.myPlayerIdx ?? 0;
         const viewIdx = (pIdx - localIdx + 4) % 4;
-        const handEl = this._getEl(`hand-${viewIdx}`);
+        const handEl = window.Dashboard._getEl(`hand-${viewIdx}`);
         if (!handEl) return;
 
         if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
@@ -109,7 +109,7 @@ window.Dashboard = {
     showEmote: function(pIdx, emote) {
         const localIdx = window.myPlayerIdx ?? 0;
         const viewIdx = (pIdx - localIdx + 4) % 4;
-        const handEl = this._getEl(`hand-${viewIdx}`);
+        const handEl = window.Dashboard._getEl(`hand-${viewIdx}`);
         if (!handEl) return;
 
         if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
@@ -127,10 +127,10 @@ window.Dashboard = {
      */
     updateScore: function() {
         requestAnimationFrame(() => {
-            const scoreA = this._getEl('scoreA');
-            const scoreB = this._getEl('scoreB');
-            const labelA = this._getEl('label-team-a');
-            const labelB = this._getEl('label-team-b');
+            const scoreA = window.Dashboard._getEl('scoreA');
+            const scoreB = window.Dashboard._getEl('scoreB');
+            const labelA = window.Dashboard._getEl('label-team-a');
+            const labelB = window.Dashboard._getEl('label-team-b');
             
             if (!scoreA || !scoreB || !labelA || !labelB) return;
 
@@ -156,7 +156,7 @@ window.Dashboard = {
      * Define uma nova mensagem no status bar.
      */
     setMessage: function(text, cls = '') {
-        requestAnimationFrame(() => this._renderStatusLocal(text, cls));
+        requestAnimationFrame(() => window.Dashboard._renderStatusLocal(text, cls));
 
         if (typeof window.Network !== 'undefined' && window.Network.isHost && window.Network.isHost()) {
             window.Network.sync({ type: 'status', text, cls });
@@ -167,15 +167,15 @@ window.Dashboard = {
      * Helper interno para processar o texto e injetar no HTML.
      */
     _renderStatusLocal: function(text, cls) {
-        const el = this._getEl('game-status');
+        const el = window.Dashboard._getEl('game-status');
         if (!el) return;
         
-        if (!this._nameMap) this._updateNameMap();
+        if (!window.Dashboard._nameMap) window.Dashboard._updateNameMap();
 
         let displayMsg = text;
-        if (this._nameMap) {
-            Object.keys(this._nameMap).forEach(key => {
-                displayMsg = displayMsg.replace(key, this._nameMap[key]);
+        if (window.Dashboard._nameMap) {
+            Object.keys(window.Dashboard._nameMap).forEach(key => {
+                displayMsg = displayMsg.replace(key, window.Dashboard._nameMap[key]);
             });
         }
         
@@ -187,8 +187,8 @@ window.Dashboard = {
      * Inicializa os estilos CSS baseados nas configurações globais.
      */
     init: function() {
-        this._updateNameMap();
-        this.updateScore();
+        window.Dashboard._updateNameMap();
+        window.Dashboard.updateScore();
         
         const width = window.CONFIG?.GAME?.TILE_W ?? 18;
         const height = window.CONFIG?.GAME?.TILE_L ?? 36;

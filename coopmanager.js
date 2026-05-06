@@ -9,9 +9,9 @@ window.CoopManager = {
     STORAGE_KEY: 'domino_coop_stats',
 
     recordTeamWin: (teamMembers) => {
-        const stats = JSON.parse(localStorage.getItem(window.CoopManager.STORAGE_KEY) || '{"totalCoopWins": 0}');
+        const stats = window.safeGetStorage(window.CoopManager.STORAGE_KEY, {"totalCoopWins": 0});
         stats.totalCoopWins++;
-        localStorage.setItem(window.CoopManager.STORAGE_KEY, JSON.stringify(stats));
+        window.safeSetStorage(window.CoopManager.STORAGE_KEY, stats);
         
         if (typeof window.Dashboard !== 'undefined') {
             window.Dashboard.setMessage("BONUS DE TRABALHO EM EQUIPE!", "active");
@@ -19,6 +19,6 @@ window.CoopManager = {
     },
 
     getStats: () => {
-        return JSON.parse(localStorage.getItem(window.CoopManager.STORAGE_KEY) || '{"totalCoopWins": 0}');
+        return window.safeGetStorage(window.CoopManager.STORAGE_KEY, {"totalCoopWins": 0});
     }
 };

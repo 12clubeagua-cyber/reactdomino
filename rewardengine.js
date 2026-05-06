@@ -12,8 +12,8 @@ window.RewardEngine = {
     check: () => {
         const elapsedMinutes = Math.floor((Date.now() - window.RewardEngine.sessionStart) / 60000);
         window.RewardEngine.milestones.forEach(m => {
-            if (elapsedMinutes >= m && !localStorage.getItem(`reward_${m}`)) {
-                localStorage.setItem(`reward_${m}`, 'true');
+            if (elapsedMinutes >= m && !window.safeGetStorage(`reward_${m}`, null)) {
+                window.safeSetStorage(`reward_${m}`, 'true');
                 window.ProgressionManager.addXp(m * 10);
                 window.Dashboard.setMessage(`RECOMPENSA: ${m} min de jogo!`, 'active');
             }

@@ -6,7 +6,7 @@
 */
 
 window.AccessibilitySuite = {
-    settings: JSON.parse(localStorage.getItem('domino_a11y_suite') || '{"reducedMotion": false, "uiScale": 1}'),
+    settings: window.safeGetStorage('domino_a11y_suite', {"reducedMotion": false, "uiScale": 1}),
 
     apply: () => {
         if (window.AccessibilitySuite.settings.reducedMotion) {
@@ -19,13 +19,13 @@ window.AccessibilitySuite = {
 
     toggleMotion: () => {
         window.AccessibilitySuite.settings.reducedMotion = !window.AccessibilitySuite.settings.reducedMotion;
-        localStorage.setItem('domino_a11y_suite', JSON.stringify(window.AccessibilitySuite.settings));
+        window.safeSetStorage('domino_a11y_suite', window.AccessibilitySuite.settings);
         window.AccessibilitySuite.apply();
     },
 
     setScale: (scale) => {
         window.AccessibilitySuite.settings.uiScale = scale;
-        localStorage.setItem('domino_a11y_suite', JSON.stringify(window.AccessibilitySuite.settings));
+        window.safeSetStorage('domino_a11y_suite', window.AccessibilitySuite.settings);
         window.AccessibilitySuite.apply();
     }
 };

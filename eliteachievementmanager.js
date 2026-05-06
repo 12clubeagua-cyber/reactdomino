@@ -16,10 +16,10 @@ window.EliteAchievementManager = {
         if (!badge) return;
         
         // Persiste no localStorage
-        const unlocked = JSON.parse(localStorage.getItem('domino_elite_badges') || '[]');
+        const unlocked = window.safeGetStorage('domino_elite_badges', []);
         if (!unlocked.includes(id)) {
             unlocked.push(id);
-            localStorage.setItem('domino_elite_badges', JSON.stringify(unlocked));
+            window.safeSetStorage('domino_elite_badges', unlocked);
             window.Dashboard.setMessage(`NOVA MESTRIA: ${badge.name}!`, 'active');
         }
     }

@@ -10,7 +10,7 @@ window.StreakManager = {
 
     init: function() {
         const today = new Date().toDateString();
-        const data = JSON.parse(localStorage.getItem(window.StreakManager.STORAGE_KEY) || '{"lastLogin": null, "count": 0}');
+        const data = window.safeGetStorage(window.StreakManager.STORAGE_KEY, {"lastLogin": null, "count": 0});
         
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
@@ -24,7 +24,7 @@ window.StreakManager = {
         }
         
         data.lastLogin = today;
-        localStorage.setItem(window.StreakManager.STORAGE_KEY, JSON.stringify(data));
+        window.safeSetStorage(window.StreakManager.STORAGE_KEY, JSON.stringify(data));
         return data;
     },
 

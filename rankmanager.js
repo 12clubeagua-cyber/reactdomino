@@ -10,7 +10,7 @@ window.RankManager = {
     LIMIT: 10,
 
     get: () => {
-        return JSON.parse(localStorage.getItem(window.RankManager.STORAGE_KEY) || '[]');
+        return window.safeGetStorage(window.RankManager.STORAGE_KEY, []);
     },
 
     add: (playerName, score) => {
@@ -22,7 +22,7 @@ window.RankManager = {
         
         // Mantém apenas o limite
         const newRanking = ranking.slice(0, window.RankManager.LIMIT);
-        localStorage.setItem(window.RankManager.STORAGE_KEY, JSON.stringify(newRanking));
+        window.safeSetStorage(window.RankManager.STORAGE_KEY, JSON.stringify(newRanking));
     },
 
     showUI: () => {

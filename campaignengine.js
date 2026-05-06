@@ -13,13 +13,13 @@ window.CampaignEngine = {
     ],
 
     getProgress: () => {
-        return parseInt(localStorage.getItem('domino_campaign_progress') || '0');
+        return window.safeGetStorage('domino_campaign_progress', 0);
     },
 
     advance: () => {
         const current = window.CampaignEngine.getProgress();
         if (current < window.CampaignEngine.stages.length - 1) {
-            localStorage.setItem('domino_campaign_progress', current + 1);
+            window.safeSetStorage('domino_campaign_progress', current + 1);
         }
     },
 

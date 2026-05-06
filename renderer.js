@@ -10,15 +10,15 @@ window.Renderer = {
     _cache: {},
 
     _getEl: function(id) {
-        if (!this._cache[id]) this._cache[id] = document.getElementById(id);
-        return this._cache[id];
+        if (!window.Renderer._cache[id]) window.Renderer._cache[id] = document.getElementById(id);
+        return window.Renderer._cache[id];
     },
 
     /**
      * Renderiza o tabuleiro de forma incremental (apenas pecas novas).
      */
     drawBoard: function() {
-        const board = this._getEl('snake');
+        const board = window.Renderer._getEl('snake');
         if (!board) return;
 
         const positions = window.STATE?.positions || [];
@@ -57,8 +57,8 @@ window.Renderer = {
             el.style.cssText = `position:absolute; left:${nP.x - offX}px; top:${nP.y - offY}px;`;
 
             el.innerHTML = `
-                <div class="half">${this._getPips(nP.v1)}</div>
-                <div class="half">${this._getPips(nP.v2)}</div>
+                <div class="half">${window.Renderer._getPips(nP.v1)}</div>
+                <div class="half">${window.Renderer._getPips(nP.v2)}</div>
             `;
             fragment.appendChild(el);
         }
@@ -80,7 +80,7 @@ window.Renderer = {
      * Renderiza as maos dos jogadores.
      */
     drawHands: function(reveal = false) {
-        const picker = this._getEl('side-picker');
+        const picker = window.Renderer._getEl('side-picker');
         if (picker) picker.style.display = 'none';
 
         const myIdx = window.myPlayerIdx ?? 0;
@@ -90,7 +90,7 @@ window.Renderer = {
         
         for (let i = 0; i < 4; i++) {
             const viewPos = (i - myIdx + 4) % 4;
-            const container = this._getEl(`hand-${viewPos}`);
+            const container = window.Renderer._getEl(`hand-${viewPos}`);
             if (!container) continue;
 
             const isSide = (viewPos === 1 || viewPos === 3);
@@ -120,7 +120,7 @@ window.Renderer = {
 
             if (canShow && handData.length > 0) {
                 handData.forEach((t, idx) => {
-                    const tileEl = this._createTileElement(t, isSide, isMe, idx);
+                    const tileEl = window.Renderer._createTileElement(t, isSide, isMe, idx);
                     rack.appendChild(tileEl);
                 });
             } else {
@@ -138,7 +138,7 @@ window.Renderer = {
             container.appendChild(fragment);
         }
 
-        this._checkLocalInteraction();
+        window.Renderer._checkLocalInteraction();
     },
 
     /**

@@ -18,11 +18,11 @@ window.SnapshotManager = {
             data: window.STATE,
             checksum: window.SnapshotManager._checksum(window.STATE)
         };
-        localStorage.setItem(window.SnapshotManager.STORAGE_KEY, JSON.stringify(snapshot));
+        window.safeSetStorage(window.SnapshotManager.STORAGE_KEY, JSON.stringify(snapshot));
     },
 
     load: () => {
-        const raw = localStorage.getItem(window.SnapshotManager.STORAGE_KEY);
+        const raw = window.safeGetStorage(window.SnapshotManager.STORAGE_KEY, null);
         if (!raw) return null;
         
         const snapshot = JSON.parse(raw);
