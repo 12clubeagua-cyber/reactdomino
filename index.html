@@ -36,6 +36,9 @@
     }
   </script>
   
+  <!-- Biblioteca PeerJS para o modo multiplayer -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  
   <!-- Arquivo de Estilo corrigido -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -54,9 +57,16 @@
         Continuar <span>Partida Salva</span>
       </button>
       <button class="start-btn" onclick="selectMode('offline')" aria-label="Modo Um Jogador, contra bots">
-        Jogar <span>Vs Bots</span>
+        Um Jogador <span>Vs Bots</span>
+      </button>
+      <button class="start-btn" onclick="selectMode('host')" aria-label="Criar sala multiplayer">
+        Criar Sala <span>Multiplayer Wi-Fi</span>
+      </button>
+      <button class="start-btn" onclick="selectMode('client')" aria-label="Entrar em uma sala existente">
+        Entrar na Sala <span>Conectar Wi-Fi</span>
       </button>
       <button class="start-btn" onclick="changeName()">Alterar Nome</button>
+      <button class="start-btn" onclick="window.AccessibilityManager.toggleHighContrast()">Acessibilidade: Alto Contraste</button>
     </div>
   </section>
 
@@ -86,6 +96,34 @@
       <button class="start-btn" onclick="selectGoal(10)">Meta: 10 Vitorias</button>
     </div>
     <button class="step-back" onclick="goToStep('step-diff')"> Voltar</button>
+  </div>
+
+  <!-- PASSO 4A: Sala de Espera do HOST -->
+  <div class="start-step" id="step-lobby-host">
+    <div class="start-options">
+      <div class="start-label">Sala Criada! Passe o codigo:</div>
+      <div class="code-display" id="host-code-display">GERANDO...</div>
+      <div class="player-list" id="host-player-list">
+        <div class="player-item">Voce (Host)</div>
+      </div>
+      <div class="start-sub" id="host-status">Aguardando conexoes... (0/3)</div>
+      <button class="start-btn" onclick="startMatch()" id="btn-start-multi" style="justify-content:center; background:var(--gold); color:var(--bg); border:none; display:none;">
+        INICIAR JOGO
+      </button>
+    </div>
+    <button class="step-back" onclick="cancelHosting()"> Cancelar e Voltar</button>
+  </div>
+
+  <!-- PASSO 4B: Tela de Conexao do CLIENTE -->
+  <div class="start-step" id="step-lobby-client">
+    <div class="start-options">
+      <div class="start-label">Entrar em uma Sala</div>
+      <input type="text" id="join-code-input" class="input-code" placeholder="CODIGO">
+      <button class="start-btn" onclick="connectToHost()" id="btn-connect" style="justify-content:center;">CONECTAR</button>
+      <div class="start-sub" id="client-status" style="margin-top:10px; color:var(--gold);"></div>
+      <div class="player-list" id="client-player-list"></div>
+    </div>
+    <button class="step-back" onclick="goToStep('step-mode')"> Voltar</button>
   </div>
 </main>
 
@@ -127,6 +165,16 @@
   </div>
 </div>
 
+<!-- OVERLAYS DE CONEXAO -->
+<div id="reconnect-overlay" style="display:none">
+    <div id="reconnect-box">
+        <div class="reconnect-spinner"></div>
+        <div id="reconnect-title">conexao perdida</div>
+        <div id="reconnect-msg">Tentando reconectar... (1/5)</div>
+        <button onclick="cancelReconnect()">Desistir</button>
+    </div>
+</div>
+
 <!-- SCRIPTS (A ordem abaixo garante o funcionamento da camera e interacoes) -->
 <!-- 1. Dados e Configuracoes Base -->
 <script src="config.js" defer></script>
@@ -134,7 +182,9 @@
 <script src="names.js" defer></script>
 <script src="utils.js" defer></script>
 
-<!-- 2. Gestores e Engines (Removidos para simplificacao) -->
+<!-- 2. Gestores e Engines (Apenas Acessibilidade Restaurada) -->
+<script src="accessibilitymanager.js" defer></script>
+<script src="accessibilitysuite.js" defer></script>
 
 <!-- 3. Matematica do Jogo e IA -->
 <script src="logic.js" defer></script>
@@ -143,6 +193,7 @@
 <script src="bots.js" defer></script>
 
 <!-- 4. Visual e Camera -->
+<script src="audio.js" defer></script>
 <script src="animations.js" defer></script>
 <script src="renderer.js" defer></script>
 
@@ -152,7 +203,10 @@
 <script src="identity.js" defer></script>
 <script src="ui.js" defer></script>
 
-<!-- 6. Input e Lobby -->
+<!-- 6. Rede e Input -->
+<script src="network.js" defer></script>
+<script src="seats.js" defer></script>
+<script src="multiplayer.js" defer></script>
 <script src="input.js" defer></script>
 <script src="lobby.js" defer></script>
 

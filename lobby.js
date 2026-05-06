@@ -10,7 +10,10 @@
  */
 
 window.addEventListener('DOMContentLoaded', () => {
-    // Inicializacao do Lobby
+    // Processa convites sociais via URL
+    if (typeof window.SocialManager !== 'undefined') {
+        window.SocialManager.processInvite();
+    }
 });
 
 window.hideAllSteps = function() {
@@ -41,7 +44,16 @@ window.changeName = function() {
 };
 
 window.selectMode = function(mode) {
-    window.goToStep('step-diff');
+    const VALID_MODES = ['offline', 'host', 'client'];
+    if (!VALID_MODES.includes(mode)) mode = 'offline';
+    
+    window.netMode = mode; 
+    
+    if (mode === 'offline' || mode === 'host') {
+        window.goToStep('step-diff');
+    } else if (mode === 'client') {
+        window.goToStep('step-lobby-client');
+    }
 };
 
 window.selectDiff = function(diff) {
@@ -63,7 +75,13 @@ window.selectGoal = function(limit) {
     if (window.STATE) {
         window.STATE.targetScore = (typeof limit === 'number' && limit > 0) ? limit : 3;
     }
-    window.startMatch();
+    
+    if (window.netMode === 'offline') {
+        window.startMatch();
+    } else if (window.netMode === 'host') {
+        window.goToStep('step-lobby-host');
+        if (typeof window.initializeHost === 'function') window.initializeHost();
+    }
 };
 
 /**
@@ -102,6 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 
 window.startMatch = function() {
+    // Inicializacao de audio
+    if (typeof window.safeAudioInit === 'function') {
+        window.safeAudioInit();
+        if (window.AudioManager && typeof window.AudioManager.startBGM === 'function') {
+            window.AudioManager.startBGM();
+        }
+    }
+    
     if (window.STATE) {
         window.STATE.scores = [0, 0];
         window.STATE.roundWinner = null;
@@ -112,7 +138,7 @@ window.startMatch = function() {
     if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.updateScore === 'function') {
         window.Dashboard.updateScore();
     }
-
+    
     // Transicao visual: Esconde o Lobby e mostra o botao Sair
     const startScreen = document.getElementById('start-screen');
     if (startScreen) startScreen.style.display = 'none';
@@ -120,9 +146,58 @@ window.startMatch = function() {
     const exitBtn = document.getElementById('btn-exit');
     if (exitBtn) exitBtn.style.display = 'block';
 
-    if (typeof window.startRound === 'function') {
-        window.startRound();
-    } else {
-        console.error('Lobby: startRound nao definido ou nao carregado.');
+    const doStartRound = () => {
+        if (typeof window.startRound === 'function') {
+            window.startRound();
+        } else {
+            console.error('Lobby: startRound nao definido ou nao carregado.');
+        }
+    };
+
+    // --- Logica de Rede (Host) ---
+    if (window.netMode === 'host') {
+        if (typeof window.Network !== 'undefined' && window.Network.isHost()) {
+            
+            // Reune os nomes para enviar aos clientes
+            let finalNames = {};
+            if (typeof window.NameManager !== 'undefined') {
+                finalNames = window.NameManager.getAll();
+            }
+            
+            // Envia comando game_start INDIVIDUALMENTE para cada cliente (para passar o yourIdx correto)
+            if (Array.isArray(window.connectedClients)) {
+                window.connectedClients.forEach(conn => {
+                    if (conn && conn.open) {
+                        conn.send({
+                            type: 'game_start',
+                            yourIdx: conn.assignedIdx,
+                            names: finalNames,
+                            targetScore: window.STATE ? window.STATE.targetScore : 3
+                        });
+                    }
+                });
+            }
+
+            // O Host roda a funcao de inicio apos um breve delay
+            setTimeout(doStartRound, 600);
+        }
+        
+    // --- Logica Local (Offline) ---
+    } else if (window.netMode === 'offline') {
+        doStartRound();
     }
+    
+    // NOTA: Se netMode === 'client', ele nao roda o `doStartRound`. Ele apenas 
+    // esconde a tela inicial e aguarda o Host enviar o pacote `state_update` com as pecas!
+};
+
+/**
+ * 4. CANCELAMENTO
+ */
+
+window.cancelHosting = function() {
+    window.ResourceManager.cleanup();
+    window.connectedClients = [];
+    window.netMode = 'offline';
+    window.goToStep('step-mode');
 };

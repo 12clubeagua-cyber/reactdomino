@@ -76,7 +76,12 @@ window.FlowUI = {
             
             if (count <= 0) {
                 clearInterval(timer);
-                if (typeof window.startRound === 'function') window.startRound();
+                // O Host ou o sistema local inicia a nova rodada
+                if (window.Network && window.Network.isHost) {
+                    if (typeof window.startRound === 'function') window.startRound();
+                } else if (!window.STATE.isMultiplayer) {
+                    if (typeof window.startRound === 'function') window.startRound();
+                }
             }
         }, 1000);
     },
@@ -122,6 +127,7 @@ window.FlowUI = {
         const data = {
             scores: window.STATE.scores,
             targetScore: window.STATE.targetScore,
+            isMultiplayer: window.STATE.isMultiplayer,
             names: window.NameManager ? window.NameManager.getAll() : {}
         };
         localStorage.setItem('domino_match_state', JSON.stringify(data));

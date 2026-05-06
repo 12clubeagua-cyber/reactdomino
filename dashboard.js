@@ -30,6 +30,38 @@ window.Dashboard = {
     },
 
     /**
+     * Exibe o painel de votacao para acoes sociais.
+     */
+    showVotePanel: function(action, callback) {
+        let panel = window.Dashboard._getEl('vote-panel');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'vote-panel';
+            panel.className = 'glass';
+            panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2000; padding:20px; display:flex; flex-direction:column; gap:10px;';
+            document.body.appendChild(panel);
+            window.Dashboard._cache['vote-panel'] = panel;
+        }
+        panel.innerHTML = `<div style="text-align:center; font-weight:bold;">Votar: ${action}?</div>`;
+        
+        const fragment = document.createDocumentFragment();
+        const btnYes = document.createElement('button');
+        btnYes.className = 'btn-side';
+        btnYes.innerText = 'Sim';
+        btnYes.onclick = () => { callback(true); panel.style.display = 'none'; };
+        
+        const btnNo = document.createElement('button');
+        btnNo.className = 'btn-side btn-cancel';
+        btnNo.innerText = 'Nao';
+        btnNo.onclick = () => { callback(false); panel.style.display = 'none'; };
+        
+        fragment.appendChild(btnYes);
+        fragment.appendChild(btnNo);
+        panel.appendChild(fragment);
+        panel.style.display = 'flex';
+    },
+
+    /**
      * Exibe uma mensagem de chat rapido para um jogador.
      */
     showQuickChat: function(pIdx, message) {
@@ -102,6 +134,10 @@ window.Dashboard = {
      */
     setMessage: function(text, cls = '') {
         requestAnimationFrame(() => window.Dashboard._renderStatusLocal(text, cls));
+
+        if (typeof window.Network !== 'undefined' && window.Network.isHost && window.Network.isHost()) {
+            window.Network.sync({ type: 'status', text, cls });
+        }
     },
 
     /**
