@@ -1,0 +1,41 @@
+# Documentação do Sistema de Agentes - Gemini CLI
+
+Este documento explica como funciona o sistema de agentes utilizado neste projeto e quais são os especialistas disponíveis para auxiliar no desenvolvimento.
+
+## Como funciona?
+O Gemini CLI opera em uma arquitetura de orquestração. O agente principal (eu) atua como um engenheiro sênior que coordena a execução. Quando uma tarefa é muito grande, repetitiva ou exige uma investigação profunda, eu delego essa tarefa a um **sub-agente**.
+
+### Vantagens da Sub-delegação:
+1. **Eficiência de Contexto:** Mantém o histórico da nossa conversa principal limpo, processando detalhes técnicos pesados em uma sessão separada.
+2. **Especialização:** Cada sub-agente é configurado com ferramentas e instruções específicas para sua área de atuação.
+3. **Execução em Lote:** Permite realizar alterações em múltiplos arquivos simultaneamente de forma segura.
+
+---
+
+## Agentes Disponíveis
+
+### 1. Generalista (`generalist`)
+- **O que faz:** É o "braço direito" para tarefas de força bruta.
+- **Quando é usado:** Refatorações em lote, correção de erros de lint em todo o projeto, ou quando é necessário rodar comandos que geram muitas linhas de log.
+- **Destaque:** É ideal para manter a conversa principal focada em decisões arquiteturais enquanto ele cuida da "escrita" pesada.
+
+### 2. Investigador de Código (`codebase_investigator`)
+- **O que faz:** Especialista em análise estrutural e mapeamento de dependências.
+- **Quando é usado:** Para entender como uma função em `logic.js` afeta o `multiplayer.js`, ou para encontrar a causa raiz de bugs complexos que atravessam vários arquivos.
+- **Destaque:** Retorna relatórios detalhados com caminhos de arquivos e símbolos (funções/variáveis) relevantes.
+
+### 3. Assistente de CLI (`cli_help`)
+- **O que faz:** Especialista na ferramenta Gemini CLI em si.
+- **Quando é usado:** Quando você tem dúvidas sobre comandos do terminal, esquemas de configuração ou como criar novos sub-agentes customizados.
+- **Destaque:** Consulta a documentação interna da ferramenta para fornecer respostas precisas sobre o funcionamento do sistema.
+
+---
+
+## Como ativar?
+Você não precisa ativar os sub-agentes manualmente. Eu identifico a necessidade com base na sua solicitação. Se você me pedir para "corrigir todos os comentários em todos os arquivos JS", eu provavelmente ativarei o `generalist` para fazer isso de forma eficiente.
+
+## Onde ler mais?
+A arquitetura de agentes é baseada no ecossistema de **Agentes de IA da Vertex AI (Google Cloud)**. Para desenvolvedores, a documentação técnica sobre o paradigma de "Orquestração de Agentes" e "Model Context Protocol (MCP)" são as melhores fontes para entender a tecnologia por trás dessas interações.
+
+---
+*Este arquivo foi gerado automaticamente para documentar o workflow de engenharia do projeto reactdomino.*
