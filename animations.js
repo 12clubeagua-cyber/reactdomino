@@ -85,6 +85,7 @@ window.updateCamera = function() {
     document.documentElement.style.setProperty('--cam-x', `${offsetX}px`);
     document.documentElement.style.setProperty('--cam-y', `${offsetY}px`);
 
+    snakeEl.style.willChange = 'transform';
     snakeEl.style.transform = `scale(${finalScale}) translate(${offsetX}px, ${offsetY}px)`;
     
     window.currentCamera = {
@@ -154,25 +155,24 @@ window.animateTile = function(pIdx, targetData, onComplete) {
         
         const curX = startX + (destX - startX) * ease;
         const curY = startY + (destY - startY) * ease;
-        const curScale = 1 + (cam.scale - 1) * ease; // A peca encolhe/cresce durante o voo
+        const curScale = 1 + (cam.scale - 1) * ease;
 
-        proxy.style.left = `${curX}px`;
-        proxy.style.top = `${curY}px`;
-        proxy.style.transform = `translate(-50%, -50%) scale(${curScale})`;
+        // PERFORMANCE: Usamos translate3d para forcar processamento na GPU e evitar Layout Recalculation
+        proxy.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%) scale(${curScale})`;
 
         if (t < 1) {
-            requestAnimationFrame(step); // Continua a animacao
+            requestAnimationFrame(step); 
         } else {
-            // Animacao terminou
-            if (typeof window.playClack === 'function') window.playClack(); // Som de batida
-            
-            // E crucial chamar o onComplete (que desenha a peca real) ANTES de remover o proxy
+            if (typeof window.playClack === 'function') window.playClack();
             if (typeof onComplete === 'function') onComplete();
-            
-            // Remove o fantasma no proximo frame para evitar flicker (piscada)
             requestAnimationFrame(() => proxy.remove());
         }
     }
+
+    // Inicializa a posicao sem forcar layout
+    proxy.style.left = "0px";
+    proxy.style.top = "0px";
+    proxy.style.transform = `translate3d(${startX}px, ${startY}px, 0) translate(-50%, -50%) scale(1)`;
     
-    requestAnimationFrame(step); // Inicia o voo
+    requestAnimationFrame(step);
 };
