@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v105'; // v105: Ajuste de zoom da camera
+const CACHE_NAME = 'domino-felipe-v106'; // v106: Correcao do z-index do overlay e fluxo de nova rodada
 
 const ASSETS = [
   '/',

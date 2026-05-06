@@ -11,7 +11,7 @@ window.FlowUI = {
     /**
      * Limpa a UI para uma nova rodada.
      */
-    clearForNewRound: function() {
+    resetForNewRound: function() {
         // Remove overlays de fim de rodada se existirem
         const overlay = document.getElementById('round-overlay');
         if (overlay) overlay.remove();
@@ -50,7 +50,7 @@ window.FlowUI = {
         } else {
             window.FlowUI._startNextRoundCountdown(msg);
         }
-        },
+    },
 
     /**
      * Inicia contagem regressiva para proxima rodada.
@@ -59,7 +59,7 @@ window.FlowUI = {
         const overlay = document.createElement('div');
         overlay.id = 'round-overlay';
         overlay.className = 'glass';
-        overlay.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; padding:30px; text-align:center; border: 2px solid var(--accent);';
+        overlay.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; padding:30px; text-align:center; border: 2px solid var(--accent);';
         
         overlay.innerHTML = `
             <h2 style="color:var(--accent); margin-bottom:10px;">${msg}</h2>
@@ -77,9 +77,9 @@ window.FlowUI = {
                 clearInterval(timer);
                 // O Host ou o sistema local inicia a nova rodada
                 if (window.Network && window.Network.isHost) {
-                    window.Game.startNewRound();
+                    if (typeof window.startRound === 'function') window.startRound();
                 } else if (!window.STATE.isMultiplayer) {
-                    window.Game.startNewRound();
+                    if (typeof window.startRound === 'function') window.startRound();
                 }
             }
         }, 1000);
@@ -96,7 +96,7 @@ window.FlowUI = {
         const overlay = document.createElement('div');
         overlay.id = 'round-overlay';
         overlay.className = 'glass';
-        overlay.style.cssText = 'position:fixed; inset:0; z-index:2000; display:flex; flex-direction:column; align-items:center; justify-content:center; background: rgba(0,0,0,0.8);';
+        overlay.style.cssText = 'position:fixed; inset:0; z-index:10001; display:flex; flex-direction:column; align-items:center; justify-content:center; background: rgba(0,0,0,0.8);';
         
         const names = window.NameManager ? window.NameManager.getAll() : {};
         let winners = "";
