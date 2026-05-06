@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v111'; // v111: Akita Audit - Fixed Tile Leak and Global Scope consistency
+const CACHE_NAME = 'domino-felipe-v112'; // v112: Perf - GPU acceleration for animations and Layout Thrashing fixes
 
 const ASSETS = [
   '/',
