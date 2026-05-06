@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v102'; // v102: Restaurado animacao de pecas voadoras
+const CACHE_NAME = 'domino-felipe-v103'; // v103: Musica procedural estilo Stardew Valley
 
 const ASSETS = [
   '/',

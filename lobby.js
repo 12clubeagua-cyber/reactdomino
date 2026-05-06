@@ -121,7 +121,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.startMatch = function() {
     // Inicialização de áudio
-    if (typeof window.safeAudioInit === 'function') window.safeAudioInit();
+    if (typeof window.safeAudioInit === 'function') {
+        window.safeAudioInit();
+        if (window.AudioManager && typeof window.AudioManager.startBGM === 'function') {
+            window.AudioManager.startBGM();
+        }
+    }
     
     if (window.STATE) {
         window.STATE.scores = [0, 0];

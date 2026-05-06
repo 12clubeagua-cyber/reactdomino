@@ -63,26 +63,60 @@ window.AudioManager = {
         osc.stop(window.AudioManager.ctx.currentTime + dur);
     },
 
-    startBGM: function(intensity = 'calm') {
+    startBGM: function() {
         if (!window.AudioManager.isInitialized) window.AudioManager.init();
         window.AudioManager.resume();
 
-        if (window.AudioManager.bgmNode) window.AudioManager.bgmNode.stop();
+        if (window.AudioManager.bgmInterval) clearInterval(window.AudioManager.bgmInterval);
 
-        const osc = window.AudioManager.ctx.createOscillator();
-        const gain = window.AudioManager.ctx.createGain();
+        // Configurações da melodia (Escala Pentatônica de Dó Maior - Estilo Stardew)
+        const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25]; // C4, D4, E4, G4, A4, C5
+        let step = 0;
 
-        osc.type = 'sine';
-        const baseFreq = intensity === 'calm' ? 110 : 165;
-        osc.frequency.setValueAtTime(baseFreq, window.AudioManager.ctx.currentTime);
-        
-        gain.gain.setValueAtTime(0.1, window.AudioManager.ctx.currentTime);
+        const playNote = (freq, dur, type, vol) => {
+            if (!window.AudioManager.ctx) return;
+            const osc = window.AudioManager.ctx.createOscillator();
+            const gain = window.AudioManager.ctx.createGain();
+            
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, window.AudioManager.ctx.currentTime);
+            
+            // Envelope suave
+            gain.gain.setValueAtTime(0, window.AudioManager.ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(vol, window.AudioManager.ctx.currentTime + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, window.AudioManager.ctx.currentTime + dur);
+            
+            osc.connect(gain);
+            gain.connect(window.AudioManager.bgmGain);
+            
+            osc.start();
+            osc.stop(window.AudioManager.ctx.currentTime + dur);
+        };
 
-        osc.connect(gain);
-        gain.connect(window.AudioManager.bgmGain); // Conecta ao canal BGM
+        // Loop do sequenciador (BPM lento para clima relaxante)
+        window.AudioManager.bgmInterval = setInterval(() => {
+            if (document.hidden) return; // Pausa se a aba estiver em segundo plano
 
-        osc.start();
-        window.AudioManager.bgmNode = osc;
+            // 1. Melodia Principal (Pluck suave)
+            if (step % 2 === 0) {
+                const noteIdx = Math.floor(Math.random() * scale.length);
+                const freq = scale[noteIdx];
+                playNote(freq, 1.5, 'triangle', 0.1);
+            }
+
+            // 2. Harmonia de Fundo (Pad etéreo)
+            if (step % 8 === 0) {
+                const baseNote = scale[0] / 2; // C3 (grave)
+                playNote(baseNote, 4.0, 'sine', 0.05);
+                playNote(baseNote * 1.5, 4.0, 'sine', 0.03); // G3 (quinta)
+            }
+
+            step++;
+        }, 800); // 800ms por step (~75 BPM)
+    },
+
+    stopBGM: function() {
+        if (window.AudioManager.bgmInterval) clearInterval(window.AudioManager.bgmInterval);
     }
 };
 
