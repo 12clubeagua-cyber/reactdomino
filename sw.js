@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v109'; // v109: Persistencia de ID do Host para resiliencia de sala
+const CACHE_NAME = 'domino-felipe-v110'; // v110: Saneamento de assets inexistentes e refatoracao de bots
 
 const ASSETS = [
   '/',
@@ -6,70 +6,30 @@ const ASSETS = [
   '/style.css',
   '/accessibilitymanager.js',
   '/accessibilitysuite.js',
-  '/achievements.js',
-  '/analytics.js',
   '/animations.js',
   '/audio.js',
   '/bots.js',
-  '/campaignengine.js',
-  '/challengemanager.js',
-  '/cloudsyncmanager.js',
   '/config.js',
-  '/coopmanager.js',
-  '/crosssyncrewardmanager.js',
-  '/dailyboardengine.js',
   '/dashboard.js',
   '/dealer.js',
-  '/eliteachievementmanager.js',
-  '/eventscheduler.js',
   '/flowui.js',
   '/game.js',
-  '/historymanager.js',
-  '/i18nmanager.js',
   '/identity.js',
   '/input.js',
   '/lobby.js',
   '/logic.js',
   '/multiplayer.js',
-  '/mutatorengine.js',
   '/names.js',
   '/network.js',
-  '/newsmanager.js',
-  '/notificationmanager.js',
-  '/powersaver.js',
-  '/powerupengine.js',
-  '/powerupspawner.js',
-  '/prestigemanager.js',
-  '/progressionmanager.js',
-  '/puzzleengine.js',
-  '/rankmanager.js',
   '/referee.js',
-  '/rematchmanager.js',
   '/renderer.js',
-  '/resourcemanager.js',
-  '/rewardchestmanager.js',
-  '/rewardengine.js',
-  '/scenarioeditor.js',
   '/seats.js',
-  '/snapshotmanager.js',
-  '/socialfeedmanager.js',
-  '/socialmanager.js',
-  '/spectatormanager.js',
   '/state.js',
-  '/streakmanager.js',
-  '/streakrewarder.js',
-  '/tableskinmanager.js',
-  '/telemetryengine.js',
-  '/thememanager.js',
-  '/tileskinmanager.js',
-  '/tournamenthub.js',
-  '/tournamentmanager.js',
-  '/trainingengine.js',
+  '/ui.js',
   '/utils.js'
 ];
 
 self.addEventListener('install', event => {
-    // skipWaiting forca o novo SW a instalar imediatamente, sem esperar fechar a aba
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
@@ -77,7 +37,6 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-    // Apaga os caches antigos para garantir que a versao nova entre no ar
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
@@ -87,12 +46,11 @@ self.addEventListener('activate', event => {
                     }
                 })
             );
-        }).then(() => self.clients.claim()) // Assume o controle de todas as abas abertas
+        }).then(() => self.clients.claim())
     );
 });
 
 self.addEventListener('fetch', event => {
-    // Stale-While-Revalidate strategy for optimal performance
     event.respondWith(
         caches.open(CACHE_NAME).then(cache => {
             return cache.match(event.request).then(cachedResponse => {

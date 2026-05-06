@@ -143,53 +143,9 @@ window.processTurn = function() {
 
     // --- LOGICA DO BOT ---
     if (!isLocal && netMode !== 'client') {
-        window.STATE.isBlocked = true;
-        
-        const botName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(cur) : `Bot ${cur}`;
-        if (typeof window.Dashboard !== 'undefined') {
-            window.Dashboard.setMessage(`${botName} PENSANDO...`);
+        if (typeof window.handleBotTurn === 'function') {
+            window.handleBotTurn(cur, moves);
         }
-
-        // Balao de pensamento visual
-        const localIdx = window.myPlayerIdx ?? 0;
-        const viewIdx = (cur - localIdx + 4) % 4;
-        const handEl = document.getElementById(`hand-${viewIdx}`);
-        if (handEl) {
-            // Garante que o container tenha posicao relativa para o balao fixar nele
-            handEl.style.position = 'relative';
-            
-            const bubble = document.createElement('div');
-            bubble.className = 'thinking-bubble';
-            
-            // Texto varia de acordo com a personalidade (ocasionalmente)
-            const personality = window.STATE.botPersonalities?.[cur] || 'normal';
-            let text = '...';
-            if (Math.random() > 0.7) {
-                if (personality === 'aggressive') text = 'Vou fechar!';
-                if (personality === 'defensive') text = 'Calma...';
-                if (personality === 'random') text = 'Sera?';
-            }
-            bubble.innerText = text;
-            
-            // Posicionamento centralizado
-            bubble.style.left = '50%';
-            bubble.style.transform = 'translateX(-50%)';
-            
-            handEl.appendChild(bubble);
-            setTimeout(() => bubble.remove(), 1000);
-        }
-
-        const minDelay = (window.CONFIG?.BOT?.MIN_DELAY) || 500;
-        const delay = minDelay + Math.random() * 1000;
-        
-        window.STATE.turnTimer = setTimeout(() => {
-            if (moves.length === 0) {
-                window.doPass(cur);
-            } else if (typeof chooseBotMove === 'function') {
-                const move = chooseBotMove(cur, moves);
-                window.play(cur, move.idx, move.side === 'both' ? 0 : (move.side === 'any' ? 0 : move.side));
-            }
-        }, delay);
         return;
     }
 

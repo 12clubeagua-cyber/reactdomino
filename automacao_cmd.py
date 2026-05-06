@@ -16,7 +16,7 @@ def automacao():
             janelas = [w for w in gw.getWindowsWithTitle('') if PARTE_DO_NOME.lower() in w.title.lower()]
 
             if janelas:
-                janela = janelas[0] # Pega a primeira correspondência
+                janela = janelas[0] # Pega a primeira correspondencia
 
                 # 2. Lida com janela minimizada
                 if janela.isMinimized:
@@ -27,7 +27,7 @@ def automacao():
                     janela.activate()
                     time.sleep(0.5) # Tempo para o Windows processar o foco
                 except Exception:
-                    # Caso o activate falhe (comum no Windows), tentamos forçar o clique
+                    # Caso o activate falhe (comum no Windows), tentamos forcar o clique
                     pass
 
                 # 4. Garante o foco clicando levemente dentro da janela (opcional)
@@ -44,7 +44,7 @@ def automacao():
             else:
                 print(f"[{time.strftime('%H:%M:%S')}] Janela '{PARTE_DO_NOME}' nao encontrada.")
 
-            # Espera 120 segundos (2 minutos) conforme seu comentário, ou 22s conforme seu sleep
+            # Espera 120 segundos (2 minutos) conforme seu comentario, ou 22s conforme seu sleep
             time.sleep(22)
 
         except KeyboardInterrupt:

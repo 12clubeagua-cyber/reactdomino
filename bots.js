@@ -76,6 +76,57 @@ window.chooseBotMove = function(botIdx, moves) {
 };
 
 /**
+ * Gerencia o processo de 'pensamento' do bot, incluindo UI e timers.
+ */
+window.handleBotTurn = function(botIdx, moves) {
+    if (window.STATE.isOver) return;
+    window.STATE.isBlocked = true;
+    
+    const botName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(botIdx) : `Bot ${botIdx}`;
+    if (typeof window.Dashboard !== 'undefined') {
+        window.Dashboard.setMessage(`${botName} PENSANDO...`);
+    }
+
+    // Balao de pensamento visual
+    const localIdx = window.myPlayerIdx ?? 0;
+    const viewIdx = (botIdx - localIdx + 4) % 4;
+    const handEl = document.getElementById(`hand-${viewIdx}`);
+    if (handEl) {
+        handEl.style.position = 'relative';
+        const bubble = document.createElement('div');
+        bubble.className = 'thinking-bubble';
+        
+        const personality = window.STATE.botPersonalities?.[botIdx] || 'normal';
+        let text = '...';
+        if (Math.random() > 0.7) {
+            if (personality === 'aggressive') text = 'Vou fechar!';
+            if (personality === 'defensive') text = 'Calma...';
+            if (personality === 'random') text = 'Sera?';
+        }
+        bubble.innerText = text;
+        bubble.style.left = '50%';
+        bubble.style.transform = 'translateX(-50%)';
+        
+        handEl.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 1000);
+    }
+
+    const minDelay = (window.CONFIG?.BOT?.MIN_DELAY) || 500;
+    const delay = minDelay + Math.random() * 1000;
+    
+    window.STATE.turnTimer = setTimeout(() => {
+        if (moves.length === 0) {
+            window.doPass(botIdx);
+        } else {
+            const move = window.chooseBotMove(botIdx, moves);
+            if (move) {
+                window.play(botIdx, move.idx, move.side === 'both' ? 0 : (move.side === 'any' ? 0 : move.side));
+            }
+        }
+    }, delay);
+};
+
+/**
  * Calcula o peso estrategico de uma peca especifica.
  */
 window.calculateWeight = function(botIdx, tile, side) {
