@@ -66,6 +66,9 @@ window.Dashboard = {
         const handEl = document.getElementById(`hand-${viewIdx}`);
         if (!handEl) return;
 
+        // Garante posicionamento para o balão
+        if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
+
         const bubble = document.createElement('div');
         bubble.className = 'thinking-bubble chat-bubble';
         bubble.innerText = message;
@@ -82,6 +85,9 @@ window.Dashboard = {
         const viewIdx = (pIdx - localIdx + 4) % 4;
         const handEl = document.getElementById(`hand-${viewIdx}`);
         if (!handEl) return;
+
+        // Garante posicionamento para o balão
+        if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
 
         const bubble = document.createElement('div');
         bubble.className = 'thinking-bubble emote-bubble';

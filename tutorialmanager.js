@@ -18,7 +18,7 @@ window.TutorialManager = {
         const tip = document.createElement('div');
         tip.className = 'glass thinking-bubble';
         tip.innerText = text;
-        tip.style.cssText = `position:fixed; top:${rect.bottom + 10}px; left:${rect.left}px; z-index:5000; padding:10px;`;
+        tip.style.cssText = `position:fixed; top:${rect.bottom + 10}px; left:${rect.left}px; z-index:5000; padding:10px; transform:none;`;
         
         document.body.appendChild(tip);
         setTimeout(() => tip.remove(), 4000);

@@ -210,38 +210,17 @@ html, body {
 }
 
 .hand {
+  position: relative;
   padding: var(--spacing);
   background: rgba(0, 0, 0, 0.1);
   border-radius: var(--radius);
   margin: 4px;
 }
 
-
-/* --- CLASSES DE LAYOUT E ANIMAÇÃO (RESTAURADAS) --- */
-.hand-horiz { min-height: 80px; }
-.hand-side { width: 90px; }
-.tiles-rack {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 5px;
-}
-.hand-side .tiles-rack { flex-direction: column; }
-.player-name-tag { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
-.active-turn { background: rgba(255, 204, 51, 0.12); border-radius: 8px; }
-
-.shake { animation: cameraShake 0.2s ease-in-out; }
-@keyframes cameraShake {
-    0% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
-    25% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 5px), calc(var(--cam-y) + 5px)); }
-    50% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) - 5px), calc(var(--cam-y) - 5px)); }
-    75% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 3px), calc(var(--cam-y) - 3px)); }
-    100% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
-}
-
 .thinking-bubble {
     position: absolute;
     top: -25px;
+    left: 50%;
     background: white;
     color: #1a1a2e;
     padding: 2px 8px;
@@ -249,14 +228,14 @@ html, body {
     font-size: 10px;
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    animation: bubblePop 0.3s ease-out;
+    animation: bubblePop 0.3s ease-out forwards;
     white-space: nowrap;
     z-index: 50;
 }
 @keyframes bubblePop {
-    0% { transform: scale(0); opacity: 0; }
-    80% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
+    0% { transform: translateX(-50%) scale(0); opacity: 0; }
+    80% { transform: translateX(-50%) scale(1.2); }
+    100% { transform: translateX(-50%) scale(1); opacity: 1; }
 }
 
 .confetti {

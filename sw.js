@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v93'; // Incrementado para v93: Correcao da visibilidade dos baloes de pensamento dos bots
+const CACHE_NAME = 'domino-felipe-v94'; // Incrementado para v94: Correcao da visibilidade dos baloes de chat rapido e emotes
 
 const ASSETS = [
   '/',
