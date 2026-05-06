@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v91'; // Incrementado para v91: Correcao do travamento do bot no inicio da rodada
+const CACHE_NAME = 'domino-felipe-v92'; // Incrementado para v92: Remocao do botao de dica (lampada)
 
 const ASSETS = [
   '/',
@@ -28,7 +28,6 @@ const ASSETS = [
   '/flowui.js',
   '/game.js',
   '/ghostengine.js',
-  '/hintmanager.js',
   '/historymanager.js',
   '/i18nmanager.js',
   '/identity.js',
