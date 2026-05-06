@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v97'; // Incrementado para v97: Pacote massivo de otimizacoes (Renderer, DOM Cache, Event Throttling)
+const CACHE_NAME = 'domino-felipe-v98'; // Incrementado para v98: Padronizacao global de storage e referencias 'window.'
 
 const ASSETS = [
   '/',
