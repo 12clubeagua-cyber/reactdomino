@@ -17,22 +17,22 @@ window.CONFIG = Object.freeze({
 
     // 2. REGRAS E PROPORÇÕES DO JOGO
     GAME: {
-        // Dimensões Físicas das Peças
-        TILE_W: 40,            // Largura (lado curto)
-        TILE_L: 80,            // Comprimento (lado longo)
+        // Dimensoes Fisicas das Pecas
+        TILE_W: 18,            // Largura (lado curto)
+        TILE_L: 36,            // Comprimento (lado longo)
         
         // Tempos de Fluxo (UX)
-        RESULT_DISPLAY_TIME: 3, // Exibição do placar final (segundos)
+        RESULT_DISPLAY_TIME: 3, // Exibicao do placar final (segundos)
         PASS_DISPLAY_TIME: 1200, // Tempo do brilho de "Passou a vez"
-        START_DELAY: 800,       // Pausa para o cérebro processar a mão nova
+        START_DELAY: 800,       // Pausa para o cerebro processar a mao nova
         
-        // Câmera e Tabuleiro (Snake)
-        SNAKE_MAX_SCALE: 2.0,   // Permite zoom maior para peças únicas ou poucas peças
+        // Camera e Tabuleiro (Snake)
+        SNAKE_MAX_SCALE: 1.0,   // Permite zoom maior para pecas unicas ou poucas pecas
         
         /* 
            AJUSTE DE CURVA:
            Valores maiores (6 a 8) criam retas mais elegantes.
-           Valores pequenos (2) fazem o jogo virar muito rápido.
+           Valores pequenos (2) fazem o jogo virar muito rapido.
         */
         MAX_VERT: 6,            
         MAX_HORIZ: 6            

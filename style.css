@@ -15,6 +15,7 @@
   --text-dim: #a8b4a8;
   --tile-bg: #fdfcf0;
   --tile-border: #c8c4a0;
+  --red: #c0392b;
   --pip: #1a1a2e;
   --radius: 12px;
   --spacing: 16px;
@@ -140,7 +141,7 @@ html, body {
 .tile {
   background: var(--tile-bg);
   border: 1px solid var(--tile-border);
-  border-radius: 4px;
+  border-radius: 3px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   display: flex; position: absolute;
   transition: transform 0.2s ease-out;
@@ -164,8 +165,8 @@ html, body {
 }
 
 .pip {
-    width: 6px;
-    height: 6px;
+    width: 3px;
+    height: 3px;
     background: var(--pip); 
     border-radius: 50%;
 }

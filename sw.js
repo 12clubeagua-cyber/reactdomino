@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v89'; // Incrementado para v89: Sincronizacao individual de game_start e maos privadas (Blind Hands)
+const CACHE_NAME = 'domino-felipe-v90'; // Incrementado para v90: Ajuste de tamanho das pecas baseado no dominoteste
 
 const ASSETS = [
   '/',
