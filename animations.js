@@ -39,50 +39,6 @@ window.RenderPipeline = {
 };
 
 /**
- * 4. SISTEMA DE PARTÍCULAS AMBIENTE (DUST PARTICLES)
- */
-window.initDustParticles = function() {
-    const container = document.getElementById('board-container');
-    if (!container) return;
-
-    const particles = [];
-    const count = 30;
-
-    for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'dust-particle';
-        const size = Math.random() * 3 + 1;
-        p.style.cssText = `
-            position: absolute; width: ${size}px; height: ${size}px;
-            background: rgba(255, 255, 255, 0.15); border-radius: 50%;
-            pointer-events: none;
-        `;
-        container.appendChild(p);
-        particles.push({
-            el: p,
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5
-        });
-    }
-
-    const anim = () => {
-        particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0) p.x = window.innerWidth;
-            if (p.x > window.innerWidth) p.x = 0;
-            if (p.y < 0) p.y = window.innerHeight;
-            if (p.y > window.innerHeight) p.y = 0;
-            p.el.style.transform = `translate(${p.x}px, ${p.y}px)`;
-        });
-    };
-
-    window.RenderPipeline.register(anim);
-};
-
-/**
  * 6. HAPTIC ENGINE (FEEDBACK TÁTIL)
  */
 window.HapticEngine = {
@@ -105,8 +61,6 @@ window.HapticEngine = {
 };
 
 // Inicializa no carregamento do DOM
-document.addEventListener('DOMContentLoaded', window.initDustParticles);
-
 window.updateCamera = function() {
     // ... manter logica original ...
     const snakeEl = document.getElementById('snake');

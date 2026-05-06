@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v95'; // Incrementado para v95: Remocao do sistema de tutorial
+const CACHE_NAME = 'domino-felipe-v96'; // Incrementado para v96: Remocao do efeito de poeira ambiente (otimizacao)
 
 const ASSETS = [
   '/',
