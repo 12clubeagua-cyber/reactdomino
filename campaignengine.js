@@ -1,15 +1,15 @@
 /*
    ========================================================================
    CAMPAIGNENGINE.JS - MOTOR DE CAMPANHA
-   Gerencia a progressão linear do jogador através de estágios.
+   Gerencia a progressao linear do jogador atraves de estagios.
    ========================================================================
 */
 
 window.CampaignEngine = {
     stages: [
         { id: 1, name: "Aprendizado", mode: "standard" },
-        { id: 2, name: "Desafio Tático", mode: "closed" },
-        { id: 3, name: "Sobrevivência", mode: "survival" }
+        { id: 2, name: "Desafio Tatico", mode: "closed" },
+        { id: 3, name: "Sobrevivencia", mode: "survival" }
     ],
 
     getProgress: () => {

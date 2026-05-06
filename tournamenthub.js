@@ -1,7 +1,7 @@
 /*
    ========================================================================
    TOURNAMENTHUB.JS - HUB DE TORNEIOS
-   Exibe salas de torneios públicos disponíveis.
+   Exibe salas de torneios publicos disponiveis.
    ========================================================================
 */
 
@@ -20,6 +20,6 @@ window.TournamentHub = {
         }
 
         hub.innerHTML = `<h3>Torneios em Destaque</h3>
-                         <div class="start-sub">Nenhum torneio público no momento.</div>`;
+                         <div class="start-sub">Nenhum torneio publico no momento.</div>`;
     }
 };

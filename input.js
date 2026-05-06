@@ -1,7 +1,7 @@
 /* 
    ========================================================================
-   INPUT.JS - CONTROLE DE ENTRADA E INTERATIVIDADE (VERSÃO BLINDADA)
-   Gerencia cliques nas peças, Drag-and-Drop e menus de escolha.
+   INPUT.JS - CONTROLE DE ENTRADA E INTERATIVIDADE (VERSAO BLINDADA)
+   Gerencia cliques nas pecas, Drag-and-Drop e menus de escolha.
    ======================================================================== 
 */
 
@@ -68,7 +68,7 @@ window.initDrag = function(e, tileIdx) {
 };
 
 /**
- * 3. GESTÃO DE INTERATIVIDADE (CLIQUES)
+ * 3. GESTAO DE INTERATIVIDADE (CLIQUES)
  */
 window.removePlayableListeners = function() {
     const myIdx = window.myPlayerIdx ?? 0;

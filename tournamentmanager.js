@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   TOURNAMENTMANAGER.JS - GESTOR DE COMPETIÇÕES
-   Gerencia chaves de torneio e progressão de rodadas.
+   TOURNAMENTMANAGER.JS - GESTOR DE COMPETICOES
+   Gerencia chaves de torneio e progressao de rodadas.
    ========================================================================
 */
 

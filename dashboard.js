@@ -1,6 +1,6 @@
 /* 
    ========================================================================
-   DASHBOARD.JS - O PAINEL DE CONTROLE (VERSÃO BLINDADA)
+   DASHBOARD.JS - O PAINEL DE CONTROLE (VERSAO BLINDADA)
    Gerencia o placar, as etiquetas de time e a barra de status superior.
    ======================================================================== 
 */
@@ -25,12 +25,12 @@ window.Dashboard = {
         window.Dashboard._nameMap = {};
         Object.keys(names).forEach(idx => {
             const i = parseInt(idx);
-            window.Dashboard._nameMap[`JOGADOR ${i + 1}`] = (i === myIdx) ? "VOCÊ" : names[idx];
+            window.Dashboard._nameMap[`JOGADOR ${i + 1}`] = (i === myIdx) ? "VOCE" : names[idx];
         });
     },
 
     /**
-     * Exibe o painel de votação para ações sociais.
+     * Exibe o painel de votacao para acoes sociais.
      */
     showVotePanel: function(action, callback) {
         let panel = window.Dashboard._getEl('vote-panel');
@@ -52,7 +52,7 @@ window.Dashboard = {
         
         const btnNo = document.createElement('button');
         btnNo.className = 'btn-side btn-cancel';
-        btnNo.innerText = 'Não';
+        btnNo.innerText = 'Nao';
         btnNo.onclick = () => { callback(false); panel.style.display = 'none'; };
         
         fragment.appendChild(btnYes);
@@ -62,7 +62,7 @@ window.Dashboard = {
     },
 
     /**
-     * Exibe uma mensagem de chat rápido para um jogador.
+     * Exibe uma mensagem de chat rapido para um jogador.
      */
     showQuickChat: function(pIdx, message) {
         const localIdx = window.myPlayerIdx ?? 0;
@@ -81,7 +81,7 @@ window.Dashboard = {
     },
 
     /**
-     * Exibe um balão de emote para um jogador específico.
+     * Exibe um balao de emote para um jogador especifico.
      */
     showEmote: function(pIdx, emote) {
         const localIdx = window.myPlayerIdx ?? 0;
@@ -161,7 +161,7 @@ window.Dashboard = {
     },
 
     /**
-     * Inicializa os estilos CSS baseados nas configurações globais.
+     * Inicializa os estilos CSS baseados nas configuracoes globais.
      */
     init: function() {
         window.Dashboard._updateNameMap();

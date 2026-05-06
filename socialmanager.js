@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   SOCIALMANAGER.JS - GESTOR DE CONEXÕES SOCIAIS
-   Facilita convites e gestão de amigos.
+   SOCIALMANAGER.JS - GESTOR DE CONEXOES SOCIAIS
+   Facilita convites e gestao de amigos.
    ========================================================================
 */
 
@@ -15,7 +15,7 @@ window.SocialManager = {
         const urlParams = new URLSearchParams(window.location.search);
         const roomCode = urlParams.get('join');
         if (roomCode) {
-            // Remove o parâmetro para não reprocessar no refresh
+            // Remove o parametro para nao reprocessar no refresh
             window.history.replaceState({}, document.title, window.location.pathname);
             
             // Aguarda o carregamento do lobby para conectar

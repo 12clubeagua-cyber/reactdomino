@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   PUZZLEENGINE.JS - MOTOR DE DESAFIOS TÁTICOS
-   Carrega e valida cenários de dominó predefinidos.
+   PUZZLEENGINE.JS - MOTOR DE DESAFIOS TATICOS
+   Carrega e valida cenarios de domino predefinidos.
    ========================================================================
 */
 

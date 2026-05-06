@@ -1,7 +1,7 @@
 /*
    ========================================================================
    POWERUPENGINE.JS - MOTOR DE POWER-UPS
-   Gerencia a ativação e efeitos de modificadores de partida.
+   Gerencia a ativacao e efeitos de modificadores de partida.
    ========================================================================
 */
 
@@ -9,7 +9,7 @@ window.PowerupEngine = {
     activeEffects: [],
 
     spawn: (boardPosition) => {
-        // Lógica de spawn do power-up na mesa
+        // Logica de spawn do power-up na mesa
         const powerup = {
             id: Math.random().toString(36).substr(2, 9),
             type: ['PEEK', 'SKIP', 'DOUBLE'][Math.floor(Math.random() * 3)],

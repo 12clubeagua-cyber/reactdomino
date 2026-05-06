@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   CHALLENGEMANAGER.JS - GESTOR DE DESAFIOS DIÁRIOS
-   Gera e rastreia metas diárias para aumentar a retenção.
+   CHALLENGEMANAGER.JS - GESTOR DE DESAFIOS DIARIOS
+   Gera e rastreia metas diarias para aumentar a retencao.
    ========================================================================
 */
 

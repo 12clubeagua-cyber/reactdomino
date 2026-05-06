@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v107'; // v107: Remocao do overlay de fim de rodada e destaque de vencedor
+const CACHE_NAME = 'domino-felipe-v109'; // v109: Persistencia de ID do Host para resiliencia de sala
 
 const ASSETS = [
   '/',
@@ -69,7 +69,7 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', event => {
-    // skipWaiting força o novo SW a instalar imediatamente, sem esperar fechar a aba
+    // skipWaiting forca o novo SW a instalar imediatamente, sem esperar fechar a aba
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
@@ -77,7 +77,7 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-    // Apaga os caches antigos para garantir que a versão nova entre no ar
+    // Apaga os caches antigos para garantir que a versao nova entre no ar
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(

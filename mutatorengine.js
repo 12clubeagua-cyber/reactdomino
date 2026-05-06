@@ -1,7 +1,7 @@
 /*
    ========================================================================
    MUTATORENGINE.JS - MOTOR DE MODIFICADORES DE PARTIDA
-   Injeta regras dinâmicas e modificadores na lógica de jogo.
+   Injeta regras dinamicas e modificadores na logica de jogo.
    ========================================================================
 */
 

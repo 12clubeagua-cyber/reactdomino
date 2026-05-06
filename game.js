@@ -1,7 +1,7 @@
 /* 
    ========================================================================
-   GAME.JS - O MOTOR DO JOGO (VERSÃO INTEGRADA E SEGURA)
-   Gerencia o ciclo de vida da rodada, turnos e ações.
+   GAME.JS - O MOTOR DO JOGO (VERSAO INTEGRADA E SEGURA)
+   Gerencia o ciclo de vida da rodada, turnos e acoes.
    ======================================================================== 
 */
 
@@ -13,7 +13,7 @@ const MAX_TURN_RETRIES = 10;
  */
 
 window.startRound = function() {
-    // Acessando STATE globalmente para maior segurança
+    // Acessando STATE globalmente para maior seguranca
     window.STATE.isOver = false;
     window.STATE.isBlocked = true;
     window.STATE.isShuffling = true;
@@ -22,7 +22,7 @@ window.startRound = function() {
     window.STATE.passCount = 0;
     window.STATE.lastPlayed = null;
 
-    // Limpeza de UI via Dashboard e FlowUI com verificação de segurança
+    // Limpeza de UI via Dashboard e FlowUI com verificacao de seguranca
     if (typeof window.FlowUI !== 'undefined' && typeof window.FlowUI.resetForNewRound === 'function') {
         window.FlowUI.resetForNewRound();
     }
@@ -31,7 +31,7 @@ window.startRound = function() {
         window.Dashboard.setMessage("EMBARALHANDO...");
     }
 
-    // Sincroniza início do embaralhamento no Multiplayer
+    // Sincroniza inicio do embaralhamento no Multiplayer
     if (typeof window.Network !== 'undefined' && typeof window.Network.sync === 'function') {
         window.Network.sync({ type: 'shuffle_start' });
     }
@@ -44,13 +44,13 @@ window.dealAndStart = function() {
     const s = document.getElementById('snake');
     if (s) s.innerHTML = '';
 
-    // MÓDULO DEALER: Logística de geração e distribuição
+    // MODULO DEALER: Logistica de geracao e distribuicao
     if (typeof window.Dealer !== 'undefined') {
         const deck = window.Dealer.generateDeck();
         window.Dealer.shuffle(deck);
         window.STATE.hands = window.Dealer.distribute(deck);
     } else {
-        console.error("Dealer.js não carregado.");
+        console.error("Dealer.js nao carregado.");
         return;
     }
     
@@ -58,13 +58,13 @@ window.dealAndStart = function() {
     window.STATE.positions = [];
     window.STATE.extremes = [null, null];
 
-    // Configuração inicial para o sistema de geometria de posicionamento
+    // Configuracao inicial para o sistema de geometria de posicionamento
     window.STATE.ends = [
         { hscX: 0, hscY: 0, dir: 270, lineCount: 1, lastVDir: 270, wasDouble: false },
         { hscX: 0, hscY: 0, dir: 90,  lineCount: 1, lastVDir: 90,  wasDouble: false },
     ];
 
-    // MÓDULO REFEREE: Define quem começa
+    // MODULO REFEREE: Define quem comeca
     if (typeof window.Referee !== 'undefined') {
         window.STATE.current = window.Referee.getInitialPlayer(window.STATE.hands, window.STATE.roundWinner);
     } else {
@@ -75,7 +75,7 @@ window.dealAndStart = function() {
     window.STATE.isBlocked = false;
     window.STATE.isShuffling = false;
 
-    // Sincronização e Renderização Inicial Segura
+    // Sincronizacao e Renderizacao Inicial Segura
     if (typeof window.Network !== 'undefined') window.Network.syncState();
     
     if (typeof window.Renderer !== 'undefined') {
@@ -92,7 +92,7 @@ window.dealAndStart = function() {
 };
 
 /**
- * 2. GESTÃO DE TURNOS
+ * 2. GESTAO DE TURNOS
  */
 
 window.processTurn = function() {
@@ -114,7 +114,7 @@ window.processTurn = function() {
         isLocal = (cur === myIdx);
     }
 
-    // Calcula tempo com base no modo sobrevivência se ativo
+    // Calcula tempo com base no modo sobrevivencia se ativo
     let timeLimit = (window.STATE.turnTime || 15) * 1000;
     if (window.STATE.gameMode === 'survival' && typeof window.SurvivalEngine !== 'undefined') {
         const dynamicSeconds = window.SurvivalEngine.getDynamicTurnTime(window.STATE.turnTime || 15, window.STATE.roundCount || 0);
@@ -124,13 +124,13 @@ window.processTurn = function() {
     if (window.STATE.turnTimer) clearTimeout(window.STATE.turnTimer);
     
     // Apenas o HOST (ou Offline) gerencia o timer de auto-pass
-    // REMOVIDO: Limite de tempo para jogadores reais. O timer agora só existe para Bots.
+    // REMOVIDO: Limite de tempo para jogadores reais. O timer agora so existe para Bots.
     const isBot = !isLocal && netMode !== 'client';
     if (isBot) {
-        // O timer para o Bot é definido mais abaixo na seção --- LOGICA DO BOT ---
+        // O timer para o Bot e definido mais abaixo na secao --- LOGICA DO BOT ---
     }
 
-    // Fallback para evitar travamentos em caso de dessincronização
+    // Fallback para evitar travamentos em caso de dessincronizacao
     if (!window.STATE.hands[cur]) {
         turnRetryCount++;
         if (turnRetryCount < MAX_TURN_RETRIES) {
@@ -198,13 +198,13 @@ window.processTurn = function() {
         return;
     }
 
-    // --- LÓGICA DO JOGADOR SEM PEÇAS VÁLIDAS ---
+    // --- LOGICA DO JOGADOR SEM PECAS VALIDAS ---
     if (moves.length === 0) {
         window.STATE.isBlocked = true;
         
         if (typeof window.Dashboard !== 'undefined') {
             const pName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(cur) : `Jogador ${cur}`;
-            window.Dashboard.setMessage(`${pName} NÃO TEM PEÇA`, 'pass');
+            window.Dashboard.setMessage(`${pName} NAO TEM PECA`, 'pass');
         }
         
         if (netMode !== 'client') {
@@ -214,15 +214,15 @@ window.processTurn = function() {
         return;
     }
 
-    // --- LÓGICA DO JOGADOR LOCAL COM PEÇAS ---
+    // --- LOGICA DO JOGADOR LOCAL COM PECAS ---
     if (isLocal) {
         if (netMode === 'client' || (netMode === 'host' && cur === myIdx) || netMode === 'offline') {
             if (typeof window.Dashboard !== 'undefined') window.Dashboard.setMessage('SUA VEZ', 'active');
-            if (typeof highlight === 'function') highlight(moves); // Ativa as peças
+            if (typeof highlight === 'function') highlight(moves); // Ativa as pecas
             
-            // Notifica se a página estiver oculta
+            // Notifica se a pagina estiver oculta
             if (document.hidden) {
-                window.NotificationManager.notify("Sua vez!", "É a hora de jogar sua peça.");
+                window.NotificationManager.notify("Sua vez!", "E a hora de jogar sua peca.");
             }
         } else {
             if (typeof window.Dashboard !== 'undefined') {
@@ -234,7 +234,7 @@ window.processTurn = function() {
 };
 
 /**
- * 3. AÇÕES (JOGAR E PASSAR)
+ * 3. ACOES (JOGAR E PASSAR)
  */
 
 window.play = function(pIdx, tIdx, side) {
@@ -253,7 +253,7 @@ window.play = function(pIdx, tIdx, side) {
     const netMode = window.netMode || 'offline';
     const myIdx = window.myPlayerIdx || 0;
     
-    // Feedback tátil: Se for a minha vez, vibra levemente
+    // Feedback tatil: Se for a minha vez, vibra levemente
     if (pIdx === myIdx && typeof window.HapticEngine !== 'undefined') {
         window.HapticEngine.vibrate('click');
     }
@@ -306,7 +306,7 @@ window.play = function(pIdx, tIdx, side) {
 };
 
 /**
- * Função auxiliar interna para completar a jogada após a animação
+ * Funcao auxiliar interna para completar a jogada apos a animacao
  * @private
  */
 window._completePlay = function(pIdx) {
@@ -364,7 +364,7 @@ window.doPass = function(pIdx) {
 };
 
 /**
- * 4. FINALIZAÇÃO
+ * 4. FINALIZACAO
  */
 
 window.endRound = function(reason, winnerIdx) {
@@ -382,7 +382,7 @@ window.endRound = function(reason, winnerIdx) {
         result = { 
             winTeam: team, 
             msg: (myIdx % 2 === team ? 'SUA DUPLA VENCEU!' : 'OPONENTES VENCERAM!'),
-            detail: `${winnerName} fechou a mão!` 
+            detail: `${winnerName} fechou a mao!` 
         };
         window.STATE.roundWinner = winnerIdx;
     } else {

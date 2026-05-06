@@ -1,7 +1,7 @@
 /*
    ========================================================================
    NOTIFICATIONMANAGER.JS - GESTOR DE ALERTA DO USUARIO
-   Gerencia permissões e exibição de notificações locais.
+   Gerencia permissoes e exibicao de notificacoes locais.
    ========================================================================
 */
 

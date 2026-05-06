@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   REWARDCHESTMANAGER.JS - GESTOR DE BAÚ DE RECOMPENSAS
-   Gerencia a entrega diária de prêmios ao jogador.
+   REWARDCHESTMANAGER.JS - GESTOR DE BAU DE RECOMPENSAS
+   Gerencia a entrega diaria de premios ao jogador.
    ========================================================================
 */
 

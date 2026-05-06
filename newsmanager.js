@@ -1,6 +1,6 @@
 /*
    ========================================================================
-   NEWSMANAGER.JS - GESTOR DE NOTÍCIAS
+   NEWSMANAGER.JS - GESTOR DE NOTICIAS
    Exibe novidades e avisos do sistema no lobby.
    ========================================================================
 */

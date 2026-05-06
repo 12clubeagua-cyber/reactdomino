@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   TILESKINMANAGER.JS - GESTOR DE SKINS DE PEÇAS
-   Gerencia a personalização visual dos dominós.
+   TILESKINMANAGER.JS - GESTOR DE SKINS DE PECAS
+   Gerencia a personalizacao visual dos dominos.
    ========================================================================
 */
 

@@ -42,7 +42,7 @@
   --tile-border: #8d6e63;
 }
 
-/* LÓGICA DE EXIBIÇÃO DO MENU */
+/* LOGICA DE EXIBICAO DO MENU */
 #start-screen {
   position: fixed; inset: 0; z-index: 9999;
   background: var(--bg-dark);

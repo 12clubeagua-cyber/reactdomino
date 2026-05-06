@@ -5,7 +5,7 @@
 */
 
 /**
- * Exibe painel de chat rápido
+ * Exibe painel de chat rapido
  */
 window.showQuickChatPanel = function() {
     let panel = document.getElementById('chat-panel');

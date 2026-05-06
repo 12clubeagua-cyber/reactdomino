@@ -1,7 +1,7 @@
 /*
    ========================================================================
    POWERSAVER.JS - GERENCIADOR DE ECONOMIA DE ENERGIA
-   Reduz o consumo de CPU/GPU em sessões longas.
+   Reduz o consumo de CPU/GPU em sessoes longas.
    ========================================================================
 */
 

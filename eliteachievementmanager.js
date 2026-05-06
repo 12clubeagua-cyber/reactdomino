@@ -1,14 +1,14 @@
 /*
    ========================================================================
-   ELITEACHIEVEMENTMANAGER.JS - MESTRIA DE DOMINÓ
+   ELITEACHIEVEMENTMANAGER.JS - MESTRIA DE DOMINO
    Rastreia marcos de alta habilidade e concede emblemas exclusivos.
    ========================================================================
 */
 
 window.EliteAchievementManager = {
     eliteBadges: {
-        'MASTER_LOCK': { name: 'Mestre do Bloqueio', icon: '🔒' },
-        'WIN_STREAK_10': { name: 'Dominador', icon: '🔥' }
+        'MASTER_LOCK': { name: 'Mestre do Bloqueio', icon: '' },
+        'WIN_STREAK_10': { name: 'Dominador', icon: '' }
     },
 
     unlock: (id) => {

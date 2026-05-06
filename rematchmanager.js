@@ -1,7 +1,7 @@
 /*
    ========================================================================
    REMATCHMANAGER.JS - GESTOR DE REVANCHE
-   Gerencia a votação e o início automático de novas rodadas.
+   Gerencia a votacao e o inicio automatico de novas rodadas.
    ========================================================================
 */
 
@@ -19,7 +19,7 @@ window.RematchManager = {
         window.RematchManager.votes[pIdx] = true;
         const totalVotes = Object.keys(window.RematchManager.votes).length;
         
-        if (totalVotes >= 2) { // Exemplo: 2 pessoas já iniciam a revanche
+        if (totalVotes >= 2) { // Exemplo: 2 pessoas ja iniciam a revanche
             window.Dashboard.setMessage("REVANCHE ACEITA!", "active");
             setTimeout(window.startRound, 1500);
             window.RematchManager.votes = {};

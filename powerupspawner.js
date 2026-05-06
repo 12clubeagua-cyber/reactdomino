@@ -1,7 +1,7 @@
 /*
    ========================================================================
    POWERUPSPAWNER.JS - GERADOR DE POWER-UPS NO TABULEIRO
-   Controla o aparecimento de modificadores táticos na mesa.
+   Controla o aparecimento de modificadores taticos na mesa.
    ========================================================================
 */
 
@@ -11,7 +11,7 @@ window.PowerupSpawner = {
     spawn: () => {
         if (!window.STATE || !window.STATE.positions.length) return;
         
-        // Escolhe um ponto aleatório do tabuleiro (simulado)
+        // Escolhe um ponto aleatorio do tabuleiro (simulado)
         const randomIndex = Math.floor(Math.random() * window.STATE.positions.length);
         const position = window.STATE.positions[randomIndex];
         

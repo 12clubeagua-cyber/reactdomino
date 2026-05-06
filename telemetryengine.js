@@ -1,7 +1,7 @@
 /*
    ========================================================================
    TELEMETRYENGINE.JS - MOTOR DE MONITORAMENTO
-   Captura erros e latência de rede para diagnóstico proativo.
+   Captura erros e latencia de rede para diagnostico proativo.
    ========================================================================
 */
 

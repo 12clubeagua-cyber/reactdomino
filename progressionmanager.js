@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   PROGRESSIONMANAGER.JS - SISTEMA DE XP E NÍVEIS
-   Gerencia a progressão do jogador com base em vitorias.
+   PROGRESSIONMANAGER.JS - SISTEMA DE XP E NIVEIS
+   Gerencia a progressao do jogador com base em vitorias.
    ========================================================================
 */
 
@@ -16,7 +16,7 @@ window.ProgressionManager = {
         const p = window.ProgressionManager.get();
         p.xp += amount;
         
-        // Simples cálculo de nível: a cada 100 XP sobe de nível
+        // Simples calculo de nivel: a cada 100 XP sobe de nivel
         p.level = Math.floor(p.xp / 100) + 1;
         
         window.safeSetStorage(window.ProgressionManager.STORAGE_KEY, p);

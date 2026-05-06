@@ -1,11 +1,11 @@
 /* 
    ========================================================================
-   ANIMATIONS.JS - VISUAIS E DINÂMICA DE CÂMERA (VERSÃO BLINDADA)
+   ANIMATIONS.JS - VISUAIS E DINAMICA DE CAMERA (VERSAO BLINDADA)
    ======================================================================== 
 */
 
 /**
- * HAPTIC ENGINE (FEEDBACK TÁTIL)
+ * HAPTIC ENGINE (FEEDBACK TATIL)
  */
 window.HapticEngine = {
     patterns: {

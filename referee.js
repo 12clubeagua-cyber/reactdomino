@@ -13,7 +13,7 @@ window.Referee = {
     },
 
     /**
-     * Define quem deve começar a rodada baseando-se no modo de jogo.
+     * Define quem deve comecar a rodada baseando-se no modo de jogo.
      */
     getInitialPlayer: function(hands, lastWinner, mode = 'standard') {
         if (lastWinner !== null && lastWinner >= 0 && lastWinner <= 3) return lastWinner;

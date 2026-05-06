@@ -1,6 +1,6 @@
 /*
    ========================================================================
-   STREAKMANAGER.JS - GESTOR DE SEQUÊNCIA (STREAK)
+   STREAKMANAGER.JS - GESTOR DE SEQUENCIA (STREAK)
    Rastreia dias consecutivos de jogo e define multiplicadores de XP.
    ========================================================================
 */
@@ -15,7 +15,7 @@ window.StreakManager = {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         
-        if (data.lastLogin === today) return data; // Já logou hoje
+        if (data.lastLogin === today) return data; // Ja logou hoje
 
         if (data.lastLogin === yesterday.toDateString()) {
             data.count++;

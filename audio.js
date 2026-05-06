@@ -1,7 +1,7 @@
 /* 
    ========================================================================
-   AUDIO.JS - SISTEMA DE SOM SINTETIZADO (VERSÃO OTIMIZADA)
-   Gerencia buffers e síntese de áudio para latência zero.
+   AUDIO.JS - SISTEMA DE SOM SINTETIZADO (VERSAO OTIMIZADA)
+   Gerencia buffers e sintese de audio para latencia zero.
    ======================================================================== 
 */
 
@@ -69,7 +69,7 @@ window.AudioManager = {
 
         if (window.AudioManager.bgmInterval) clearInterval(window.AudioManager.bgmInterval);
 
-        // Configurações da melodia (Escala Pentatônica de Dó Maior - Estilo Stardew)
+        // Configuracoes da melodia (Escala Pentatonica de Do Maior - Estilo Stardew)
         const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25]; // C4, D4, E4, G4, A4, C5
         let step = 0;
 
@@ -104,7 +104,7 @@ window.AudioManager = {
                 playNote(freq, 1.5, 'triangle', 0.1);
             }
 
-            // 2. Harmonia de Fundo (Pad etéreo)
+            // 2. Harmonia de Fundo (Pad etereo)
             if (step % 8 === 0) {
                 const baseNote = scale[0] / 2; // C3 (grave)
                 playNote(baseNote, 4.0, 'sine', 0.05);

@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   HISTORYMANAGER.JS - GESTOR DE HISTÓRICO
-   Persiste os resultados das partidas para análise posterior.
+   HISTORYMANAGER.JS - GESTOR DE HISTORICO
+   Persiste os resultados das partidas para analise posterior.
    ========================================================================
 */
 
@@ -16,7 +16,7 @@ window.HistoryManager = {
             result,
             date: new Date().toLocaleString()
         });
-        window.safeSetStorage(window.HistoryManager.STORAGE_KEY, JSON.stringify(history.slice(-20))); // Mantém os últimos 20
+        window.safeSetStorage(window.HistoryManager.STORAGE_KEY, JSON.stringify(history.slice(-20))); // Mantem os ultimos 20
     },
 
     showUI: function() {

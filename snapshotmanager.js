@@ -1,14 +1,14 @@
 /*
    ========================================================================
    SNAPSHOTMANAGER.JS - GESTOR DE SNAPSHOTS DE ESTADO
-   Garante integridade e recuperação de estados pós-crash.
+   Garante integridade e recuperacao de estados pos-crash.
    ========================================================================
 */
 
 window.SnapshotManager = {
     STORAGE_KEY: 'domino_state_snapshot',
 
-    // Cria uma soma de verificação simples para garantir a integridade do snapshot
+    // Cria uma soma de verificacao simples para garantir a integridade do snapshot
     _checksum: (data) => {
         return btoa(JSON.stringify(data)).slice(0, 8);
     },

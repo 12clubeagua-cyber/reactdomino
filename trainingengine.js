@@ -1,7 +1,7 @@
 /*
    ========================================================================
    TRAININGENGINE.JS - MOTOR DE TREINAMENTO E SANDBOX
-   Permite manipulação livre do tabuleiro para prática estratégica.
+   Permite manipulacao livre do tabuleiro para pratica estrategica.
    ========================================================================
 */
 
@@ -14,11 +14,11 @@ window.TrainingEngine = {
         window.STATE.isOver = false;
         window.Dashboard.setMessage("MODO SANDBOX: Clique para colocar pecas");
         
-        // Desbloqueia a manipulação do tabuleiro
+        // Desbloqueia a manipulacao do tabuleiro
         document.getElementById('board-container').onclick = (e) => {
             if (!window.TrainingEngine.active) return;
-            // Lógica simplificada de teste de colocação (mock)
-            console.log("Posição de clique registrada para teste.");
+            // Logica simplificada de teste de colocacao (mock)
+            console.log("Posicao de clique registrada para teste.");
         };
     },
 

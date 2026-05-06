@@ -6,7 +6,7 @@
 */
 
 window.Renderer = {
-    // Cache de referências do DOM para evitar buscas repetitivas
+    // Cache de referencias do DOM para evitar buscas repetitivas
     _cache: {},
 
     _getEl: function(id) {

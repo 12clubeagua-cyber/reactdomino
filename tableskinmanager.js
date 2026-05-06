@@ -1,6 +1,6 @@
 /*
    ========================================================================
-   TABLESKINMANAGER.JS - GESTÃO DE SKINS DE MESA
+   TABLESKINMANAGER.JS - GESTAO DE SKINS DE MESA
    ========================================================================
 */
 

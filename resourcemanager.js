@@ -1,7 +1,7 @@
 /*
    ========================================================================
    RESOURCEMANAGER.JS - O GESTOR DE CICLO DE VIDA
-   Previne vazamentos de memoria destruindo instâncias de rede e listeners.
+   Previne vazamentos de memoria destruindo instancias de rede e listeners.
    ========================================================================
 */
 
@@ -25,7 +25,7 @@ window.ResourceManager = {
         });
         window.ResourceManager.listeners = [];
 
-        // Destroi instâncias (PeerJS, etc)
+        // Destroi instancias (PeerJS, etc)
         window.ResourceManager.instances.forEach(i => {
             if (i.instance && typeof i.instance[i.destroyMethod] === 'function') {
                 i.instance[i.destroyMethod]();

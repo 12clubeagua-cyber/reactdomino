@@ -1,6 +1,6 @@
 /*
    ========================================================================
-   ACCESSIBILITYSUITE.JS - SUÍTE DE ACESSIBILIDADE
+   ACCESSIBILITYSUITE.JS - SUITE DE ACESSIBILIDADE
    Permite ajustes granulares de UI e movimento.
    ========================================================================
 */

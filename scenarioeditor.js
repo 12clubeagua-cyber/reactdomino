@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   SCENARIOEDITOR.JS - EDITOR DE CENÁRIOS
-   Permite que usuários criem seus próprios desafios de dominó.
+   SCENARIOEDITOR.JS - EDITOR DE CENARIOS
+   Permite que usuarios criem seus proprios desafios de domino.
    ========================================================================
 */
 
@@ -12,7 +12,7 @@ window.ScenarioEditor = {
         window.ScenarioEditor.active = !window.ScenarioEditor.active;
         window.Dashboard.setMessage(window.ScenarioEditor.active ? "EDITOR: ON (Drag/Rotate)" : "EDITOR: OFF", "active");
         
-        // Habilita Câmera Livre no modo editor
+        // Habilita Camera Livre no modo editor
         if (window.ScenarioEditor.active) window.CinematicEngine.isFreeCam = true;
     },
 

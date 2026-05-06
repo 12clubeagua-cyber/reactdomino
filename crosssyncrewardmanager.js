@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   CROSSSYNCREWARDMANAGER.JS - RECOMPENSAS DE SINCRONIZAÇÃO
-   Premia jogadores por autenticação em múltiplos dispositivos.
+   CROSSSYNCREWARDMANAGER.JS - RECOMPENSAS DE SINCRONIZACAO
+   Premia jogadores por autenticacao em multiplos dispositivos.
    ========================================================================
 */
 

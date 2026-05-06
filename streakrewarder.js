@@ -1,7 +1,7 @@
 /*
    ========================================================================
-   STREAKREWARDER.JS - RECOMPENSAS POR SEQUÊNCIA DE VITÓRIAS
-   Monitora vitórias consecutivas e aplica multiplicadores de XP.
+   STREAKREWARDER.JS - RECOMPENSAS POR SEQUENCIA DE VITORIAS
+   Monitora vitorias consecutivas e aplica multiplicadores de XP.
    ========================================================================
 */
 
@@ -15,7 +15,7 @@ window.StreakRewarder = {
             streak++;
             window.safeSetStorage(window.StreakRewarder.STORAGE_KEY, streak);
             if (streak > 1) {
-                window.Dashboard.setMessage(`STREAK DE VITÓRIAS: ${streak}x`, 'active');
+                window.Dashboard.setMessage(`STREAK DE VITORIAS: ${streak}x`, 'active');
             }
         } else {
             streak = 0;
@@ -26,6 +26,6 @@ window.StreakRewarder = {
 
     getMultiplier: () => {
         const streak = parseInt(window.safeGetStorage(window.StreakRewarder.STORAGE_KEY, '0'));
-        return 1.0 + (streak * 0.2); // +20% XP por vitória consecutiva
+        return 1.0 + (streak * 0.2); // +20% XP por vitoria consecutiva
     }
 };

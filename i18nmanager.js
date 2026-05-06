@@ -1,14 +1,14 @@
 /*
    ========================================================================
-   I18NMANAGER.JS - GESTOR DE INTERNACIONALIZAÇÃO
-   Gerencia traduções e troca de idioma dinamicamente.
+   I18NMANAGER.JS - GESTOR DE INTERNACIONALIZACAO
+   Gerencia traducoes e troca de idioma dinamicamente.
    ========================================================================
 */
 
 window.I18nManager = {
     lang: window.safeGetStorage('domino_lang', 'pt'),
     dicts: {
-        'pt': { 'start_title': 'domino', 'play': 'Jogar', 'settings': 'Configurações' },
+        'pt': { 'start_title': 'domino', 'play': 'Jogar', 'settings': 'Configuracoes' },
         'en': { 'start_title': 'domino', 'play': 'Play', 'settings': 'Settings' },
         'es': { 'start_title': 'domino', 'play': 'Jugar', 'settings': 'Ajustes' }
     },

@@ -1,7 +1,7 @@
 /*
    ========================================================================
    RANKMANAGER.JS - GESTOR DE RANKING LOCAL
-   Mantém o histórico dos 10 melhores resultados.
+   Mantem o historico dos 10 melhores resultados.
    ========================================================================
 */
 
@@ -17,10 +17,10 @@ window.RankManager = {
         const ranking = window.RankManager.get();
         ranking.push({ name: playerName, score: score, date: new Date().toLocaleDateString() });
         
-        // Ordena por maior pontuação
+        // Ordena por maior pontuacao
         ranking.sort((a, b) => b.score - a.score);
         
-        // Mantém apenas o limite
+        // Mantem apenas o limite
         const newRanking = ranking.slice(0, window.RankManager.LIMIT);
         window.safeSetStorage(window.RankManager.STORAGE_KEY, JSON.stringify(newRanking));
     },

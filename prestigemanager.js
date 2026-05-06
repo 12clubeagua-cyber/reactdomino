@@ -1,21 +1,21 @@
 /*
    ========================================================================
-   PRESTIGEMANAGER.JS - GESTOR DE PRESTÍGIO
-   Define e exibe emblemas baseados no nível do jogador.
+   PRESTIGEMANAGER.JS - GESTOR DE PRESTIGIO
+   Define e exibe emblemas baseados no nivel do jogador.
    ========================================================================
 */
 
 window.PrestigeManager = {
     badges: {
-        1: { name: 'Novato', icon: '🌱' },
-        2: { name: 'Bronze', icon: '🥉' },
-        3: { name: 'Prata', icon: '🥈' },
-        4: { name: 'Ouro', icon: '🥇' },
-        5: { name: 'Platina', icon: '💎' }
+        1: { name: 'Novato', icon: '' },
+        2: { name: 'Bronze', icon: '' },
+        3: { name: 'Prata', icon: '' },
+        4: { name: 'Ouro', icon: '' },
+        5: { name: 'Platina', icon: '' }
     },
 
     getBadge: (level) => {
-        return window.PrestigeManager.badges[level] || { name: 'Lenda', icon: '👑' };
+        return window.PrestigeManager.badges[level] || { name: 'Lenda', icon: '' };
     },
 
     renderBadge: (level) => {

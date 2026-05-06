@@ -1,4 +1,4 @@
-<!-- Declara que este documento é um HTML5 válido -->
+<!-- Declara que este documento e um HTML5 valido -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -23,12 +23,12 @@
   
       // Registra o Service Worker
       navigator.serviceWorker.register('sw.js').then(reg => {
-          // Checa se há atualizações silenciosamente
+          // Checa se ha atualizacoes silenciosamente
           reg.onupdatefound = () => {
               const installingWorker = reg.installing;
               installingWorker.onstatechange = () => {
                   if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                      console.log('Nova atualização encontrada. Recarregando...');
+                      console.log('Nova atualizacao encontrada. Recarregando...');
                   }
               };
           };
@@ -44,13 +44,13 @@
 </head>
 <body role="document">
 
-<!-- CONTÊINER DA TELA INICIAL (Lobby) -->
+<!-- CONTEINER DA TELA INICIAL (Lobby) -->
 <main id="start-screen" role="main">
   <h1 class="start-logo">domino</h1>
   <div class="start-sub">Felipe W.</div>
 
   <!-- PASSO 1: Escolha do Modo de Jogo -->
-  <section class="start-step active" id="step-mode" aria-label="Seleção de modo">
+  <section class="start-step active" id="step-mode" aria-label="Selecao de modo">
     <div class="start-options">
       <h2 class="start-label">Modo de Jogo</h2>
       <button class="start-btn" id="btn-continue" onclick="loadMatchState()" style="display:none; background:var(--gold); color:var(--bg);">
@@ -114,7 +114,7 @@
     <button class="step-back" onclick="cancelHosting()"> Cancelar e Voltar</button>
   </div>
 
-  <!-- PASSO 4B: Tela de Conexão do CLIENTE -->
+  <!-- PASSO 4B: Tela de Conexao do CLIENTE -->
   <div class="start-step" id="step-lobby-client">
     <div class="start-options">
       <div class="start-label">Entrar em uma Sala</div>
@@ -127,7 +127,7 @@
   </div>
 </main>
 
-<!-- CABEÇALHO DO JOGO -->
+<!-- CABECALHO DO JOGO -->
 <header id="header" role="banner">
   <div class="score-block" aria-label="Placar da sua dupla">
     <span class="score-name" id="label-team-a">Sua dupla</span>
@@ -142,19 +142,19 @@
 
 <div id="game-area" role="application">
     <button id="btn-exit" onclick="exitGame()" aria-label="Sair do jogo">Sair</button>
-    <button id="btn-chat" onclick="showQuickChatPanel()" style="position:fixed; bottom:20px; right:20px; z-index:1000;" aria-label="Chat rapido">💬</button>
-    <section id="hand-2" class="hand" aria-label="Mão do oponente 2"></section>
+    <button id="btn-chat" onclick="showQuickChatPanel()" style="position:fixed; bottom:20px; right:20px; z-index:1000;" aria-label="Chat rapido"></button>
+    <section id="hand-2" class="hand" aria-label="Mao do oponente 2"></section>
     <div id="mid-row">
-      <section id="hand-1" class="hand hand-side" aria-label="Mão do oponente 1"></section> 
+      <section id="hand-1" class="hand hand-side" aria-label="Mao do oponente 1"></section> 
 
       <section id="board-container" role="region" aria-label="Tabuleiro de jogo">
         <div id="snake"></div>
       </section>
 
-      <section id="hand-3" class="hand hand-side" aria-label="Mão do oponente 3"></section> 
+      <section id="hand-3" class="hand hand-side" aria-label="Mao do oponente 3"></section> 
     </div>
 
-    <section id="hand-0" class="hand" aria-label="Sua mão"></section> 
+    <section id="hand-0" class="hand" aria-label="Sua mao"></section> 
 
   
   <!-- Seletor de Lado -->
@@ -165,7 +165,7 @@
   </div>
 </div>
 
-<!-- OVERLAYS DE CONEXÃO -->
+<!-- OVERLAYS DE CONEXAO -->
 <div id="reconnect-overlay" style="display:none">
     <div id="reconnect-box">
         <div class="reconnect-spinner"></div>
@@ -175,14 +175,14 @@
     </div>
 </div>
 
-<!-- SCRIPTS (A ordem abaixo garante o funcionamento da câmera e interações) -->
-<!-- 1. Dados e Configurações Base -->
+<!-- SCRIPTS (A ordem abaixo garante o funcionamento da camera e interacoes) -->
+<!-- 1. Dados e Configuracoes Base -->
 <script src="config.js" defer></script>
 <script src="state.js" defer></script>
 <script src="names.js" defer></script>
 <script src="utils.js" defer></script>
 
-<!-- 2. Gestores e Engines (Extensões do Jogo) -->
+<!-- 2. Gestores e Engines (Extensoes do Jogo) -->
 <script src="accessibilitymanager.js" defer></script>
 <script src="accessibilitysuite.js" defer></script>
 <script src="achievements.js" defer></script>
@@ -227,13 +227,13 @@
 <script src="trainingengine.js" defer></script>
 
 
-<!-- 3. Matemática do Jogo e IA -->
+<!-- 3. Matematica do Jogo e IA -->
 <script src="logic.js" defer></script>
 <script src="dealer.js" defer></script>
 <script src="referee.js" defer></script>
 <script src="bots.js" defer></script>
 
-<!-- 4. Visual e Câmera -->
+<!-- 4. Visual e Camera -->
 <script src="audio.js" defer></script>
 <script src="animations.js" defer></script>
 <script src="renderer.js" defer></script>
@@ -251,7 +251,7 @@
 <script src="input.js" defer></script>
 <script src="lobby.js" defer></script>
 
-<!-- 7. O Motor Principal (Sempre por último) -->
+<!-- 7. O Motor Principal (Sempre por ultimo) -->
 <script src="game.js" defer></script>
 
 </body>

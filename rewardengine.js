@@ -1,6 +1,6 @@
 /*
    ========================================================================
-   REWARDENGINE.JS - MOTOR DE RECOMPENSAS DE SESSÃO
+   REWARDENGINE.JS - MOTOR DE RECOMPENSAS DE SESSAO
    Recompensa jogadores por tempo dedicado ao jogo.
    ========================================================================
 */

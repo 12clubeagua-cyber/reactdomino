@@ -14,7 +14,7 @@ window.Network = {
         if (!payload || typeof payload !== 'object') return false;
         if (typeof payload.type !== 'string') return false;
         
-        // Validação temporal: descarta pacotes antigos (ghost packets)
+        // Validacao temporal: descarta pacotes antigos (ghost packets)
         if (payload.ts && payload.ts < window.Network.lastReceivedTs) return false;
         if (payload.ts) window.Network.lastReceivedTs = payload.ts;
         

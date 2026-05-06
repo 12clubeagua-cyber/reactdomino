@@ -1,12 +1,12 @@
 /*
    ========================================================================
    EVENTSCHEDULER.JS - GESTOR DE EVENTOS E TORNEIOS
-   Gerencia o agendamento de torneios diários e exibe contagem regressiva.
+   Gerencia o agendamento de torneios diarios e exibe contagem regressiva.
    ========================================================================
 */
 
 window.EventScheduler = {
-    // Torneio diário às 20h
+    // Torneio diario as 20h
     getNextTournamentTime: () => {
         const now = new Date();
         const target = new Date();

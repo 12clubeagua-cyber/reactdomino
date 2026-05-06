@@ -1,7 +1,7 @@
 /* 
    ========================================================================
-   CONFIG.JS - CONFIGURAÇÕES GERAIS E CONSTANTES (VERSÃO BLINDADA)
-   Centraliza todos os parâmetros de equilíbrio, visual e áudio do jogo.
+   CONFIG.JS - CONFIGURACOES GERAIS E CONSTANTES (VERSAO BLINDADA)
+   Centraliza todos os parametros de equilibrio, visual e audio do jogo.
    Utiliza Object.freeze para garantir a imutabilidade dos dados globais.
    ======================================================================== 
 */
@@ -11,11 +11,11 @@ window.CONFIG = Object.freeze({
     // 1. COMPORTAMENTO DOS BOTS (IA)
     BOT: {
         MIN_DELAY: 600,         // Aumentado levemente para parecer mais humano
-        MAX_DELAY: 1200,        // Dá tempo do jogador ler o que o bot fez
+        MAX_DELAY: 1200,        // Da tempo do jogador ler o que o bot fez
         THINKING_MSG: " PENSANDO..."
     },
 
-    // 2. REGRAS E PROPORÇÕES DO JOGO
+    // 2. REGRAS E PROPORCOES DO JOGO
     GAME: {
         // Dimensoes Fisicas das Pecas
         TILE_W: 18,            // Largura (lado curto)
@@ -38,10 +38,10 @@ window.CONFIG = Object.freeze({
         MAX_HORIZ: 6            
     },
 
-    // 3. SÍNTESE DE ÁUDIO (WEB AUDIO API)
+    // 3. SINTESE DE AUDIO (WEB AUDIO API)
     AUDIO: {
-        CLACK_FREQ: 800,       // Frequência do impacto (agudo)
-        PASS_FREQ: 220,        // Frequência do passe (mais grave/alerta)
+        CLACK_FREQ: 800,       // Frequencia do impacto (agudo)
+        PASS_FREQ: 220,        // Frequencia do passe (mais grave/alerta)
         DUR: 0.08              // Bipes mais curtos soam mais "secos" e profissionais
     }
 });

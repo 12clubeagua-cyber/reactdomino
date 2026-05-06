@@ -1,11 +1,11 @@
 /* 
    ========================================================================
-   MULTIPLAYER.JS - VERSÃO ULTRA RESILIENTE E BLINDADA (PEERJS)
-   Gerencia conexões P2P, criação de salas e sincronização de rede.
+   MULTIPLAYER.JS - VERSAO ULTRA RESILIENTE E BLINDADA (PEERJS)
+   Gerencia conexoes P2P, criacao de salas e sincronizacao de rede.
    ======================================================================== 
 */
 
-// 1. RESILIÊNCIA E DEBUG MOBILE
+// 1. RESILIENCIA E DEBUG MOBILE
 window.mobileLog = (function() {
     let statusEl, clientStatusEl;
     return function(msg, cor = "white") {
@@ -22,13 +22,13 @@ window.mobileLog = (function() {
 
 window.onerror = function(msg, url, line) {
     if (msg.includes("Script error") || msg.includes("PeerJS")) return false;
-    // Evita popups excessivos em produção, útil apenas para debug
+    // Evita popups excessivos em producao, util apenas para debug
     console.error("ERRO NO JS: " + msg + "\nLinha: " + line);
     return false;
 };
 
 /**
- * 2. UTILITÁRIOS DE REDE
+ * 2. UTILITARIOS DE REDE
  */
 window.generateShortID = function() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
@@ -40,25 +40,31 @@ window.generateShortID = function() {
 };
 
 /**
- * 3. LÓGICA DO HOST (CRIADOR DA SALA)
+ * 3. LOGICA DO HOST (CRIADOR DA SALA)
  */
 window.initializeHost = function() {
     window.netMode = 'host';
     window.mobileLog("Iniciando Host...", "yellow");
     
     if (typeof Peer === 'undefined') {
-        alert("Erro: Biblioteca de rede (PeerJS) não carregou. Verifique sua internet.");
+        alert("Erro: Biblioteca de rede (PeerJS) nao carregou. Verifique sua internet.");
         return;
     }
 
     try {
-        // Limpa conexão anterior se existir
+        // Limpa conexao anterior se existir
         if (window.myPeer) { 
             window.myPeer.destroy(); 
             window.myPeer = null; 
         }
 
-        const fullID = window.generateShortID();
+        // PERSISTENCIA: Tenta recuperar ID anterior para manter a sala no refresh
+        let fullID = localStorage.getItem('domino_host_id');
+        if (!fullID) {
+            fullID = window.generateShortID();
+            localStorage.setItem('domino_host_id', fullID);
+        }
+
         window.lastRoomCode = fullID.split('-')[1];
 
         const codeDisplay = document.getElementById('host-code-display');
@@ -72,7 +78,7 @@ window.initializeHost = function() {
         });
         window.ResourceManager.registerInstance(window.myPeer);
 
-        window.myPeer.on('open', () => {
+        window.myPeer.on('open', (id) => {
             window.mobileLog("SALA ONLINE!", "#00ff00");
             const btnStart = document.getElementById('btn-start-multi');
             if (btnStart) btnStart.style.display = 'flex';
@@ -85,6 +91,11 @@ window.initializeHost = function() {
 
         window.myPeer.on('error', (err) => {
             window.mobileLog("Erro de rede: " + err.type, "red");
+            // Se o ID ja estiver em uso (ex: refresh rapido), tenta limpar e reconectar
+            if (err.type === 'unavailable-id') {
+                localStorage.removeItem('domino_host_id');
+                setTimeout(window.initializeHost, 1000);
+            }
         });
 
     } catch (e) { 
@@ -93,23 +104,23 @@ window.initializeHost = function() {
 };
 
 /**
- * 4. LÓGICA DO CLIENTE (QUEM ENTRA)
+ * 4. LOGICA DO CLIENTE (QUEM ENTRA)
  */
 window.connectToHost = function() {
     const inputEl = document.getElementById('join-code-input');
     if (!inputEl) return;
     
     const input = inputEl.value.toUpperCase().trim();
-    if (!input) return alert("Digite o código da sala!");
+    if (!input) return alert("Digite o codigo da sala!");
 
     window.netMode = 'client';
-    window.lastRoomCode = input; // SALVA O CÓDIGO PARA RECONEXÃO
+    window.lastRoomCode = input; // SALVA O CODIGO PARA RECONEXAO
     window.mobileLog("Procurando sala...", "yellow");
 
     window._initiateConnection(input);
 };
 
-// Separamos a criação da conexão para reutilizar no loop de reconexão
+// Separamos a criacao da conexao para reutilizar no loop de reconexao
 window._initiateConnection = function(roomCode) {
     try {
         if (window.myPeer) window.myPeer.destroy();
@@ -118,7 +129,7 @@ window._initiateConnection = function(roomCode) {
         });
 
         window.myPeer.on('open', () => {
-            // reliable: true garante que os pacotes de peças não se percam pelo caminho
+            // reliable: true garante que os pacotes de pecas nao se percam pelo caminho
             const conn = window.myPeer.connect('domino-' + roomCode, { reliable: true });
             window.setupClientEvents(conn);
         });
@@ -145,13 +156,13 @@ window.setupHostEvents = function(conn) {
         window.broadcastState(); 
     });
 
-    // BLINDAGEM: Remoção de fantasmas
+    // BLINDAGEM: Remocao de fantasmas
     conn.on('close', () => {
         const gameStarted = window.STATE && window.STATE.positions && window.STATE.positions.length > 0;
 
         if (gameStarted) {
             window.mobileLog("Queda detectada. Pausando a mesa.", "var(--red)");
-            conn.isActive = false; // Marca como offline, mas mantém a cadeira
+            conn.isActive = false; // Marca como offline, mas mantem a cadeira
             window.STATE.isBlocked = true; // Pausa o motor do jogo
             
             const pName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(conn.assignedIdx) : `Jogador ${conn.assignedIdx}`;
@@ -159,7 +170,7 @@ window.setupHostEvents = function(conn) {
                 window.Network.sendStatus(`Aguardando ${pName}...`, 'pass');
             }
 
-            // BOT TAKEOVER: Timer de segurança de 60 segundos
+            // BOT TAKEOVER: Timer de seguranca de 60 segundos
             conn.botTimer = setTimeout(() => {
                 if (!conn.isActive) {
                     window.mobileLog("Tempo esgotado. Bot assumindo...", "var(--gold)");
@@ -191,10 +202,10 @@ window.setupHostEvents = function(conn) {
             const isPlayersTurn = (window.STATE.current === conn.assignedIdx);
             
             if (isPlayersTurn && typeof window.getMoves === 'function') {
-                // 1. O Host calcula quais são os movimentos válidos para este cliente
+                // 1. O Host calcula quais sao os movimentos validos para este cliente
                 const validMoves = window.getMoves(window.STATE.hands[conn.assignedIdx]);
                 
-                // 2. Verifica se o que o Cliente pediu está na lista de jogadas permitidas pelo Host
+                // 2. Verifica se o que o Cliente pediu esta na lista de jogadas permitidas pelo Host
                 const isValid = validMoves.some(m => 
                     m.idx === data.tIdx && 
                     (m.side === 'both' || m.side === 'any' || m.side === data.side)
@@ -206,7 +217,7 @@ window.setupHostEvents = function(conn) {
                         window.play(conn.assignedIdx, data.tIdx, data.side);
                     }
                 } else {
-                    window.mobileLog(`Tentativa de jogada inválida ignorada (Cadeira ${conn.assignedIdx})`, "var(--red)");
+                    window.mobileLog(`Tentativa de jogada invalida ignorada (Cadeira ${conn.assignedIdx})`, "var(--red)");
                 }
             }
         }
@@ -219,7 +230,7 @@ window.setupHostEvents = function(conn) {
             window.broadcastState();
         }
 
-        // NOVO: Processamento de Votação
+        // NOVO: Processamento de Votacao
         if (data.type === 'vote_request') {
             window.Dashboard.showVotePanel(data.action, (result) => {
                 window.Network.request({ type: 'vote_submit', pIdx: window.myPlayerIdx, action: data.action, vote: result });
@@ -231,7 +242,7 @@ window.setupHostEvents = function(conn) {
             const oldConnIndex = window.connectedClients.findIndex(c => c.assignedIdx === targetIdx);
             
             if (oldConnIndex !== -1) {
-                // Atualiza o socket da cadeira com a nova conexão
+                // Atualiza o socket da cadeira com a nova conexao
                 conn.assignedIdx = targetIdx;
                 conn.isActive = true;
                 window.connectedClients[oldConnIndex] = conn;
@@ -244,7 +255,7 @@ window.setupHostEvents = function(conn) {
                     window.Network.sendStatus(`${pName} VOLTOU!`, 'active');
                 }
 
-                // Envia o estado PUBLICO + a mão privada desse jogador específico (Blind Hands)
+                // Envia o estado PUBLICO + a mao privada desse jogador especifico (Blind Hands)
                 conn.send({
                     type: 'recovery_state',
                     state: window.getPublicState(),
@@ -262,7 +273,7 @@ window.setupClientEvents = function(conn) {
         window.mobileLog("Conectado ao Host!", "#00ff00");
         window.myConnToHost = conn;
         
-        // Se for uma reconexão bem-sucedida, dispara o handshake
+        // Se for uma reconexao bem-sucedida, dispara o handshake
         if (window.isReconnecting) {
             conn.send({ type: 'reconnect_request', seatIdx: window.myPlayerIdx });
         }
@@ -270,11 +281,11 @@ window.setupClientEvents = function(conn) {
 
     // Detectar quando o Host fecha a sala ou cai a internet dele
     conn.on('close', () => {
-        // Se a partida já começou, não recarrega a página. Inicia o resgate.
+        // Se a partida ja comecou, nao recarrega a pagina. Inicia o resgate.
         if (window.STATE && window.STATE.positions && window.STATE.positions.length > 0) {
             window.attemptReconnect();
         } else {
-            alert("A conexão com o Host foi perdida no lobby.");
+            alert("A conexao com o Host foi perdida no lobby.");
             window.location.reload(); 
         }
     });
@@ -292,20 +303,20 @@ window.setupClientEvents = function(conn) {
         
         if (data.type === 'state_update' && window.STATE) {
             Object.assign(window.STATE, data.state);
-            // BLIND HANDS: Recebe apenas a sua própria mão do Host
+            // BLIND HANDS: Recebe apenas a sua propria mao do Host
             if (data.myHand) {
                 window.STATE.hands[window.myPlayerIdx] = data.myHand;
             }
             if (typeof window.renderHands === 'function') window.renderHands();
             if (typeof window.renderBoardFromState === 'function') window.renderBoardFromState();
 
-            // Desbloqueia e destaca peças se for o turno do cliente
+            // Desbloqueia e destaca pecas se for o turno do cliente
             if (window.STATE.current === window.myPlayerIdx && !window.STATE.isOver) {
                 if (typeof window.processTurn === 'function') window.processTurn();
             }
         }
 
-        // NOVO: Suporte a animação sincronizada
+        // NOVO: Suporte a animacao sincronizada
         if (data.type === 'animate_play' && data.nP) {
             if (typeof window.animateTile === 'function') {
                 window.animateTile(data.pIdx, data.nP, () => {
@@ -314,17 +325,17 @@ window.setupClientEvents = function(conn) {
             }
         }
 
-        // NOVO: Pacote de recuperação de estado privado
+        // NOVO: Pacote de recuperacao de estado privado
         if (data.type === 'recovery_state') {
             Object.assign(window.STATE, data.state);
-            window.STATE.hands[window.myPlayerIdx] = data.myHand; // Restaura a mão oculta
+            window.STATE.hands[window.myPlayerIdx] = data.myHand; // Restaura a mao oculta
             
-            // Limpa UI de reconexão
+            // Limpa UI de reconexao
             window.isReconnecting = false;
             clearInterval(window.reconnectTimer);
             document.getElementById('reconnect-overlay').style.display = 'none';
             
-            // Redesenha e verifica se é o turno do jogador
+            // Redesenha e verifica se e o turno do jogador
             if (typeof window.renderHands === 'function') window.renderHands(true);
             if (typeof window.renderBoardFromState === 'function') window.renderBoardFromState();
             
@@ -344,7 +355,7 @@ window.setupClientEvents = function(conn) {
     });
 };
 
-// A Máquina de Reconexão
+// A Maquina de Reconexao
 window.attemptReconnect = function() {
     if (window.isReconnecting) return;
     window.isReconnecting = true;
@@ -375,7 +386,7 @@ window.cancelReconnect = function() {
 };
 
 /**
- * 6. SISTEMA DE TRANSMISSÃO (BROADCAST)
+ * 6. SISTEMA DE TRANSMISSAO (BROADCAST)
  */
 window.broadcastToClients = function(data) {
     if (window.netMode !== 'host' || !Array.isArray(window.connectedClients)) return;
@@ -394,7 +405,7 @@ window.broadcastToClients = function(data) {
 window.getPublicState = function() {
     if (!window.STATE) return null;
     
-    // Clonagem performática (structuredClone se disponível, senão fallback manual)
+    // Clonagem performatica (structuredClone se disponivel, senao fallback manual)
     const clone = (obj) => {
         if (typeof structuredClone === 'function') return structuredClone(obj);
         return JSON.parse(JSON.stringify(obj));

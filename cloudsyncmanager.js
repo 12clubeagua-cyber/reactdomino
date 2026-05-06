@@ -1,12 +1,12 @@
 /*
    ========================================================================
-   CLOUDSYNCMANAGER.JS - SINCRONIZAÇÃO EM NUVEM
-   Gerencia a persistência de perfil entre dispositivos diferentes.
+   CLOUDSYNCMANAGER.JS - SINCRONIZACAO EM NUVEM
+   Gerencia a persistencia de perfil entre dispositivos diferentes.
    ========================================================================
 */
 
 window.CloudSyncManager = {
-    // URL hipotética para sincronização. Em produção, este seria o seu endpoint de backend.
+    // URL hipotetica para sincronizacao. Em producao, este seria o seu endpoint de backend.
     SYNC_ENDPOINT: 'https://api.dominoteste.com/sync',
 
     pushProfile: async () => {
@@ -24,7 +24,7 @@ window.CloudSyncManager = {
             });
             return await response.json();
         } catch (e) {
-            console.warn("Sincronização em nuvem indisponível, usando fallback local.");
+            console.warn("Sincronizacao em nuvem indisponivel, usando fallback local.");
         }
     }
 };

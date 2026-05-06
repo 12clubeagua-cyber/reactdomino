@@ -1,7 +1,7 @@
 /*
    ========================================================================
    DAILYBOARDENGINE.JS - MOTOR DE DESAFIO GLOBAL
-   Gera desafios diários sincronizados para todos os jogadores via seed.
+   Gera desafios diarios sincronizados para todos os jogadores via seed.
    ========================================================================
 */
 
@@ -13,9 +13,9 @@ window.DailyBoardEngine = {
 
     loadChallenge: () => {
         const seed = window.DailyBoardEngine.getSeed();
-        console.log("Carregando desafio diário com seed:", seed);
+        console.log("Carregando desafio diario com seed:", seed);
         
-        // Simulação de inicialização baseada em seed
+        // Simulacao de inicializacao baseada em seed
         window.PuzzleEngine.load(1); // Exemplo de carregamento
         window.Dashboard.setMessage("DESAFIO GLOBAL DO DIA ATIVO!");
     }
