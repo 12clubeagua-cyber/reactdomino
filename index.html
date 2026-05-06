@@ -125,23 +125,22 @@
     </div>
     <button class="step-back" onclick="goToStep('step-mode')"> Voltar</button>
   </div>
-</div>
+</main>
 
 <!-- CABEÇALHO DO JOGO -->
-<div id="header">
-  <header id="header" role="banner">
-    <div class="score-block" aria-label="Placar da sua dupla">
-      <span class="score-name" id="label-team-a">Sua dupla</span>
-      <span class="score-val" id="scoreA">0</span>
-    </div>
-    <div id="game-status" aria-live="polite">domino Master</div>
-    <div class="score-block right" aria-label="Placar dos oponentes">
-      <span class="score-name" id="label-team-b">Oponentes</span>
-      <span class="score-val" id="scoreB">0</span>
-    </div>
-  </header>
+<header id="header" role="banner">
+  <div class="score-block" aria-label="Placar da sua dupla">
+    <span class="score-name" id="label-team-a">Sua dupla</span>
+    <span class="score-val" id="scoreA">0</span>
+  </div>
+  <div id="game-status" aria-live="polite">domino Master</div>
+  <div class="score-block right" aria-label="Placar dos oponentes">
+    <span class="score-name" id="label-team-b">Oponentes</span>
+    <span class="score-val" id="scoreB">0</span>
+  </div>
+</header>
 
-  <div id="game-area" role="application">
+<div id="game-area" role="application">
     <button id="btn-exit" onclick="exitGame()" aria-label="Sair do jogo">Sair</button>
     <button id="btn-hint" onclick="window.HintManager.showHint()" style="position:fixed; bottom:20px; left:20px; z-index:1000;" aria-label="Pedir Dica">💡</button>
     <button id="btn-chat" onclick="showQuickChatPanel()" style="position:fixed; bottom:20px; right:20px; z-index:1000;" aria-label="Chat rapido">💬</button>

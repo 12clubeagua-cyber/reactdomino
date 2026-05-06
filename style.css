@@ -45,7 +45,30 @@
 #start-screen {
   position: fixed; inset: 0; z-index: 9999;
   background: var(--bg-dark);
+  height: 100dvh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
+#game-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: calc(100dvh - 60px);
+  position: relative;
+  overflow: hidden;
+}
+
+#mid-row {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#board-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 }
 
 .start-logo { font-size: 4rem; color: var(--gold); margin: 0; font-weight: 900; }

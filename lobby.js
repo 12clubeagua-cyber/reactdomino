@@ -20,6 +20,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+window.hideAllSteps = function() {
+    document.querySelectorAll('.start-step').forEach(el => el.classList.remove('active'));
+};
+
 window.goToStep = function(stepId) {
     window.hideAllSteps();
     const el = document.getElementById(stepId);
