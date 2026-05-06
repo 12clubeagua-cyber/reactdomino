@@ -1,0 +1,66 @@
+ANALISE DE COMPONENTES: ESSENCIAL VS. NAO-ESSENCIAL (PROJETO REACTDOMINO)
+
+Este documento categoriza os arquivos e funcionalidades do projeto para ajudar na decisao de simplificacao do jogo.
+
+-------------------------------------------------------------------------------
+1. O QUE E ESSENCIAL (CORE - NAO REMOVER)
+-------------------------------------------------------------------------------
+Estes arquivos formam a logica basica do jogo de domino. Sem eles, o jogo nao funciona.
+
+- logic.js: Motor de posicionamento de pecas e regras de encaixe (Corner Hinge).
+- game.js: Gerenciamento do fluxo de rodadas e turnos.
+- state.js: O "window.STATE", que mantem o estado atual da partida.
+- renderer.js: Responsavel por desenhar o tabuleiro e as pecas na tela.
+- dealer.js: Logica de embaralhar e distribuir as pecas.
+- referee.js: O juiz do jogo (quem comeca, quem ganhou, jogo trancado).
+- seats.js: Define as posicoes dos jogadores na mesa.
+- input.js: Captura os cliques e movimentos do jogador humano.
+- config.js: Configuracoes basicas de funcionamento.
+- utils.js: Funcoes auxiliares compartilhadas.
+- index.html & style.css: Estrutura base e layout fundamental.
+
+-------------------------------------------------------------------------------
+2. O QUE NAO E ESSENCIAL (POLIMENTO / EXTRAS - PODE RETIRAR)
+-------------------------------------------------------------------------------
+Funcionalidades que adicionam "suco" (juice), retencao ou extras, mas nao impedem o jogo de funcionar.
+
+A. Feedback Visual e Audio (Juice):
+- Baloes de Fala (thinking-bubbles): Mencionado no GEMINI.md como efeito visual.
+- audio.js: Sons do jogo. O jogo funciona perfeitamente em silencio.
+- animations.js: Efeitos de tremor de camera (shake), confetes e zoom.
+- tableskinmanager.js / tileskinmanager.js / thememanager.js: Sistemas de skins e temas visuais.
+
+B. Sistemas de Progressao e Recompensa:
+- achievements.js / eliteachievementmanager.js: Sistema de conquistas.
+- progressionmanager.js / prestigemanager.js: Niveis e prestigio do jogador.
+- rewardengine.js / rewardchestmanager.js: Bau de recompensas e moedas.
+- streakmanager.js / streakrewarder.js: Premios por vitorias consecutivas.
+
+C. Modos de Jogo Extras:
+- campaignengine.js: Modo campanha.
+- tournamentmanager.js / tournamenthub.js: Sistema de torneios.
+- dailyboardengine.js / challengemanager.js: Desafios diarios.
+- puzzleengine.js / survivalengine.js: Modos que fogem do domino classico.
+- trainingengine.js: Tutorial ou modo de treino.
+
+D. Social e Rede:
+- multiplayer.js / network.js: Se o foco for apenas contra bots, a rede e descartavel.
+- socialmanager.js / socialfeedmanager.js: Amigos e feed social.
+- newsmanager.js / notificationmanager.js: Notificacoes e noticias internas.
+- spectatormanager.js: Permite que outros assistam a partida.
+
+E. Utilitarios e Telemetria:
+- analytics.js / telemetryengine.js: Coleta de dados de uso.
+- accessibilitymanager.js / accessibilitysuite.js: Recursos de acessibilidade.
+- i18nmanager.js: Suporte a varios idiomas (se o jogo for apenas em PT ou EN).
+- cloudsyncmanager.js / snapshotmanager.js: Sincronizacao na nuvem.
+- powersaver.js: Otimizacao de bateria.
+
+-------------------------------------------------------------------------------
+3. RECOMENDACAO DE SIMPLIFICACAO
+-------------------------------------------------------------------------------
+Se o objetivo e deixar o jogo "leve" e focado apenas na partida:
+1. Remova todos os arquivos das categorias B, C e D.
+2. No Category A, mantenha apenas o basico do animations.js para o movimento das pecas nao ser instantaneo.
+3. Desative os "thinking-bubbles" (baloes de fala) no Renderer.js ou Logic.js (onde forem disparados).
+4. Limpe o index.html removendo as chamadas de script desses arquivos deletados.
