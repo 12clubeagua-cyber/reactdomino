@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v87'; // Incrementado para v87: Ajuste de escala da camera e centralizacao do tabuleiro
+const CACHE_NAME = 'domino-felipe-v88'; // Incrementado para v88: Correcao critica de vazamento de maos (Blind Hands) no multiplayer e reconexao
 
 const ASSETS = [
   '/',

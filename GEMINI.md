@@ -38,9 +38,9 @@ Antes de entregar, valide silenciosamente:
  5. O arquivo `sw.js` foi atualizado se houve mudanca funcional?
 
 ## 6. Licoes Aprendidas (Registro de Engenharia)
+- **Vazamento de Dados (Blind Hands):** Em sistemas P2P, nunca envie o objeto `window.STATE` completo se ele contiver informacoes privadas (como as maos dos jogadores). Use sempre um helper de filtragem (`getPublicState`) para sincronizacao e reconexao.
+- **Renderizacao Defensiva:** O Renderer deve assumir que os dados podem estar presentes (cache/leak) e proteger a exibicao baseado no estado do jogo (`isOver`) e identidade do jogador (`isMe`).
 - **Contexto 'this':** Arrow functions e callbacks em `setTimeout/forEach` perdem contexto. Use `window.Renderer` em vez de `this`.
-- **Sintaxe em Arquivos Grandes:** Verifique sempre o final dos arquivos apos edicoes para evitar blocos duplicados ou "fantasmas".
-- **Z-Index de Animacao:** Pecas em movimento devem estar sempre na camada superior para evitar clipping.
 
 ## 7. PROTOCOLO DE EXPANSÃO E VALIDAÇÃO
 - **Ciclo de Evolução:** Com o sistema estavel, a prioridade e a expansao funcional autonoma.

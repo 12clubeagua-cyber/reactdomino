@@ -98,8 +98,11 @@ window.Renderer = {
 
             const isMe = (i === myIdx);
             const handData = window.STATE?.hands?.[i] || [];
+            
+            // BLIND HANDS: Apenas mostra as peças se for o próprio jogador, fim de jogo ou revelação forçada
+            const canShow = isMe || isOver || reveal;
 
-            if (isMe || reveal || (shouldHide && isOver) || (!shouldHide)) {
+            if (canShow && handData.length > 0) {
                 handData.forEach((t, idx) => {
                     const tileEl = window.Renderer._createTileElement(t, isSide, isMe, idx);
                     rack.appendChild(tileEl);

@@ -245,10 +245,10 @@ window.setupHostEvents = function(conn) {
                     window.Network.sendStatus(`${pName} VOLTOU!`, 'active');
                 }
 
-                // Envia o estado completo + a mão privada desse jogador específico
+                // Envia o estado PUBLICO + a mão privada desse jogador específico (Blind Hands)
                 conn.send({
                     type: 'recovery_state',
-                    state: window.STATE,
+                    state: window.getPublicState(),
                     myHand: window.STATE.hands[targetIdx]
                 });
 
@@ -374,23 +374,26 @@ window.broadcastToClients = function(data) {
     });
 };
 
+window.getPublicState = function() {
+    if (!window.STATE) return null;
+    return {
+        current: Number(window.STATE.current),
+        extremes: JSON.parse(JSON.stringify(window.STATE.extremes)),
+        positions: JSON.parse(JSON.stringify(window.STATE.positions)),
+        handSize: window.STATE.handSize.map(n => Number(n)),
+        scores: [Number(window.STATE.scores[0]), Number(window.STATE.scores[1])],
+        isOver: !!window.STATE.isOver,
+        playerPassed: [...window.STATE.playerPassed],
+        roundWinner: window.STATE.roundWinner !== null ? Number(window.STATE.roundWinner) : null
+    };
+};
+
 window.broadcastState = function() {
     if (window.netMode !== 'host' || !window.STATE) return;
 
-    // Criamos um pacote apenas com os dados públicos. 
-    // NOTA: Usamos serializacao para garantir isolamento total de referencias (deep copy)
     const statePackage = {
         type: 'state_update',
-        state: {
-            current: Number(window.STATE.current),
-            extremes: JSON.parse(JSON.stringify(window.STATE.extremes)),
-            positions: JSON.parse(JSON.stringify(window.STATE.positions)),
-            handSize: window.STATE.handSize.map(n => Number(n)),
-            scores: [Number(window.STATE.scores[0]), Number(window.STATE.scores[1])],
-            isOver: !!window.STATE.isOver,
-            playerPassed: [...window.STATE.playerPassed],
-            roundWinner: window.STATE.roundWinner !== null ? Number(window.STATE.roundWinner) : null
-        }
+        state: window.getPublicState()
     };
     window.broadcastToClients(statePackage);
 };
