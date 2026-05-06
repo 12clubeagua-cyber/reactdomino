@@ -64,7 +64,7 @@ window.updateCamera = function() {
         if (p.y + h > maxY) maxY = p.y + h;
     }
 
-    const padding = 100;
+    const padding = 30;
     const viewW = boardBox.clientWidth;
     const viewH = boardBox.clientHeight;
 

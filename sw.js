@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v104'; // v104: Remocao do resumo de rodada
+const CACHE_NAME = 'domino-felipe-v105'; // v105: Ajuste de zoom da camera
 
 const ASSETS = [
   '/',

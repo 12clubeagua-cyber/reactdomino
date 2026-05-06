@@ -27,7 +27,7 @@ window.CONFIG = Object.freeze({
         START_DELAY: 800,       // Pausa para o cerebro processar a mao nova
         
         // Camera e Tabuleiro (Snake)
-        SNAKE_MAX_SCALE: 1.0,   // Permite zoom maior para pecas unicas ou poucas pecas
+        SNAKE_MAX_SCALE: 1.3,   // Permite zoom maior para pecas unicas ou poucas pecas
         
         /* 
            AJUSTE DE CURVA:
