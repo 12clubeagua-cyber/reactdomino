@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v101'; // v101: Espacamento entre nome e contador de pecas
+const CACHE_NAME = 'domino-felipe-v102'; // v102: Restaurado animacao de pecas voadoras
 
 const ASSETS = [
   '/',

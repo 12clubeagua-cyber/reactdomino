@@ -93,3 +93,86 @@ window.updateCamera = function() {
         y: offsetY
     };
 };
+
+/**
+ * 3. ANIMACOES DE JOGADA (FLYING TILES)
+ * Move a peca da mao do jogador ate a posicao exata na mesa.
+ */
+window.animateTile = function(pIdx, targetData, onComplete) {
+    const snakeEl = document.getElementById('snake');
+    const containerEl = document.getElementById('board-container');
+    
+    // Se a interface falhar, aplica a jogada instantaneamente
+    if (!snakeEl || !containerEl || !targetData) {
+        if (typeof onComplete === 'function') onComplete();
+        return;
+    }
+
+    // Cria a peca 'fantasma' que fara o trajeto visual
+    const proxy = document.createElement('div');
+    proxy.className = `tile moving-proxy ${targetData.isV ? 'tile-v' : 'tile-h'}`;
+    proxy.style.cssText = `z-index: 9999; position: fixed; pointer-events: none;`;
+    
+    // Preenche a peca fantasma com os pontos de forma segura
+    let pipsHTML = "";
+    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer._getPips === 'function') {
+        pipsHTML = `<div class="half">${window.Renderer._getPips(targetData.v1)}</div><div class="half">${window.Renderer._getPips(targetData.v2)}</div>`;
+    } else if (typeof window.getPips === 'function') {
+        pipsHTML = `<div class="half">${window.getPips(targetData.v1)}</div><div class="half">${window.getPips(targetData.v2)}</div>`;
+    }
+    proxy.innerHTML = pipsHTML;
+    document.body.appendChild(proxy);
+
+    // 1. Define o PONTO DE PARTIDA (Mao do Jogador)
+    const localIdx = window.myPlayerIdx ?? 0;
+    const viewIdx = (pIdx - localIdx + 4) % 4; // Qual mao na tela representa esse jogador?
+    const handEl = document.getElementById(`hand-${viewIdx}`);
+    
+    // Se a mao nao for encontrada, parte do centro da tela
+    const hRect = handEl ? handEl.getBoundingClientRect() : { left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0 };
+    const startX = hRect.left + (hRect.width / 2);
+    const startY = hRect.top + (hRect.height / 2);
+
+    // 2. Define o PONTO DE CHEGADA (Posicao logica traduzida para pixel e escala)
+    const cRect = containerEl.getBoundingClientRect();
+    const cam = window.currentCamera || { scale: 1, x: 0, y: 0 };
+    
+    // A magica matematica: converte a posicao logica para a fisica atual da camera
+    const destX = (cRect.left + (cRect.width / 2)) + ((targetData.x + cam.x) * cam.scale);
+    const destY = (cRect.top + (cRect.height / 2))  + ((targetData.y + cam.y) * cam.scale);
+
+    const startTime = performance.now();
+    const duration = 500; // Tempo de voo em ms
+
+    // Motor de interpolacao frame a frame
+    function step(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        
+        // Easing: Cubic Out (comeca rapido, termina suave)
+        const ease = 1 - Math.pow(1 - t, 3); 
+        
+        const curX = startX + (destX - startX) * ease;
+        const curY = startY + (destY - startY) * ease;
+        const curScale = 1 + (cam.scale - 1) * ease; // A peca encolhe/cresce durante o voo
+
+        proxy.style.left = `${curX}px`;
+        proxy.style.top = `${curY}px`;
+        proxy.style.transform = `translate(-50%, -50%) scale(${curScale})`;
+
+        if (t < 1) {
+            requestAnimationFrame(step); // Continua a animacao
+        } else {
+            // Animacao terminou
+            if (typeof window.playClack === 'function') window.playClack(); // Som de batida
+            
+            // E crucial chamar o onComplete (que desenha a peca real) ANTES de remover o proxy
+            if (typeof onComplete === 'function') onComplete();
+            
+            // Remove o fantasma no proximo frame para evitar flicker (piscada)
+            requestAnimationFrame(() => proxy.remove());
+        }
+    }
+    
+    requestAnimationFrame(step); // Inicia o voo
+};

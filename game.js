@@ -298,7 +298,11 @@ window.play = function(pIdx, tIdx, side) {
 
     if (typeof window.Network !== 'undefined') window.Network.sync({ type: 'animate_play', pIdx, nP: placement ? placement.nP : null, tIdx });
 
-    window._completePlay(pIdx);
+    if (typeof window.animateTile === 'function' && placement) {
+        window.animateTile(pIdx, placement.nP, () => window._completePlay(pIdx));
+    } else {
+        window._completePlay(pIdx);
+    }
 };
 
 /**

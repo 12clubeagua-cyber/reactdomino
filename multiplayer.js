@@ -305,6 +305,15 @@ window.setupClientEvents = function(conn) {
             }
         }
 
+        // NOVO: Suporte a animação sincronizada
+        if (data.type === 'animate_play' && data.nP) {
+            if (typeof window.animateTile === 'function') {
+                window.animateTile(data.pIdx, data.nP, () => {
+                    if (typeof window.renderBoardFromState === 'function') window.renderBoardFromState();
+                });
+            }
+        }
+
         // NOVO: Pacote de recuperação de estado privado
         if (data.type === 'recovery_state') {
             Object.assign(window.STATE, data.state);
