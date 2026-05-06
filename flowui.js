@@ -19,7 +19,6 @@ window.FlowUI = {
         for (let i = 0; i < 4; i++) {
             const handEl = document.getElementById(`hand-${i}`);
             if (handEl) {
-                handEl.classList.remove('hand-win-blink');
                 handEl.classList.remove('active-turn');
             }
         }
@@ -47,13 +46,6 @@ window.FlowUI = {
         };
         setTimeout(() => window.Dashboard.showMatchStats(stats), 1500);
         
-        // 2. Zoom na peca vencedora e Confetes
-        if (winTeam !== -1) {
-            if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.spawnConfetti === 'function') {
-                window.Renderer.spawnConfetti();
-            }
-        }
-
         // 3. Atualiza o placar no Dashboard
         if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.updateScore === 'function') {
             window.Dashboard.updateScore();
@@ -64,27 +56,24 @@ window.FlowUI = {
             window.FlowUI.saveMatchState();
         }
 
-        // 5. Feedback sonoro
-        if (winTeam !== -1 && typeof window.playVictory === 'function') {
-            window.playVictory();
+        // 3. Atualiza o placar no Dashboard
+        if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.updateScore === 'function') {
+            window.Dashboard.updateScore();
         }
-        
-        // 6. Efeito visual de brilho nas maos da dupla vencedora
-        window.FlowUI._highlightWinningTeam(winTeam);
 
         // 7. Verifica se a partida inteira acabou
         const target = (window.STATE && window.STATE.targetScore) ? window.STATE.targetScore : 10;
         const scoreA = (window.STATE && window.STATE.scores) ? window.STATE.scores[0] : 0;
         const scoreB = (window.STATE && window.STATE.scores) ? window.STATE.scores[1] : 0;
-        
+
         const isMatchOver = (scoreA >= target || scoreB >= target);
-        
+
         if (isMatchOver) {
             window.FlowUI._handleMatchEnd(target);
         } else {
             window.FlowUI._startNextRoundCountdown(msg);
         }
-    },
+        },
 
     /**
      * Salva o estado atual da partida no localStorage para persistencia.
@@ -108,27 +97,10 @@ window.FlowUI = {
     },
 
     /**
-     * Aplica brilho visual nas mãos da dupla vencedora.
-     * @private
-     */
-    _highlightWinningTeam: function(winTeam) {
-        if (winTeam === -1) return;
-        
-        const teamMembers = (winTeam === 0) ? [0, 2] : [1, 3];
-        teamMembers.forEach(pIdx => {
-            // Converte índice global para índice de visão local
-            const viewIdx = (pIdx - (window.myPlayerIdx || 0) + 4) % 4;
-            const handEl = document.getElementById(`hand-${viewIdx}`);
-            if (handEl) handEl.classList.add('hand-win-blink');
-        });
-    },
-
-    /**
      * Encerramento definitivo da partida.
      * @private
      */
-    _handleMatchEnd: function(target) {
-        const myIdx = window.myPlayerIdx || 0;
+    _handleMatchEnd: function(target) {        const myIdx = window.myPlayerIdx || 0;
         const scoreA = (window.STATE && window.STATE.scores) ? window.STATE.scores[0] : 0;
         
         const isMyTeamWinner = (scoreA >= target) 

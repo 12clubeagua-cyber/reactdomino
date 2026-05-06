@@ -22,8 +22,5 @@ window.RewardChestManager = {
         const xpReward = 100;
         window.ProgressionManager.addXp(xpReward);
         window.Dashboard.setMessage(`BAU ABERTO! +${xpReward} XP`, 'active');
-        
-        // Efeito visual
-        if (typeof window.spawnConfetti === 'function') window.spawnConfetti();
     }
 };

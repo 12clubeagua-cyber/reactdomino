@@ -46,7 +46,6 @@ window.Dashboard = {
             <div style="text-align:center; font-weight:bold; font-size: 1.2rem;">Resumo da Partida</div>
             <div>Pontos: ${stats.points}</div>
             <div>Eficacia Media: ${stats.avgMoveTime}ms/jogada</div>
-            <button class="btn-side" onclick="window.ReplayManager.play(); document.getElementById('stats-panel').style.display='none'">Assistir Replay</button>
             <button class="btn-side" onclick="document.getElementById('stats-panel').style.display='none'">Fechar</button>
         `;
         panel.style.display = 'flex';

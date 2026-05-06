@@ -104,14 +104,6 @@ window.playVictory = () => {
     window.speak("Ganhei");
 };
 
-window.playShuffleSound = () => {
-    let count = 0;
-    const interval = setInterval(() => {
-        window.playClack(200 + Math.random() * 400, 0.05);
-        if (++count > 15) clearInterval(interval);
-    }, 80);
-};
-
 window.speak = (text) => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();

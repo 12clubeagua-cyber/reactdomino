@@ -91,7 +91,8 @@ window.Renderer = {
             const label = document.createElement('div');
             label.className = 'player-name-tag';
             const playerName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(i) : `Jogador ${i}`;
-            label.innerHTML = `<span>${playerName}</span>`;
+            const tileCount = window.STATE?.handSize?.[i] || 0;
+            label.innerHTML = `<span>${playerName} (${tileCount})</span>`;
             fragment.appendChild(label);
 
             // B) Rack de Pecas
@@ -183,45 +184,5 @@ window.Renderer = {
             return window.getPips(val, color);
         }
         return `<span style="color:var(--bg); font-weight:bold; font-size:10px;">${val}</span>`;
-    },
-
-    /**
-     * Cria uma explosao de confetes na tela, respeitando o contexto da camera.
-     */
-    spawnConfetti: function() {
-        const snake = window.Renderer._getEl('snake');
-        if (!snake) return;
-
-        const colors = ['#ffcc33', '#ffffff', '#2ecc71', '#3498db', '#e74c3c'];
-        const cam = window.currentCamera || { scale: 1, x: 0, y: 0 };
-        
-        // Compensamos a escala para que os confetes nao fiquem gigantes ou minusculos
-        const sizeBase = 6 / cam.scale;
-
-        for (let i = 0; i < 60; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti';
-            
-            // Posicao inicial relativa ao centro do snake (em coordenadas do mundo)
-            const startX = (Math.random() - 0.5) * 600;
-            const startY = (Math.random() - 0.5) * 400 - 300; 
-            
-            el.style.left = `${startX}px`;
-            el.style.top = `${startY}px`;
-            el.style.width = `${sizeBase}px`;
-            el.style.height = `${sizeBase}px`;
-            el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Trajeto da queda (world space)
-            const fallX = (Math.random() - 0.5) * 100;
-            const fallY = 400 + Math.random() * 200;
-            
-            el.style.setProperty('--fall-x', `${fallX}px`);
-            el.style.setProperty('--fall-y', `${fallY}px`);
-            el.style.animation = `confettiFall ${1.5 + Math.random() * 2}s cubic-bezier(0.2, 0, 0.4, 1) forwards`;
-            
-            snake.appendChild(el);
-            setTimeout(() => el.remove(), 4000);
-        }
     }
 };

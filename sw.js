@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v99'; // Incrementado para v99: Correção dos bugs visuais da camera e maos baseada no dominoteste
+const CACHE_NAME = 'domino-felipe-v100'; // v100: Removido replays, animações e adicionado contador de peças
 
 const ASSETS = [
   '/',
@@ -13,8 +13,6 @@ const ASSETS = [
   '/bots.js',
   '/campaignengine.js',
   '/challengemanager.js',
-  '/cinematicengine.js',
-  '/cloudreplaymanager.js',
   '/cloudsyncmanager.js',
   '/config.js',
   '/coopmanager.js',
@@ -24,10 +22,8 @@ const ASSETS = [
   '/dealer.js',
   '/eliteachievementmanager.js',
   '/eventscheduler.js',
-  '/exportmanager.js',
   '/flowui.js',
   '/game.js',
-  '/ghostengine.js',
   '/historymanager.js',
   '/i18nmanager.js',
   '/identity.js',
@@ -50,7 +46,6 @@ const ASSETS = [
   '/referee.js',
   '/rematchmanager.js',
   '/renderer.js',
-  '/replaymanager.js',
   '/resourcemanager.js',
   '/rewardchestmanager.js',
   '/rewardengine.js',
@@ -70,7 +65,6 @@ const ASSETS = [
   '/tournamenthub.js',
   '/tournamentmanager.js',
   '/trainingengine.js',
-  '/uianimator.js',
   '/utils.js'
 ];
 

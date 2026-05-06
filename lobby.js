@@ -14,10 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (typeof window.SocialManager !== 'undefined') {
         window.SocialManager.processInvite();
     }
-    // Processa replays via URL
-    if (typeof window.ReplayManager !== 'undefined') {
-        window.ReplayManager.loadFromUrl();
-    }
 });
 
 window.hideAllSteps = function() {

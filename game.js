@@ -36,14 +36,8 @@ window.startRound = function() {
         window.Network.sync({ type: 'shuffle_start' });
     }
 
-    // Inicia animacao visual antes de distribuir as pecas
-    if (typeof runShuffleAnimation === 'function') {
-        if (typeof window.playShuffleSound === 'function') window.playShuffleSound();
-        runShuffleAnimation(() => window.dealAndStart());
-    } else {
-        // Fallback caso animations.js falhe
-        window.dealAndStart(); 
-    }
+    // Inicia imediatamente sem animacao ou som
+    window.dealAndStart();
 };
 
 window.dealAndStart = function() {
@@ -246,8 +240,6 @@ window.processTurn = function() {
 window.play = function(pIdx, tIdx, side) {
     if (window.STATE.isOver) return;
     
-    window.ReplayManager.record('play', { pIdx, tIdx, side });
-    
     // Rastreia tempo de jogada
     if (window.STATE.lastTurnTime) {
         const moveTime = Date.now() - window.STATE.lastTurnTime;
@@ -265,8 +257,6 @@ window.play = function(pIdx, tIdx, side) {
     if (pIdx === myIdx && typeof window.HapticEngine !== 'undefined') {
         window.HapticEngine.vibrate('click');
     }
-    
-    // ... restante ...
 
     if (netMode === 'client') {
         if (pIdx === myIdx) {
@@ -288,8 +278,6 @@ window.play = function(pIdx, tIdx, side) {
     const tile = window.STATE.hands[pIdx].splice(tIdx, 1)[0];
     window.STATE.handSize[pIdx]--;
     
-    if (tile[0] === tile[1] && typeof window.screenShake === 'function') window.screenShake();
-
     if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawHands === 'function') window.Renderer.drawHands(); 
 
     const normalizedSide = (side === 'any') ? 0 : side;
@@ -310,11 +298,7 @@ window.play = function(pIdx, tIdx, side) {
 
     if (typeof window.Network !== 'undefined') window.Network.sync({ type: 'animate_play', pIdx, nP: placement ? placement.nP : null, tIdx });
 
-    if (typeof animateTile === 'function' && placement) {
-        animateTile(pIdx, placement.nP, () => window._completePlay(pIdx));
-    } else {
-        window._completePlay(pIdx);
-    }
+    window._completePlay(pIdx);
 };
 
 /**
@@ -339,8 +323,6 @@ window._completePlay = function(pIdx) {
 
 window.doPass = function(pIdx) {
     if (window.STATE.isOver) return;
-
-    window.ReplayManager.record('pass', { pIdx });
 
     if (window.STATE.extremes[0] !== null) {
         [0, 1].forEach(s => {
@@ -393,9 +375,6 @@ window.endRound = function(reason, winnerIdx) {
         const team = (winnerIdx % 2 === 0 ? 0 : 1);
         const winnerName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(winnerIdx) : `Jogador ${winnerIdx}`;
         
-        // Trigger confetti on victory
-        if (typeof window.spawnConfetti === 'function') window.spawnConfetti();
-
         result = { 
             winTeam: team, 
             msg: (myIdx % 2 === team ? 'SUA DUPLA VENCEU!' : 'OPONENTES VENCERAM!'),
