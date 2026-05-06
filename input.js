@@ -71,15 +71,18 @@ window.initDrag = function(e, tileIdx) {
  * 3. GESTAO DE INTERATIVIDADE (CLIQUES)
  */
 window.removePlayableListeners = function() {
-    const myIdx = window.myPlayerIdx ?? 0;
     const rack = document.querySelector(`#hand-0 .tiles-rack`);
     if (!rack) return;
 
     const tiles = rack.querySelectorAll('.tile');
     tiles.forEach(el => {
         el.classList.remove('playable');
+        el.removeAttribute('tabindex');
+        el.removeAttribute('role');
+        el.removeAttribute('aria-label');
         el.onclick = null;
         el.onmousedown = null;
+        el.onkeydown = null;
     });
 };
 
@@ -91,9 +94,13 @@ window.highlight = function(moves) {
         if (!el) return;
         
         el.classList.add('playable');
+        el.setAttribute('tabindex', '0'); // Torna focavel via teclado
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-label', `Peca ${window.STATE.hands[window.myPlayerIdx][move.idx].join('-')}`);
+
         el.onmousedown = (e) => window.initDrag(e, move.idx);
         
-        el.onclick = () => {
+        const action = () => {
             if (window.STATE?.isBlocked) return;
             
             const extremesAreDiff = window.STATE?.extremes?.[0] !== window.STATE?.extremes?.[1];
@@ -103,11 +110,24 @@ window.highlight = function(moves) {
                 window.STATE.isBlocked = true;
                 window.STATE.pendingIdx = move.idx;
                 const picker = document.getElementById('side-picker');
-                if (picker) picker.style.display = 'flex';
+                if (picker) {
+                    picker.style.display = 'flex';
+                    // Foca no primeiro botao do picker para acessibilidade
+                    const firstBtn = picker.querySelector('button');
+                    if (firstBtn) firstBtn.focus();
+                }
             } else {
                 window.STATE.isBlocked = true;
                 const side = (move.side === 'both' || move.side === 'any') ? 0 : move.side;
                 if (typeof window.play === 'function') window.play(window.myPlayerIdx ?? 0, move.idx, side);
+            }
+        };
+
+        el.onclick = action;
+        el.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                action();
             }
         };
     });
