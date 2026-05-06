@@ -146,10 +146,61 @@ html, body {
   transition: transform 0.2s ease-out;
 }
 
+.tile-h { width: var(--tile-height); height: var(--tile-width); }
+.tile-v { width: var(--tile-width); height: var(--tile-height); flex-direction: column; }
+
+/* Grid Interno para os Pontos */
+.half {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0;
+    padding: 2px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    align-items: center; 
+    justify-items: center;
+}
+
+.pip {
+    width: 3px;
+    height: 3px;
+    background: var(--pip); 
+    border-radius: 50%;
+}
+
+.tile-back {
+    background-color: #2a3a30 !important;
+    border: 1px solid #1a251e !important;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.4) !important;
+}
+
+.tile-back .half { border: none !important; }
+.tile-back .pip { display: none; }
+
+/* Pecas nas maos */
+.tile-rel {
+  position: relative !important; 
+  left: auto !important;
+  top: auto !important;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+}
+
 .tile.playable {
   border: 3px solid var(--gold) !important;
   box-shadow: 0 0 20px var(--gold-glow);
   transform: translateY(-8px) scale(1.05);
+}
+
+.tile-double {
+    /* Estilo opcional para buchas */
+}
+
+.last-move {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 10px var(--gold);
 }
 
 .hand {

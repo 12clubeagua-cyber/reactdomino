@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v85'; // Incrementado para v85: Correcao de estrutural HTML e display steps
+const CACHE_NAME = 'domino-felipe-v86'; // Incrementado para v86: Correcao de pecas invisiveis (pips e dimensoes)
 
 const ASSETS = [
   '/',
