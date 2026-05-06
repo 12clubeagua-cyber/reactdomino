@@ -40,7 +40,9 @@ Antes de entregar, valide silenciosamente:
 ## 6. Licoes Aprendidas (Registro de Engenharia)
 - **Vazamento de Dados (Blind Hands):** Em sistemas P2P, nunca envie o objeto `window.STATE` completo se ele contiver informacoes privadas (como as maos dos jogadores). Use sempre um helper de filtragem (`getPublicState`) para sincronizacao e reconexao.
 - **Sincronizacao Inicial:** Comandos de inicio de jogo (`game_start`) devem ser individuais se dependerem de informacoes especificas do jogador (como `yourIdx`). O broadcast simples causa dessincronizacao de identidade.
-- **Renderizacao Defensiva:** O Renderer deve assumir que os dados podem estar presentes (cache/leak) e proteger a exibicao baseado no estado do jogo (`isOver`) e identidade do jogador (`isMe`).
+- **Renderizacao Defensiva (Bug Recorrente):** A renderizacao do tabuleiro e das maos e sensivel a novas features. O `Renderer.drawBoard` deve SEMPRE realizar uma limpeza seletiva (`.tile:not(.moving-proxy)`) antes de renderizar para evitar pecas duplicadas ou "fantasmas" no tabuleiro.
+- **Integridade da Camera:** A camera depende das variaveis CSS `--cam-scale`, `--cam-x` e `--cam-y` injetadas via JS. Se adicionar novas animacoes ou elementos sobrepostos, garanta que eles respeitem essas variaveis ou que o `updateCamera` seja chamado ao final do ciclo de renderizacao.
+- **Layout de Maos (CSS Missing):** O layout das maos depende das classes `.hand-side`, `.hand-horiz` e `.tiles-rack`. Se as pecas sumirem ou ficarem empilhadas incorretamente ao adicionar features de UI, verifique se estas classes nao foram sobrescritas ou removidas do `style.css`.
 - **Contexto 'this':** Arrow functions e callbacks em `setTimeout/forEach` perdem contexto. Use `window.Renderer` em vez de `this`.
 
 ## 7. PROTOCOLO DE EXPANSÃO E VALIDAÇÃO
