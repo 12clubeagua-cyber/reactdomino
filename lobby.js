@@ -163,12 +163,19 @@ window.startMatch = function() {
                 finalNames = window.NameManager.getAll();
             }
             
-            // Envia comando game_start para todos
-            window.Network.sync({ 
-                type: 'game_start', 
-                names: finalNames,
-                targetScore: window.STATE ? window.STATE.targetScore : 3
-            });
+            // Envia comando game_start INDIVIDUALMENTE para cada cliente (para passar o yourIdx correto)
+            if (Array.isArray(window.connectedClients)) {
+                window.connectedClients.forEach(conn => {
+                    if (conn && conn.open) {
+                        conn.send({
+                            type: 'game_start',
+                            yourIdx: conn.assignedIdx,
+                            names: finalNames,
+                            targetScore: window.STATE ? window.STATE.targetScore : 3
+                        });
+                    }
+                });
+            }
 
             // O Host roda a função de início após um breve delay
             setTimeout(doStartRound, 600);

@@ -293,6 +293,10 @@ window.setupClientEvents = function(conn) {
         
         if (data.type === 'state_update' && window.STATE) {
             Object.assign(window.STATE, data.state);
+            // BLIND HANDS: Recebe apenas a sua própria mão do Host
+            if (data.myHand) {
+                window.STATE.hands[window.myPlayerIdx] = data.myHand;
+            }
             if (typeof window.renderHands === 'function') window.renderHands();
             if (typeof window.renderBoardFromState === 'function') window.renderBoardFromState();
         }
@@ -391,9 +395,17 @@ window.getPublicState = function() {
 window.broadcastState = function() {
     if (window.netMode !== 'host' || !window.STATE) return;
 
-    const statePackage = {
-        type: 'state_update',
-        state: window.getPublicState()
-    };
-    window.broadcastToClients(statePackage);
+    const publicState = window.getPublicState();
+
+    if (Array.isArray(window.connectedClients)) {
+        window.connectedClients.forEach(conn => {
+            if (conn && conn.open) {
+                conn.send({
+                    type: 'state_update',
+                    state: publicState,
+                    myHand: window.STATE.hands[conn.assignedIdx]
+                });
+            }
+        });
+    }
 };
