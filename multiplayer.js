@@ -299,6 +299,11 @@ window.setupClientEvents = function(conn) {
             }
             if (typeof window.renderHands === 'function') window.renderHands();
             if (typeof window.renderBoardFromState === 'function') window.renderBoardFromState();
+
+            // Desbloqueia e destaca peças se for o turno do cliente
+            if (window.STATE.current === window.myPlayerIdx && !window.STATE.isOver) {
+                if (typeof window.processTurn === 'function') window.processTurn();
+            }
         }
 
         // NOVO: Pacote de recuperação de estado privado

@@ -33,10 +33,6 @@ window.getMoves = function(hand) {
         const matchLeft = (t[0] === extremes[0] || t[1] === extremes[0]);
         const matchRight = (t[0] === extremes[1] || t[1] === extremes[1]);
 
-        if (gameMode === 'closed' && t[0] !== t[1] && t[0] + t[1] < 5) {
-            return null; // Exemplo de regra restritiva: não permite peças fracas
-        }
-
         if (matchLeft && matchRight) return { idx: i, side: 'both' };
         if (matchLeft) return { idx: i, side: 0 };
         if (matchRight) return { idx: i, side: 1 };

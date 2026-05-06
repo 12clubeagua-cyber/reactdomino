@@ -114,9 +114,13 @@ window.processTurn = function() {
     }
 
     if (window.STATE.turnTimer) clearTimeout(window.STATE.turnTimer);
-    window.STATE.turnTimer = setTimeout(() => {
-        window.doPass(window.STATE.current);
-    }, timeLimit);
+    
+    // Apenas o HOST (ou Offline) gerencia o timer de auto-pass para evitar dessincronia
+    if (window.netMode !== 'client') {
+        window.STATE.turnTimer = setTimeout(() => {
+            window.doPass(window.STATE.current);
+        }, timeLimit);
+    }
 
     const cur = window.STATE.current;
     // ... restante ...
