@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v88'; // Incrementado para v88: Correcao critica de vazamento de maos (Blind Hands) no multiplayer e reconexao
+const CACHE_NAME = 'domino-felipe-v89'; // Incrementado para v89: Sincronizacao individual de game_start e maos privadas (Blind Hands)
 
 const ASSETS = [
   '/',
