@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v92'; // Incrementado para v92: Remocao do botao de dica (lampada)
+const CACHE_NAME = 'domino-felipe-v93'; // Incrementado para v93: Correcao da visibilidade dos baloes de pensamento dos bots
 
 const ASSETS = [
   '/',

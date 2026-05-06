@@ -166,6 +166,9 @@ window.processTurn = function() {
         const viewIdx = (cur - localIdx + 4) % 4;
         const handEl = document.getElementById(`hand-${viewIdx}`);
         if (handEl) {
+            // Garante que o container tenha posicao relativa para o balao fixar nele
+            handEl.style.position = 'relative';
+            
             const bubble = document.createElement('div');
             bubble.className = 'thinking-bubble';
             
@@ -178,6 +181,10 @@ window.processTurn = function() {
                 if (personality === 'random') text = 'Sera?';
             }
             bubble.innerText = text;
+            
+            // Posicionamento centralizado
+            bubble.style.left = '50%';
+            bubble.style.transform = 'translateX(-50%)';
             
             handEl.appendChild(bubble);
             setTimeout(() => bubble.remove(), 1000);
