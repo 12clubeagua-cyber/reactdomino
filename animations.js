@@ -152,11 +152,15 @@ window.updateCamera = function() {
     const offsetX = -(minX + maxX) / 2;
     const offsetY = -(minY + maxY) / 2;
     
-    document.documentElement.style.setProperty('--cam-scale', finalScale);
-    document.documentElement.style.setProperty('--cam-x', `${offsetX}px`);
-    document.documentElement.style.setProperty('--cam-y', `${offsetY}px`);
+    // Calcula o deslocamento para centralizar a origem do snake no boardBox
+    const centerX = (viewW / 2) / finalScale + offsetX;
+    const centerY = (viewH / 2) / finalScale + offsetY;
 
-    snakeEl.style.transform = `scale(${finalScale}) translate(${offsetX}px, ${offsetY}px)`;
+    document.documentElement.style.setProperty('--cam-scale', finalScale);
+    document.documentElement.style.setProperty('--cam-x', `${centerX}px`);
+    document.documentElement.style.setProperty('--cam-y', `${centerY}px`);
+
+    snakeEl.style.transform = `scale(${finalScale}) translate(${centerX}px, ${centerY}px)`;
     
     window.currentCamera = {
         scale: finalScale,

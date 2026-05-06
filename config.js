@@ -18,8 +18,8 @@ window.CONFIG = Object.freeze({
     // 2. REGRAS E PROPORÇÕES DO JOGO
     GAME: {
         // Dimensões Físicas das Peças
-        TILE_W: 18,            // Largura (lado curto)
-        TILE_L: 36,            // Comprimento (lado longo)
+        TILE_W: 40,            // Largura (lado curto)
+        TILE_L: 80,            // Comprimento (lado longo)
         
         // Tempos de Fluxo (UX)
         RESULT_DISPLAY_TIME: 3, // Exibição do placar final (segundos)
@@ -27,7 +27,7 @@ window.CONFIG = Object.freeze({
         START_DELAY: 800,       // Pausa para o cérebro processar a mão nova
         
         // Câmera e Tabuleiro (Snake)
-        SNAKE_MAX_SCALE: 1.0,   // 1.0 evita distorção de pixels em telas menores
+        SNAKE_MAX_SCALE: 2.0,   // Permite zoom maior para peças únicas ou poucas peças
         
         /* 
            AJUSTE DE CURVA:

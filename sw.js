@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v86'; // Incrementado para v86: Correcao de pecas invisiveis (pips e dimensoes)
+const CACHE_NAME = 'domino-felipe-v87'; // Incrementado para v87: Ajuste de escala da camera e centralizacao do tabuleiro
 
 const ASSETS = [
   '/',

@@ -164,10 +164,15 @@ html, body {
 }
 
 .pip {
-    width: 3px;
-    height: 3px;
+    width: 6px;
+    height: 6px;
     background: var(--pip); 
     border-radius: 50%;
+}
+
+#snake {
+    position: absolute;
+    transform-origin: 0 0;
 }
 
 .tile-back {
