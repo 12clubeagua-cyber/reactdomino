@@ -8,36 +8,30 @@
 /**
  * 1. EVENTOS GERAIS DE SISTEMA
  */
+let resizeTimeout;
 window.handleResize = function() {
-    if (window.STATE?.positions?.length > 0) {
-        if (typeof window.updateCamera === 'function') window.updateCamera();
-        if (typeof window.renderBoardFromState === 'function') window.renderBoardFromState();
-    }
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (window.STATE?.positions?.length > 0) {
+            if (typeof window.updateCamera === 'function') window.updateCamera();
+            if (typeof window.renderBoardFromState === 'function') window.renderBoardFromState();
+        }
+    }, 150);
 };
 window.addEventListener('resize', window.handleResize);
 
 /**
- * 2. DRAG AND DROP (Funcionalidade Expansível)
+ * 2. DRAG AND DROP (Otimizado)
  */
 let draggedTile = null;
-let startX, startY;
-
-window.initDrag = function(e, tileIdx) {
-    if (window.STATE?.isBlocked) return;
-    draggedTile = e.target;
-    startX = e.clientX || e.touches[0].clientX;
-    startY = e.clientY || e.touches[0].clientY;
-    
-    draggedTile.style.zIndex = '1000';
-    draggedTile.style.position = 'fixed';
-};
 
 window.handleDrag = function(e) {
     if (!draggedTile) return;
-    const x = e.clientX || e.touches[0].clientX;
-    const y = e.clientY || e.touches[0].clientY;
+    const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+    const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
     
     requestAnimationFrame(() => {
+        if (!draggedTile) return;
         draggedTile.style.left = `${x - 15}px`;
         draggedTile.style.top = `${y - 15}px`;
     });
@@ -46,40 +40,50 @@ window.handleDrag = function(e) {
 window.endDrag = function(e) {
     if (!draggedTile) return;
     
-    // Simplificacao: retorna a peca pro lugar se nao soltar na mesa (implementar logica de drop em ciclos futuros)
     draggedTile.style.position = 'relative';
     draggedTile.style.left = 'auto';
     draggedTile.style.top = 'auto';
+    draggedTile.style.zIndex = '';
     draggedTile = null;
+
+    // Remove listeners apenas quando a acao termina para economizar CPU
+    window.removeEventListener('mousemove', window.handleDrag);
+    window.removeEventListener('mouseup', window.endDrag);
+    window.removeEventListener('touchmove', window.handleDrag);
+    window.removeEventListener('touchend', window.endDrag);
 };
 
-// Listeners globais para arrasto
-window.addEventListener('mousemove', window.handleDrag);
-window.addEventListener('mouseup', window.endDrag);
-window.addEventListener('touchmove', window.handleDrag);
-window.addEventListener('touchend', window.endDrag);
+window.initDrag = function(e, tileIdx) {
+    if (window.STATE?.isBlocked) return;
+    draggedTile = e.target;
+    
+    draggedTile.style.zIndex = '1000';
+    draggedTile.style.position = 'fixed';
+
+    // Adiciona listeners apenas durante o arrasto
+    window.addEventListener('mousemove', window.handleDrag);
+    window.addEventListener('mouseup', window.endDrag);
+    window.addEventListener('touchmove', window.handleDrag, { passive: true });
+    window.addEventListener('touchend', window.endDrag);
+};
 
 /**
  * 3. GESTÃO DE INTERATIVIDADE (CLIQUES)
  */
 window.removePlayableListeners = function() {
     const myIdx = window.myPlayerIdx ?? 0;
-    const hand = window.STATE?.hands?.[myIdx];
-    
-    if (!Array.isArray(hand)) return;
+    const rack = document.querySelector(`#hand-0 .tiles-rack`);
+    if (!rack) return;
 
-    hand.forEach((_, idx) => {
-        const el = document.getElementById(`my-tile-${idx}`);
-        if (el) {
-            el.classList.remove('playable');
-            el.onclick = null;
-            el.onmousedown = null;
-        }
+    const tiles = rack.querySelectorAll('.tile');
+    tiles.forEach(el => {
+        el.classList.remove('playable');
+        el.onclick = null;
+        el.onmousedown = null;
     });
 };
 
 window.highlight = function(moves) {
-    document.querySelectorAll('.tile').forEach(el => el.classList.remove('playable'));
     window.removePlayableListeners();
 
     moves.forEach(move => {
@@ -91,21 +95,20 @@ window.highlight = function(moves) {
         
         el.onclick = () => {
             if (window.STATE?.isBlocked) return;
-            window.STATE.isBlocked = true;
             
-            requestAnimationFrame(() => {
-                const extremesAreDiff = window.STATE?.extremes?.[0] !== window.STATE?.extremes?.[1];
-                const needsPicker = move.side === 'both' && extremesAreDiff && window.STATE?.positions?.length > 0;
+            const extremesAreDiff = window.STATE?.extremes?.[0] !== window.STATE?.extremes?.[1];
+            const needsPicker = move.side === 'both' && extremesAreDiff && window.STATE?.positions?.length > 0;
 
-                if (needsPicker) {
-                    window.STATE.pendingIdx = move.idx;
-                    const picker = document.getElementById('side-picker');
-                    if (picker) picker.style.display = 'flex';
-                } else {
-                    const side = (move.side === 'both' || move.side === 'any') ? 0 : move.side;
-                    if (typeof window.play === 'function') window.play(window.myPlayerIdx ?? 0, move.idx, side);
-                }
-            });
+            if (needsPicker) {
+                window.STATE.isBlocked = true;
+                window.STATE.pendingIdx = move.idx;
+                const picker = document.getElementById('side-picker');
+                if (picker) picker.style.display = 'flex';
+            } else {
+                window.STATE.isBlocked = true;
+                const side = (move.side === 'both' || move.side === 'any') ? 0 : move.side;
+                if (typeof window.play === 'function') window.play(window.myPlayerIdx ?? 0, move.idx, side);
+            }
         };
     });
 };

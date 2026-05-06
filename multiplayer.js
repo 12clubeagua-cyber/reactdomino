@@ -6,18 +6,19 @@
 */
 
 // 1. RESILIÊNCIA E DEBUG MOBILE
-window.mobileLog = function(msg, cor = "white") {
-    const statusEl = document.getElementById('host-status');
-    const clientStatusEl = document.getElementById('client-status');
-    
-    if (statusEl && window.netMode === 'host') {
-        statusEl.style.color = cor;
-        statusEl.innerText = "> " + msg;
-    } else if (clientStatusEl && window.netMode === 'client') {
-        clientStatusEl.style.color = cor;
-        clientStatusEl.innerText = "> " + msg;
-    }
-};
+window.mobileLog = (function() {
+    let statusEl, clientStatusEl;
+    return function(msg, cor = "white") {
+        if (!statusEl) statusEl = document.getElementById('host-status');
+        if (!clientStatusEl) clientStatusEl = document.getElementById('client-status');
+        
+        const target = (window.netMode === 'host') ? statusEl : clientStatusEl;
+        if (target) {
+            target.style.color = cor;
+            target.innerText = "> " + msg;
+        }
+    };
+})();
 
 window.onerror = function(msg, url, line) {
     if (msg.includes("Script error") || msg.includes("PeerJS")) return false;
@@ -225,8 +226,6 @@ window.setupHostEvents = function(conn) {
             });
         }
         
-        if (data.type === 'emote') {
-// ... restante ...
         if (data.type === 'reconnect_request') {
             const targetIdx = data.seatIdx;
             const oldConnIndex = window.connectedClients.findIndex(c => c.assignedIdx === targetIdx);
@@ -385,12 +384,19 @@ window.broadcastToClients = function(data) {
 
 window.getPublicState = function() {
     if (!window.STATE) return null;
+    
+    // Clonagem performática (structuredClone se disponível, senão fallback manual)
+    const clone = (obj) => {
+        if (typeof structuredClone === 'function') return structuredClone(obj);
+        return JSON.parse(JSON.stringify(obj));
+    };
+
     return {
         current: Number(window.STATE.current),
-        extremes: JSON.parse(JSON.stringify(window.STATE.extremes)),
-        positions: JSON.parse(JSON.stringify(window.STATE.positions)),
-        handSize: window.STATE.handSize.map(n => Number(n)),
-        scores: [Number(window.STATE.scores[0]), Number(window.STATE.scores[1])],
+        extremes: clone(window.STATE.extremes),
+        positions: clone(window.STATE.positions),
+        handSize: [...window.STATE.handSize],
+        scores: [...window.STATE.scores],
         isOver: !!window.STATE.isOver,
         playerPassed: [...window.STATE.playerPassed],
         roundWinner: window.STATE.roundWinner !== null ? Number(window.STATE.roundWinner) : null

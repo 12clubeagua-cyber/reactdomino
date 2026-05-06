@@ -6,48 +6,71 @@
 */
 
 window.Renderer = {
+    // Cache de referências do DOM para evitar buscas repetitivas
+    _cache: {},
+
+    _getEl: function(id) {
+        if (!this._cache[id]) this._cache[id] = document.getElementById(id);
+        return this._cache[id];
+    },
+
     /**
-     * Renderiza o tabuleiro (as pecas jogadas).
+     * Renderiza o tabuleiro de forma incremental (apenas pecas novas).
      */
     drawBoard: function() {
-        const board = document.getElementById('snake');
+        const board = this._getEl('snake');
         if (!board) return;
 
-        // 1. Limpeza Seletiva: Preserva pecas em animacao para evitar "piscadas"
-        const staticTiles = board.querySelectorAll('.tile:not(.moving-proxy):not(.temp-hidden)');
-        staticTiles.forEach(tile => tile.remove());
-
-        // Carrega configuracoes globais de forma segura
-        const W = window.CONFIG?.GAME?.TILE_W ?? 18;
-        const L = window.CONFIG?.GAME?.TILE_L ?? 36;
         const positions = window.STATE?.positions || [];
         const isOver = window.STATE?.isOver || false;
+        
+        // Identifica pecas ja renderizadas (contagem simples para performance)
+        const renderedCount = board.querySelectorAll('.tile:not(.moving-proxy)').length;
+        
+        if (positions.length === 0) {
+            board.innerHTML = '';
+            return;
+        }
 
-        // 2. Renderizacao das pecas no tabuleiro
-        positions.forEach((nP, i) => {
+        // Se houve reset ou mudanca drastica, limpa tudo (fallback)
+        if (positions.length < renderedCount) {
+            board.querySelectorAll('.tile:not(.moving-proxy)').forEach(t => t.remove());
+        }
+
+        const fragment = document.createDocumentFragment();
+        const W = window.CONFIG?.GAME?.TILE_W ?? 18;
+        const L = window.CONFIG?.GAME?.TILE_L ?? 36;
+
+        // Renderiza apenas as novas pecas
+        const startIdx = positions.length < renderedCount ? 0 : renderedCount;
+        
+        for (let i = startIdx; i < positions.length; i++) {
+            const nP = positions[i];
             const el = document.createElement('div');
-            
             const isLast = (i === positions.length - 1 && !isOver);
+            
             el.className = `tile ${nP.isV ? 'tile-v' : 'tile-h'} ${isLast ? 'last-move' : ''}`;
-
-            // 3. Posicionamento Absoluto (Crucial para nao empilhar no canto)
+            
             const offX = nP.isV ? (W / 2) : (L / 2);
             const offY = nP.isV ? (L / 2) : (W / 2);
 
-            el.style.position = 'absolute';
-            el.style.left = `${nP.x - offX}px`;
-            el.style.top  = `${nP.y - offY}px`;
+            el.style.cssText = `position:absolute; left:${nP.x - offX}px; top:${nP.y - offY}px;`;
 
-            // Usamos window.Renderer para garantir o contexto correto
             el.innerHTML = `
-                <div class="half">${window.Renderer._getPips(nP.v1)}</div>
-                <div class="half">${window.Renderer._getPips(nP.v2)}</div>
+                <div class="half">${this._getPips(nP.v1)}</div>
+                <div class="half">${this._getPips(nP.v2)}</div>
             `;
+            fragment.appendChild(el);
+        }
 
-            board.appendChild(el);
-        });
+        // Remove classe 'last-move' da peca anterior se houver
+        if (startIdx > 0 && startIdx < positions.length) {
+            const lastTiles = board.querySelectorAll('.last-move');
+            lastTiles.forEach(t => t.classList.remove('last-move'));
+        }
 
-        // 4. Sincroniza a câmera no final do desenho do tabuleiro
+        board.appendChild(fragment);
+
         if (typeof window.updateCamera === 'function') {
             window.updateCamera();
         }
@@ -57,7 +80,7 @@ window.Renderer = {
      * Renderiza as maos dos jogadores.
      */
     drawHands: function(reveal = false) {
-        const picker = document.getElementById('side-picker');
+        const picker = this._getEl('side-picker');
         if (picker) picker.style.display = 'none';
 
         const myIdx = window.myPlayerIdx ?? 0;
@@ -65,13 +88,9 @@ window.Renderer = {
         const isOver = window.STATE?.isOver ?? false;
         const isBlocked = window.STATE?.isBlocked ?? false;
         
-        // Modo Fechado: Oculta peças se não for fim de jogo ou revelação forçada
-        const gameMode = window.STATE?.gameMode || 'standard';
-        const shouldHide = (gameMode === 'closed' && !isOver && !reveal);
-
         for (let i = 0; i < 4; i++) {
             const viewPos = (i - myIdx + 4) % 4;
-            const container = document.getElementById(`hand-${viewPos}`);
+            const container = this._getEl(`hand-${viewPos}`);
             if (!container) continue;
 
             const isSide = (viewPos === 1 || viewPos === 3);
@@ -82,29 +101,26 @@ window.Renderer = {
                                    ${isActive ? 'active-turn' : ''} 
                                    ${isPassing ? 'hand-passed' : ''}`;
 
-            container.innerHTML = '';
+            const fragment = document.createDocumentFragment();
 
             // A) Nome do Jogador
             const label = document.createElement('div');
             label.className = 'player-name-tag';
             const playerName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(i) : `Jogador ${i}`;
             label.innerHTML = `<span>${playerName}</span>`;
-            container.appendChild(label);
+            fragment.appendChild(label);
 
             // B) Rack de Pecas
             const rack = document.createElement('div');
             rack.className = 'tiles-rack';
-            container.appendChild(rack);
-
+            
             const isMe = (i === myIdx);
             const handData = window.STATE?.hands?.[i] || [];
-            
-            // BLIND HANDS: Apenas mostra as peças se for o próprio jogador, fim de jogo ou revelação forçada
             const canShow = isMe || isOver || reveal;
 
             if (canShow && handData.length > 0) {
                 handData.forEach((t, idx) => {
-                    const tileEl = window.Renderer._createTileElement(t, isSide, isMe, idx);
+                    const tileEl = this._createTileElement(t, isSide, isMe, idx);
                     rack.appendChild(tileEl);
                 });
             } else {
@@ -116,9 +132,13 @@ window.Renderer = {
                     rack.appendChild(darkTile);
                 }
             }
+            fragment.appendChild(rack);
+            
+            container.innerHTML = '';
+            container.appendChild(fragment);
         }
 
-        window.Renderer._checkLocalInteraction();
+        this._checkLocalInteraction();
     },
 
     /**
@@ -186,15 +206,25 @@ window.Renderer = {
      */
     spawnConfetti: function() {
         const colors = ['#ffcc33', '#ffffff', '#2ecc71', '#3498db', '#e74c3c'];
+        const container = document.createElement('div');
+        container.style.cssText = 'position:fixed; inset:0; pointer-events:none; z-index:10000; overflow:hidden;';
+        document.body.appendChild(container);
+
+        const fragment = document.createDocumentFragment();
         for (let i = 0; i < 50; i++) {
             const el = document.createElement('div');
             el.className = 'confetti';
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            el.style.animation = `confettiFall ${2 + Math.random() * 3}s linear forwards`;
-            el.style.opacity = Math.random();
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 5000);
+            el.style.cssText = `
+                left: ${Math.random() * 100}vw;
+                background-color: ${colors[Math.floor(Math.random() * colors.length)]};
+                animation: confettiFall ${2 + Math.random() * 2}s linear forwards;
+                opacity: ${0.5 + Math.random() * 0.5};
+            `;
+            fragment.appendChild(el);
         }
+        container.appendChild(fragment);
+
+        // Remove o container inteiro apos as animacoes terminarem
+        setTimeout(() => container.remove(), 4500);
     }
 };

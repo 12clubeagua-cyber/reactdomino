@@ -6,17 +6,41 @@
 */
 
 window.Dashboard = {
+    _cache: {},
+    _nameMap: null,
+
+    _getEl: function(id) {
+        if (!this._cache[id]) this._cache[id] = document.getElementById(id);
+        return this._cache[id];
+    },
+
+    /**
+     * Atualiza o mapa de nomes para evitar buscas repetitivas no NameManager.
+     */
+    _updateNameMap: function() {
+        if (typeof window.NameManager === 'undefined') return;
+        const names = window.NameManager.getAll();
+        const myIdx = window.myPlayerIdx ?? 0;
+        
+        this._nameMap = {};
+        Object.keys(names).forEach(idx => {
+            const i = parseInt(idx);
+            this._nameMap[`JOGADOR ${i + 1}`] = (i === myIdx) ? "VOCÊ" : names[idx];
+        });
+    },
+
     /**
      * Exibe o painel de estatísticas de fim de rodada.
      */
     showMatchStats: function(stats) {
-        let panel = document.getElementById('stats-panel');
+        let panel = this._getEl('stats-panel');
         if (!panel) {
             panel = document.createElement('div');
             panel.id = 'stats-panel';
             panel.className = 'glass';
             panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2000; padding:20px; display:flex; flex-direction:column; gap:10px; min-width: 250px;';
             document.body.appendChild(panel);
+            this._cache['stats-panel'] = panel;
         }
         panel.innerHTML = `
             <div style="text-align:center; font-weight:bold; font-size: 1.2rem;">Resumo da Partida</div>
@@ -32,16 +56,18 @@ window.Dashboard = {
      * Exibe o painel de votação para ações sociais.
      */
     showVotePanel: function(action, callback) {
-        let panel = document.getElementById('vote-panel');
+        let panel = this._getEl('vote-panel');
         if (!panel) {
             panel = document.createElement('div');
             panel.id = 'vote-panel';
             panel.className = 'glass';
             panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2000; padding:20px; display:flex; flex-direction:column; gap:10px;';
             document.body.appendChild(panel);
+            this._cache['vote-panel'] = panel;
         }
         panel.innerHTML = `<div style="text-align:center; font-weight:bold;">Votar: ${action}?</div>`;
         
+        const fragment = document.createDocumentFragment();
         const btnYes = document.createElement('button');
         btnYes.className = 'btn-side';
         btnYes.innerText = 'Sim';
@@ -52,8 +78,9 @@ window.Dashboard = {
         btnNo.innerText = 'Não';
         btnNo.onclick = () => { callback(false); panel.style.display = 'none'; };
         
-        panel.appendChild(btnYes);
-        panel.appendChild(btnNo);
+        fragment.appendChild(btnYes);
+        fragment.appendChild(btnNo);
+        panel.appendChild(fragment);
         panel.style.display = 'flex';
     },
 
@@ -63,10 +90,9 @@ window.Dashboard = {
     showQuickChat: function(pIdx, message) {
         const localIdx = window.myPlayerIdx ?? 0;
         const viewIdx = (pIdx - localIdx + 4) % 4;
-        const handEl = document.getElementById(`hand-${viewIdx}`);
+        const handEl = this._getEl(`hand-${viewIdx}`);
         if (!handEl) return;
 
-        // Garante posicionamento para o balão
         if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
 
         const bubble = document.createElement('div');
@@ -83,10 +109,9 @@ window.Dashboard = {
     showEmote: function(pIdx, emote) {
         const localIdx = window.myPlayerIdx ?? 0;
         const viewIdx = (pIdx - localIdx + 4) % 4;
-        const handEl = document.getElementById(`hand-${viewIdx}`);
+        const handEl = this._getEl(`hand-${viewIdx}`);
         if (!handEl) return;
 
-        // Garante posicionamento para o balão
         if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
 
         const bubble = document.createElement('div');
@@ -102,10 +127,10 @@ window.Dashboard = {
      */
     updateScore: function() {
         requestAnimationFrame(() => {
-            const scoreA = document.getElementById('scoreA');
-            const scoreB = document.getElementById('scoreB');
-            const labelA = document.getElementById('label-team-a');
-            const labelB = document.getElementById('label-team-b');
+            const scoreA = this._getEl('scoreA');
+            const scoreB = this._getEl('scoreB');
+            const labelA = this._getEl('label-team-a');
+            const labelB = this._getEl('label-team-b');
             
             if (!scoreA || !scoreB || !labelA || !labelB) return;
 
@@ -129,45 +154,32 @@ window.Dashboard = {
 
     /**
      * Define uma nova mensagem no status bar.
-     * Se for o Host, propaga para todos os jogadores via rede.
      */
     setMessage: function(text, cls = '') {
-        requestAnimationFrame(() => window.Dashboard._renderStatusLocal(text, cls));
+        requestAnimationFrame(() => this._renderStatusLocal(text, cls));
 
-        if (typeof window.Network !== 'undefined' && typeof window.Network.isHost === 'function' && window.Network.isHost()) {
+        if (typeof window.Network !== 'undefined' && window.Network.isHost && window.Network.isHost()) {
             window.Network.sync({ type: 'status', text, cls });
         }
     },
 
     /**
      * Helper interno para processar o texto e injetar no HTML.
-     * @private
      */
     _renderStatusLocal: function(text, cls) {
-        const el = document.getElementById('game-status');
+        const el = this._getEl('game-status');
         if (!el) return;
         
+        if (!this._nameMap) this._updateNameMap();
+
         let displayMsg = text;
-        const myIdx = window.myPlayerIdx ?? 0;
-        
-        // Garante que não quebre se o NameManager ainda não carregou
-        const allNames = typeof window.NameManager !== 'undefined' ? window.NameManager.getAll() : {};
-        
-        /**
-         * Tradutor de Nomes:
-         * Converte "JOGADOR X" no texto para o nome real ou "VOCÊ".
-         */
-        Object.keys(allNames).forEach(idx => {
-            const genericName = `JOGADOR ${parseInt(idx) + 1}`;
-            if (displayMsg.includes(genericName)) {
-                const isMe = (parseInt(idx) === myIdx);
-                displayMsg = displayMsg.replace(genericName, isMe ? "VOCÊ" : allNames[idx]);
-            }
-        });
+        if (this._nameMap) {
+            Object.keys(this._nameMap).forEach(key => {
+                displayMsg = displayMsg.replace(key, this._nameMap[key]);
+            });
+        }
         
         el.innerText = displayMsg;
-
-        // Aplica estilos CSS baseados no tipo de mensagem (ex: 'active', 'pass')
         el.className = (cls === 'active' || cls === 'pass') ? cls : '';
     },
 
@@ -175,9 +187,9 @@ window.Dashboard = {
      * Inicializa os estilos CSS baseados nas configurações globais.
      */
     init: function() {
-        window.Dashboard.updateScore();
+        this._updateNameMap();
+        this.updateScore();
         
-        // Sincroniza o tamanho das peças no CSS com o config.js de forma segura
         const width = window.CONFIG?.GAME?.TILE_W ?? 18;
         const height = window.CONFIG?.GAME?.TILE_L ?? 36;
         document.documentElement.style.setProperty('--tile-width', `${width}px`);

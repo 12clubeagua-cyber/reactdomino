@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v96'; // Incrementado para v96: Remocao do efeito de poeira ambiente (otimizacao)
+const CACHE_NAME = 'domino-felipe-v97'; // Incrementado para v97: Pacote massivo de otimizacoes (Renderer, DOM Cache, Event Throttling)
 
 const ASSETS = [
   '/',

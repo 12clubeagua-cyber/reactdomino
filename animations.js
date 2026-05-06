@@ -60,11 +60,17 @@ window.HapticEngine = {
     }
 };
 
-// Inicializa no carregamento do DOM
+window.Animations = {
+    _cache: {},
+    _getEl: function(id) {
+        if (!this._cache[id]) this._cache[id] = document.getElementById(id);
+        return this._cache[id];
+    }
+};
+
 window.updateCamera = function() {
-    // ... manter logica original ...
-    const snakeEl = document.getElementById('snake');
-    const boardBox = document.getElementById('board-container');
+    const snakeEl = window.Animations._getEl('snake');
+    const boardBox = window.Animations._getEl('board-container');
     
     if (!window.STATE?.positions?.length || !snakeEl || !boardBox) {
         if (snakeEl) {
@@ -81,14 +87,16 @@ window.updateCamera = function() {
 
     let minX = 0, maxX = 0, minY = 0, maxY = 0;
 
-    window.STATE.positions.forEach(p => {
+    const positions = window.STATE.positions;
+    for (let i = 0; i < positions.length; i++) {
+        const p = positions[i];
         const w = p.isV ? tileHalfW : tileHalfL;
         const h = p.isV ? tileHalfL : tileHalfW;
-        minX = Math.min(minX, p.x - w); 
-        maxX = Math.max(maxX, p.x + w);
-        minY = Math.min(minY, p.y - h); 
-        maxY = Math.max(maxY, p.y + h);
-    });
+        if (p.x - w < minX) minX = p.x - w;
+        if (p.x + w > maxX) maxX = p.x + w;
+        if (p.y - h < minY) minY = p.y - h;
+        if (p.y + h > maxY) maxY = p.y + h;
+    }
 
     const padding = 100;
     const viewW = boardBox.clientWidth;
@@ -106,13 +114,8 @@ window.updateCamera = function() {
     const offsetX = -(minX + maxX) / 2;
     const offsetY = -(minY + maxY) / 2;
     
-    // Calcula o deslocamento para centralizar a origem do snake no boardBox
     const centerX = (viewW / 2) / finalScale + offsetX;
     const centerY = (viewH / 2) / finalScale + offsetY;
-
-    document.documentElement.style.setProperty('--cam-scale', finalScale);
-    document.documentElement.style.setProperty('--cam-x', `${centerX}px`);
-    document.documentElement.style.setProperty('--cam-y', `${centerY}px`);
 
     snakeEl.style.transform = `scale(${finalScale}) translate(${centerX}px, ${centerY}px)`;
     
@@ -124,7 +127,7 @@ window.updateCamera = function() {
 };
 
 window.screenShake = function() {
-    const snakeEl = document.getElementById('snake');
+    const snakeEl = window.Animations._getEl('snake');
     if (!snakeEl) return;
     snakeEl.classList.remove('shake');
     void snakeEl.offsetWidth; 
@@ -133,7 +136,7 @@ window.screenShake = function() {
 };
 
 window.runShuffleAnimation = function(onComplete) {
-    const snake = document.getElementById('snake');
+    const snake = window.Animations._getEl('snake');
     if (!snake) {
         if (typeof onComplete === 'function') onComplete();
         return;
@@ -144,35 +147,50 @@ window.runShuffleAnimation = function(onComplete) {
     snake.style.transform = `scale(${initialScale}) translate(0,0)`;
     window.currentCamera = { scale: initialScale, x: 0, y: 0 };
 
+    const fragment = document.createDocumentFragment();
     const fakes = [];
     for (let i = 0; i < 28; i++) {
         const el = document.createElement('div');
-        el.className = 'tile tile-v hidden';
-        el.style.cssText = `position:absolute; left:50%; top:50%; margin-left:-9px; margin-top:-18px; transition:transform 0.2s ease-out; z-index:10;`;
-        window.applyScatter(el);
-        snake.appendChild(el);
+        el.className = 'tile tile-v';
+        el.style.cssText = `position:absolute; left:50%; top:50%; margin-left:-9px; margin-top:-18px; transition:transform 0.1s linear; z-index:10; opacity:0;`;
+        fragment.appendChild(el);
         fakes.push(el);
     }
+    snake.appendChild(fragment);
 
     if (navigator.vibrate) try { navigator.vibrate([10, 20, 10]); } catch (e) {}
 
-    let count = 0;
-    const interval = setInterval(() => {
-        fakes.forEach(el => window.applyScatter(el));
-        if (typeof window.playClack === 'function') window.playClack(400 + Math.random() * 200, 0.05);
+    let startTime = performance.now();
+    const duration = 1000;
+    let lastScatter = 0;
+
+    const anim = (now) => {
+        const elapsed = now - startTime;
         
-        if (++count >= 6) {
-            clearInterval(interval);
+        if (now - lastScatter > 150) {
             fakes.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform += ' scale(0)';
+                el.style.opacity = '1';
+                window.applyScatter(el);
             });
-            setTimeout(() => {
-                fakes.forEach(el => el.remove());
-                if (typeof onComplete === 'function') onComplete();
-            }, 300);
+            if (typeof window.playClack === 'function') window.playClack(400 + Math.random() * 200, 0.05);
+            lastScatter = now;
         }
-    }, 150);
+
+        if (elapsed < duration) return;
+
+        fakes.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform += ' scale(0)';
+        });
+        
+        window.RenderPipeline.unregister(anim);
+        setTimeout(() => {
+            fakes.forEach(el => el.remove());
+            if (typeof onComplete === 'function') onComplete();
+        }, 200);
+    };
+
+    window.RenderPipeline.register(anim);
 };
 
 window.applyScatter = function(el) {
