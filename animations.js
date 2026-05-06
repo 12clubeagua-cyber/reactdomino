@@ -114,16 +114,34 @@ window.updateCamera = function() {
     const offsetX = -(minX + maxX) / 2;
     const offsetY = -(minY + maxY) / 2;
     
-    const centerX = (viewW / 2) / finalScale + offsetX;
-    const centerY = (viewH / 2) / finalScale + offsetY;
+    // Define variaveis CSS para a animacao de shake usar os valores atuais
+    document.documentElement.style.setProperty('--cam-scale', finalScale);
+    document.documentElement.style.setProperty('--cam-x', `${offsetX}px`);
+    document.documentElement.style.setProperty('--cam-y', `${offsetY}px`);
 
-    snakeEl.style.transform = `scale(${finalScale}) translate(${centerX}px, ${centerY}px)`;
+    snakeEl.style.transform = `scale(${finalScale}) translate(${offsetX}px, ${offsetY}px)`;
     
     window.currentCamera = {
         scale: finalScale,
         x: offsetX,
         y: offsetY
     };
+};
+
+window.victoryZoom = function(targetTilePos) {
+    const snakeEl = window.Animations._getEl('snake');
+    if (!snakeEl || !targetTilePos) return;
+
+    const zoomScale = 1.8; 
+    const offsetX = -targetTilePos.x;
+    const offsetY = -targetTilePos.y;
+
+    snakeEl.style.transition = 'transform 1.5s cubic-bezier(0.2, 0, 0.2, 1)';
+    snakeEl.style.transform = `scale(${zoomScale}) translate(${offsetX}px, ${offsetY}px)`;
+    
+    document.documentElement.style.setProperty('--cam-scale', zoomScale);
+    document.documentElement.style.setProperty('--cam-x', `${offsetX}px`);
+    document.documentElement.style.setProperty('--cam-y', `${offsetY}px`);
 };
 
 window.screenShake = function() {

@@ -173,7 +173,10 @@ html, body {
 
 #snake {
     position: absolute;
+    left: 50%;
+    top: 50%;
     transform-origin: 0 0;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .tile-back {
@@ -192,12 +195,14 @@ html, body {
   top: auto !important;
   cursor: pointer;
   transition: transform 0.2s ease-out;
+  z-index: 10;
 }
 
 .tile.playable {
   border: 3px solid var(--gold) !important;
   box-shadow: 0 0 20px var(--gold-glow);
   transform: translateY(-8px) scale(1.05);
+  z-index: 100;
 }
 
 .tile-double {
@@ -210,11 +215,44 @@ html, body {
 }
 
 .hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  padding: var(--spacing);
-  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
   border-radius: var(--radius);
-  margin: 4px;
+  transition: background 0.3s;
+  z-index: 20;
+}
+
+.hand-horiz { min-height: 80px; }
+.hand-side { width: 90px; }
+
+.tiles-rack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.hand-side .tiles-rack { flex-direction: column; }
+.player-name-tag { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
+
+.active-turn { background: rgba(255, 204, 51, 0.12); }
+
+/* --- ANIMACOES DE IMPACTO (JUICE) --- */
+.shake {
+    animation: cameraShake 0.2s ease-in-out;
+}
+
+@keyframes cameraShake {
+    0% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
+    25% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 5px), calc(var(--cam-y) + 5px)); }
+    50% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) - 5px), calc(var(--cam-y) - 5px)); }
+    75% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 3px), calc(var(--cam-y) - 3px)); }
+    100% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
 }
 
 .thinking-bubble {

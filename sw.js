@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v98'; // Incrementado para v98: Padronizacao global de storage e referencias 'window.'
+const CACHE_NAME = 'domino-felipe-v99'; // Incrementado para v99: Correção dos bugs visuais da camera e maos baseada no dominoteste
 
 const ASSETS = [
   '/',

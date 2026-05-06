@@ -15,36 +15,26 @@ window.Renderer = {
     },
 
     /**
-     * Renderiza o tabuleiro de forma incremental (apenas pecas novas).
+     * Renderiza o tabuleiro (as pecas jogadas).
      */
     drawBoard: function() {
         const board = window.Renderer._getEl('snake');
         if (!board) return;
 
+        // 1. Limpeza Seletiva: Preserva pecas em animacao para evitar "piscadas"
+        const staticTiles = board.querySelectorAll('.tile:not(.moving-proxy):not(.temp-hidden)');
+        staticTiles.forEach(tile => tile.remove());
+
         const positions = window.STATE?.positions || [];
         const isOver = window.STATE?.isOver || false;
         
-        // Identifica pecas ja renderizadas (contagem simples para performance)
-        const renderedCount = board.querySelectorAll('.tile:not(.moving-proxy)').length;
-        
-        if (positions.length === 0) {
-            board.innerHTML = '';
-            return;
-        }
-
-        // Se houve reset ou mudanca drastica, limpa tudo (fallback)
-        if (positions.length < renderedCount) {
-            board.querySelectorAll('.tile:not(.moving-proxy)').forEach(t => t.remove());
-        }
+        if (positions.length === 0) return;
 
         const fragment = document.createDocumentFragment();
         const W = window.CONFIG?.GAME?.TILE_W ?? 18;
         const L = window.CONFIG?.GAME?.TILE_L ?? 36;
 
-        // Renderiza apenas as novas pecas
-        const startIdx = positions.length < renderedCount ? 0 : renderedCount;
-        
-        for (let i = startIdx; i < positions.length; i++) {
+        for (let i = 0; i < positions.length; i++) {
             const nP = positions[i];
             const el = document.createElement('div');
             const isLast = (i === positions.length - 1 && !isOver);
@@ -61,12 +51,6 @@ window.Renderer = {
                 <div class="half">${window.Renderer._getPips(nP.v2)}</div>
             `;
             fragment.appendChild(el);
-        }
-
-        // Remove classe 'last-move' da peca anterior se houver
-        if (startIdx > 0 && startIdx < positions.length) {
-            const lastTiles = board.querySelectorAll('.last-move');
-            lastTiles.forEach(t => t.classList.remove('last-move'));
         }
 
         board.appendChild(fragment);
@@ -202,29 +186,42 @@ window.Renderer = {
     },
 
     /**
-     * Cria uma explosao de confetes na tela.
+     * Cria uma explosao de confetes na tela, respeitando o contexto da camera.
      */
     spawnConfetti: function() {
-        const colors = ['#ffcc33', '#ffffff', '#2ecc71', '#3498db', '#e74c3c'];
-        const container = document.createElement('div');
-        container.style.cssText = 'position:fixed; inset:0; pointer-events:none; z-index:10000; overflow:hidden;';
-        document.body.appendChild(container);
+        const snake = window.Renderer._getEl('snake');
+        if (!snake) return;
 
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i < 50; i++) {
+        const colors = ['#ffcc33', '#ffffff', '#2ecc71', '#3498db', '#e74c3c'];
+        const cam = window.currentCamera || { scale: 1, x: 0, y: 0 };
+        
+        // Compensamos a escala para que os confetes nao fiquem gigantes ou minusculos
+        const sizeBase = 6 / cam.scale;
+
+        for (let i = 0; i < 60; i++) {
             const el = document.createElement('div');
             el.className = 'confetti';
-            el.style.cssText = `
-                left: ${Math.random() * 100}vw;
-                background-color: ${colors[Math.floor(Math.random() * colors.length)]};
-                animation: confettiFall ${2 + Math.random() * 2}s linear forwards;
-                opacity: ${0.5 + Math.random() * 0.5};
-            `;
-            fragment.appendChild(el);
+            
+            // Posicao inicial relativa ao centro do snake (em coordenadas do mundo)
+            const startX = (Math.random() - 0.5) * 600;
+            const startY = (Math.random() - 0.5) * 400 - 300; 
+            
+            el.style.left = `${startX}px`;
+            el.style.top = `${startY}px`;
+            el.style.width = `${sizeBase}px`;
+            el.style.height = `${sizeBase}px`;
+            el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Trajeto da queda (world space)
+            const fallX = (Math.random() - 0.5) * 100;
+            const fallY = 400 + Math.random() * 200;
+            
+            el.style.setProperty('--fall-x', `${fallX}px`);
+            el.style.setProperty('--fall-y', `${fallY}px`);
+            el.style.animation = `confettiFall ${1.5 + Math.random() * 2}s cubic-bezier(0.2, 0, 0.4, 1) forwards`;
+            
+            snake.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
         }
-        container.appendChild(fragment);
-
-        // Remove o container inteiro apos as animacoes terminarem
-        setTimeout(() => container.remove(), 4500);
     }
 };
