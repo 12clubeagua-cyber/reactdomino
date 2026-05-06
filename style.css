@@ -215,3 +215,84 @@ html, body {
   margin: 4px;
 }
 
+
+/* --- CLASSES DE LAYOUT E ANIMAÇÃO (RESTAURADAS) --- */
+.hand-horiz { min-height: 80px; }
+.hand-side { width: 90px; }
+.tiles-rack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+.hand-side .tiles-rack { flex-direction: column; }
+.player-name-tag { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
+.active-turn { background: rgba(255, 204, 51, 0.12); border-radius: 8px; }
+
+.shake { animation: cameraShake 0.2s ease-in-out; }
+@keyframes cameraShake {
+    0% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
+    25% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 5px), calc(var(--cam-y) + 5px)); }
+    50% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) - 5px), calc(var(--cam-y) - 5px)); }
+    75% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 3px), calc(var(--cam-y) - 3px)); }
+    100% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
+}
+
+.thinking-bubble {
+    position: absolute;
+    top: -25px;
+    background: white;
+    color: #1a1a2e;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    animation: bubblePop 0.3s ease-out;
+    white-space: nowrap;
+    z-index: 50;
+}
+@keyframes bubblePop {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.confetti {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    z-index: 10000;
+    pointer-events: none;
+    border-radius: 1px;
+    top: 0; left: 0;
+}
+@keyframes confettiFall {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--fall-x), var(--fall-y)) rotate(720deg); opacity: 0; }
+}
+
+#side-picker {
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  gap: 15px;
+  z-index: 1000;
+  background: var(--glass-bg);
+  padding: 10px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+}
+
+.btn-side {
+  background: var(--gold); color: var(--bg-dark);
+  border: none; padding: 12px 24px;
+  border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+}
+.btn-cancel { background: #e74c3c; color: white; }
+
+.hidden { display: none !important; }
