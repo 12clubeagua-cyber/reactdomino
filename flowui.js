@@ -56,22 +56,23 @@ window.FlowUI = {
      * Inicia contagem regressiva para proxima rodada.
      */
     _startNextRoundCountdown: function(msg) {
-        const overlay = document.createElement('div');
-        overlay.id = 'round-overlay';
-        overlay.className = 'glass';
-        overlay.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; padding:30px; text-align:center; border: 2px solid var(--accent);';
+        // Remove overlay se existir (limpeza preventiva)
+        const existing = document.getElementById('round-overlay');
+        if (existing) existing.remove();
         
-        overlay.innerHTML = `
-            <h2 style="color:var(--accent); margin-bottom:10px;">${msg}</h2>
-            <div id="countdown-text" style="font-size:1.5rem; font-weight:bold;">Nova rodada em 5s...</div>
-        `;
-        document.body.appendChild(overlay);
-
+        // Em vez de um overlay invasivo, usamos o Dashboard para informar o status
         let count = 5;
+        const updateStatus = () => {
+            if (typeof window.Dashboard !== 'undefined') {
+                window.Dashboard.setMessage(`${msg} | NOVA RODADA EM ${count}S...`, 'active');
+            }
+        };
+
+        updateStatus();
+        
         const timer = setInterval(() => {
             count--;
-            const txt = document.getElementById('countdown-text');
-            if (txt) txt.innerText = `Nova rodada em ${count}s...`;
+            updateStatus();
             
             if (count <= 0) {
                 clearInterval(timer);

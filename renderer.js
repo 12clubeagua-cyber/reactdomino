@@ -72,6 +72,15 @@ window.Renderer = {
         const isOver = window.STATE?.isOver ?? false;
         const isBlocked = window.STATE?.isBlocked ?? false;
         
+        // Determina quem venceu para o destaque visual
+        let winTeam = -1;
+        if (isOver && window.STATE.roundWinner !== undefined && window.STATE.roundWinner !== null) {
+            // Se roundWinner for player index (0-3), team e player % 2
+            // Se roundWinner for team index (0-1), team e ele mesmo
+            // Padronizamos aqui para sempre tentar obter o index do time
+            winTeam = (window.STATE.roundWinner < 2 && window.STATE.isBlocked) ? window.STATE.roundWinner : (window.STATE.roundWinner % 2);
+        }
+
         for (let i = 0; i < 4; i++) {
             const viewPos = (i - myIdx + 4) % 4;
             const container = window.Renderer._getEl(`hand-${viewPos}`);
@@ -80,10 +89,12 @@ window.Renderer = {
             const isSide = (viewPos === 1 || viewPos === 3);
             const isActive = (i === currentTurn && !isOver && !isBlocked);
             const isPassing = window.visualPass && window.visualPass[i];
+            const isWinner = (isOver && (i % 2 === winTeam));
 
             container.className = `hand hand-${viewPos} ${isSide ? 'hand-side' : 'hand-horiz'} 
                                    ${isActive ? 'active-turn' : ''} 
-                                   ${isPassing ? 'hand-passed' : ''}`;
+                                   ${isPassing ? 'hand-passed' : ''}
+                                   ${isWinner ? 'hand-win-blink' : ''}`;
 
             const fragment = document.createDocumentFragment();
 

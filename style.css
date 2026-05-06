@@ -299,8 +299,15 @@ html, body {
     z-index: 100;
 }
 
+@keyframes win-glow {
+  0% { box-shadow: 0 0 10px rgba(255, 204, 51, 0.4); }
+  50% { box-shadow: 0 0 30px rgba(255, 204, 51, 0.9); }
+  100% { box-shadow: 0 0 10px rgba(255, 204, 51, 0.4); }
+}
+
 .hand-win-blink {
-  background: rgba(255, 204, 51, 0.4);
-  box-shadow: 0 0 20px rgba(255, 204, 51, 0.6);
-  border-radius: 8px;
+  background: rgba(255, 204, 51, 0.2) !important;
+  border: 2px solid var(--gold) !important;
+  animation: win-glow 1s infinite;
+  z-index: 50;
 }

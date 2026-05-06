@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v106'; // v106: Correcao do z-index do overlay e fluxo de nova rodada
+const CACHE_NAME = 'domino-felipe-v107'; // v107: Remocao do overlay de fim de rodada e destaque de vencedor
 
 const ASSETS = [
   '/',
