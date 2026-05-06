@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v100'; // v100: Removido replays, animações e adicionado contador de peças
+const CACHE_NAME = 'domino-felipe-v101'; // v101: Espacamento entre nome e contador de pecas
 
 const ASSETS = [
   '/',

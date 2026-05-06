@@ -238,7 +238,24 @@ html, body {
 }
 
 .hand-side .tiles-rack { flex-direction: column; }
-.player-name-tag { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
+.player-name-tag { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  width: 100%;
+  font-size: 11px; 
+  color: var(--text-dim); 
+  margin-bottom: 8px; 
+  text-transform: uppercase; 
+}
+.p-count { 
+  background: rgba(255,255,255,0.1); 
+  padding: 2px 6px; 
+  border-radius: 10px; 
+  color: var(--gold); 
+  font-weight: bold;
+  margin-left: 10px;
+}
 
 .active-turn { background: rgba(255, 204, 51, 0.12); }
 

@@ -92,7 +92,7 @@ window.Renderer = {
             label.className = 'player-name-tag';
             const playerName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(i) : `Jogador ${i}`;
             const tileCount = window.STATE?.handSize?.[i] || 0;
-            label.innerHTML = `<span>${playerName} (${tileCount})</span>`;
+            label.innerHTML = `<span class="p-name">${playerName}</span><span class="p-count">${tileCount}</span>`;
             fragment.appendChild(label);
 
             // B) Rack de Pecas
