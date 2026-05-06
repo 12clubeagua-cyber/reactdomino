@@ -99,7 +99,7 @@ window.loadMatchState = function() {
             window.STATE.difficulty = data.difficulty || 'normal';
         }
 
-        window.startMatch();
+        window.startMatch(true); // Indica que e restauracao
     } catch (e) {
         console.warn("Erro ao carregar partida:", e);
         try { window.safeSetStorage('domino_match_state', null); } catch(ex) {}
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * 3. FLUXO DE INICIO DE JOGO
  */
 
-window.startMatch = function() {
+window.startMatch = function(isRestoring = false) {
     // Inicializacao de audio
     if (typeof window.safeAudioInit === 'function') {
         window.safeAudioInit();
@@ -129,7 +129,9 @@ window.startMatch = function() {
     }
     
     if (window.STATE) {
-        window.STATE.scores = [0, 0];
+        if (!isRestoring) {
+            window.STATE.scores = [0, 0];
+        }
         window.STATE.roundWinner = null;
         window.STATE.isOver = false;
     }
@@ -199,5 +201,6 @@ window.cancelHosting = function() {
     window.ResourceManager.cleanup();
     window.connectedClients = [];
     window.netMode = 'offline';
+    localStorage.removeItem('domino_host_id'); // Garante novo codigo na proxima vez
     window.goToStep('step-mode');
 };
