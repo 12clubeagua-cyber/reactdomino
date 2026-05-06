@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v90'; // Incrementado para v90: Ajuste de tamanho das pecas baseado no dominoteste
+const CACHE_NAME = 'domino-felipe-v91'; // Incrementado para v91: Correcao do travamento do bot no inicio da rodada
 
 const ASSETS = [
   '/',

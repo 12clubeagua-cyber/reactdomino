@@ -106,6 +106,20 @@ window.processTurn = function() {
     window.STATE.isBlocked = false;
     window.STATE.lastTurnTime = Date.now();
     
+    const cur = window.STATE.current;
+    const netMode = window.netMode || 'offline';
+    const myIdx = window.myPlayerIdx || 0;
+    
+    // Determina se o turno pertence ao jogador local
+    let isLocal = false;
+    if (netMode === 'offline') {
+        isLocal = (cur === myIdx);
+    } else if (netMode === 'host') {
+        isLocal = (cur === myIdx || (window.connectedClients && window.connectedClients.some(c => c.assignedIdx === cur)));
+    } else {
+        isLocal = (cur === myIdx);
+    }
+
     // Calcula tempo com base no modo sobrevivência se ativo
     let timeLimit = (window.STATE.turnTime || 15) * 1000;
     if (window.STATE.gameMode === 'survival' && typeof window.SurvivalEngine !== 'undefined') {
@@ -122,9 +136,6 @@ window.processTurn = function() {
         // O timer para o Bot é definido mais abaixo na seção --- LOGICA DO BOT ---
     }
 
-    const cur = window.STATE.current;
-    // ... restante ...
-
     // Fallback para evitar travamentos em caso de dessincronização
     if (!window.STATE.hands[cur]) {
         turnRetryCount++;
@@ -139,19 +150,6 @@ window.processTurn = function() {
     let moves = [];
     if (typeof getMoves === 'function') {
         moves = getMoves(window.STATE.hands[cur]);
-    }
-
-    const netMode = window.netMode || 'offline';
-    const myIdx = window.myPlayerIdx || 0;
-    
-    // Determina se o turno pertence ao jogador local
-    let isLocal = false;
-    if (netMode === 'offline') {
-        isLocal = (cur === myIdx);
-    } else if (netMode === 'host') {
-        isLocal = (cur === myIdx || (window.connectedClients && window.connectedClients.some(c => c.assignedIdx === cur)));
-    } else {
-        isLocal = (cur === myIdx);
     }
 
     // --- LOGICA DO BOT ---
