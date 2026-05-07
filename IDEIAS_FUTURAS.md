@@ -2,6 +2,17 @@
 
 Este documento serve como um backlog de ideias criativas e melhorias tecnicas para futuras versoes do projeto.
 
+
+Reacoes de Bots: Emojis ou baloes de texto baseados em eventos (ex: bot comemorando ao trancar o jogo).
+Temas Dinamicos:** Aura de "vitoria iminente" no tabuleiro quando um time atinge Match Point.
+
+Modo Daltonismo:** Formas geometricas ou cores distintas para cada numero (pips).
+- **Feedback Haptico Avancado:** Padroes de vibracao diferentes para cada tipo de evento.
+
+melhoramento na conexao e recomexao é sempre bem vinda quando fazer sentido tecnico com a tecnologia de ponta
+
+
+
 ## 1. NOVOS MODOS DE JOGO
 - **Modo Ponta de 5 (All Fives):** Pontue durante a partida quando a soma das pontas for multiplo de 5.
 - **Modo Dormitorio (Draw):** Jogador compra do boneyard se nao tiver peca valida.
