@@ -12,10 +12,17 @@
 
 window.PLAYER_NAMES = {
     0: window.safeGetStorage('userName', "VOCE"),
-    1: "ROBO A",
-    2: "ROBO B",
-    3: "ROBO C"
+    1: "BOT ALPHA",
+    2: "BOT BETA",
+    3: "BOT GAMMA"
 };
+
+const BOT_POOL = [
+    "ADA", "TURING", "HOPPER", "BABBAGE", "LOVELACE", 
+    "KNUTH", "DIJKSTRA", "RITCHIE", "THOMPSON", "CERF",
+    "GATES", "JOBS", "WOZ", "LINUS", "STALLMAN",
+    "PASCAL", "NEWTON", "EINSTEIN", "TESLA", "CURIE"
+];
 
 /**
  * 3. GERENCIADOR DE NOMES (NameManager)
@@ -23,9 +30,29 @@ window.PLAYER_NAMES = {
  */
 
 window.NameManager = {
+    // Inicializa nomes de bots aleatorios
+    randomizeBots: () => {
+        const pool = [...BOT_POOL];
+        const humanIndices = [0]; // Local player is always human
+        
+        // Se houver clientes conectados (Host mode), eles tambem sao humanos
+        if (Array.isArray(window.connectedClients)) {
+            window.connectedClients.forEach(c => {
+                if (c.assignedIdx !== undefined) humanIndices.push(c.assignedIdx);
+            });
+        }
+
+        for (let i = 1; i <= 3; i++) {
+            if (humanIndices.includes(i)) continue; // Pula se for um humano
+            
+            const randIdx = Math.floor(Math.random() * pool.length);
+            window.PLAYER_NAMES[i] = pool.splice(randIdx, 1)[0];
+        }
+    },
+
     // Retorna o dicionario completo (util para o Host enviar via rede)
     getAll: () => window.PLAYER_NAMES,
-    
+...
     // Busca o nome de uma cadeira especifica com fallback de seguranca
     get: (idx) => {
         const name = window.PLAYER_NAMES[idx];

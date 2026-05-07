@@ -136,6 +136,11 @@ window.startMatch = function(isRestoring = false) {
         }
     }
     
+    // NOVO: Randomiza nomes de bots para maior variedade
+    if (!isRestoring && typeof window.NameManager !== 'undefined' && typeof window.NameManager.randomizeBots === 'function') {
+        window.NameManager.randomizeBots();
+    }
+    
     if (window.STATE) {
         if (!isRestoring) {
             window.STATE.scores = [0, 0];
