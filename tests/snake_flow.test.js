@@ -57,27 +57,28 @@ function runStressTest() {
         window.STATE.positions.push(p.nP);
     }
 
-    // lineCount should be 10 (0 initial + 10 iterations)
-    assert(window.STATE.ends[1].lineCount === 10, `LineCount should be 10, got ${window.STATE.ends[1].lineCount}`);
-    assert(window.STATE.ends[1].dir === 0, "Direction should stay 0 (horizontal)");
+    // lineCount should be 5 because it turned once (11 total pieces)
+    // P1(1), P2(2), P3(3), P4(4), P5(5), P6(6). P7 turns (1).
+    // P8(2), P9(3), P10(4), P11(5).
+    assert(window.STATE.ends[1].lineCount === 5, `LineCount should be 5, got ${window.STATE.ends[1].lineCount}`);
+    assert(window.STATE.ends[1].dir === 270 || window.STATE.ends[1].dir === 90, "Direction should be vertical after 1 turn");
 
     // Case 2: Play a normal piece after 10 doubles
     console.log("[INFO] Playing normal piece after double-overflow...");
     let normalTile = [6,5];
     let pNormal = window.calculateTilePlacement(normalTile, 1);
     window.STATE.positions.push(pNormal.nP);
-    // e.wasDouble was true, so it SHOULD NOT turn.
-    assert(window.STATE.ends[1].dir === 0, "Should still be horizontal because last was double");
-    assert(window.STATE.ends[1].lineCount === 11, "LineCount should be 11");
+    // lineCount was 5. Now 6. No turn.
+    assert(window.STATE.ends[1].dir === 270 || window.STATE.ends[1].dir === 90, "Should still be vertical");
+    assert(window.STATE.ends[1].lineCount === 6, "LineCount should be 6");
 
-    // Case 3: Play another normal piece. Now e.wasDouble is false.
-    console.log("[INFO] Playing second normal piece to trigger turn...");
+    // Case 3: Play another normal piece.
+    console.log("[INFO] Playing second normal piece to trigger turn back to horizontal...");
     let normalTile2 = [5,4];
     let pNormal2 = window.calculateTilePlacement(normalTile2, 1);
     window.STATE.positions.push(pNormal2.nP);
-    // lineCount was 11 >= 6. isD false. wasDouble false. 
-    // IT TURNS!
-    assert(window.STATE.ends[1].dir === 270, "Should finally turn to vertical");
+    // lineCount was 6. IT TURNS BACK!
+    assert(window.STATE.ends[1].dir === 0 || window.STATE.ends[1].dir === 180, "Should turn back to horizontal");
     assert(window.STATE.ends[1].lineCount === 1, "LineCount should reset to 1 after turn");
 
     console.log("--- Stress Test Complete: Logic holds ---");

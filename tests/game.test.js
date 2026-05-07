@@ -70,7 +70,7 @@ async function runAudit() {
     window.STATE.hands[0] = [[6,6], [6,5]];
     window.STATE.positions = [];
     // Mock calculateTilePlacement (usually in logic.js)
-    global.calculateTilePlacement = (tile, side) => ({ nP: {x:0, y:0, v1:tile[0], v2:tile[1], isV:true}, vOther: tile[1] });
+    window.calculateTilePlacement = (tile, side) => ({ nP: {x:0, y:0, v1:tile[0], v2:tile[1], isV:true}, vOther: tile[1] });
     
     window.play(0, 0, 'any'); // Play 6-6
     assert(window.STATE.positions.length === 1, "play: should add piece to positions");

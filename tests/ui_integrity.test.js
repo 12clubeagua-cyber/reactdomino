@@ -68,6 +68,7 @@ global.document = {
         style: {},
         className: '',
         children: [],
+        setAttribute: function(k, v) { this[k] = v; },
         appendChild: function(child) {
             if (child && child.isFragment) {
                 this.children.push(...child.children);
@@ -143,6 +144,7 @@ function testRotationVisuals() {
     window.getPips = (v) => `pips-${v}`;
     // Test Horizontal (v1 left, v2 right)
     window.STATE.positions = [{x:100, y:100, v1:6, v2:5, isV:false}];
+    if (window.Renderer) window.Renderer._lastBoardState = null;
     window.Renderer.drawBoard();
     
     const tileHTML = board.children[0].innerHTML;

@@ -36,7 +36,8 @@ global.document = {
                     // Mock appendChild
                 },
                 querySelectorAll: () => [],
-                remove: () => {}
+                remove: () => {},
+                setAttribute: () => {}
             };
         }
         return elements[id];
@@ -46,7 +47,9 @@ global.document = {
         style: {},
         className: '',
         appendChild: () => {},
-        remove: () => {}
+        remove: () => {},
+        setAttribute: () => {},
+        classList: { add: () => {}, remove: () => {} }
     }),
     createDocumentFragment: () => ({
         appendChild: () => {},

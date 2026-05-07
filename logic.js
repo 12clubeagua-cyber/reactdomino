@@ -80,8 +80,16 @@ window.calculateTilePlacement = function(tile, side) {
         window.STATE.ends[1].hscX = 0;
         window.STATE.ends[1].hscY = 0;
         
+        window.STATE.ends[0].lineCount = 1;
+        window.STATE.ends[1].lineCount = 1;
+        
         window.STATE.ends[0].wasDouble = isD;
         window.STATE.ends[1].wasDouble = isD;
+        
+        // Inicializa dimensoes da primeira peca
+        window.STATE.ends[0].lastIsV = nP.isV;
+        window.STATE.ends[1].lastIsV = nP.isV;
+        
         window.updateExtremes(tile, null);
         return { nP, vOther: tile[1] };
     }
@@ -112,6 +120,12 @@ window.calculateTilePlacement = function(tile, side) {
     }
     e.lineCount++;
 
+    // Objeto de Posicao Final - CALCULADO ANTES DAS DIMENSOES
+    let finalIsV = isVertFlow ? !isD : isD;
+    if (isTurning && isD) {
+        finalIsV = isVertFlow; // Fica paralela ao NOVO fluxo (transversal a anterior)
+    }
+
     // Vetores de Direcao
     const oldDX = (prevDir === 0) ? 1 : (prevDir === 180 ? -1 : 0);
     const oldDY = (prevDir === 90) ? 1 : (prevDir === 270 ? -1 : 0);
@@ -120,30 +134,27 @@ window.calculateTilePlacement = function(tile, side) {
 
     let nx, ny;
 
-    // Dimensoes dinamicas
-    const prevHalf = e.wasDouble ? (TW / 2) : (TL / 2);
-    const currentHalf = isD ? (TW / 2) : (TL / 2);
+    // Dimensoes dinamicas baseadas na ORIENTACAO FINAL (finalIsV) e FLUXO ATUAL (isVertFlow)
+    const currentExtentInFlow = (isVertFlow === finalIsV) ? (TL / 2) : (TW / 2);
+    const currentExtentSideways = (isVertFlow === finalIsV) ? (TW / 2) : (TL / 2);
 
     if (!isTurning) {
-        const totalDist = prevHalf + currentHalf + 2; 
+        // Em reta, prevHalf e a extensao da peca anterior no fluxo atual
+        const prevHalf = (e.lastIsV === isVertFlow) ? (TL / 2) : (TW / 2);
+        const totalDist = prevHalf + currentExtentInFlow + 2; 
         nx = e.hscX + (totalDist * dx);
         ny = e.hscY + (totalDist * dy);
     } else {
-        const prevSideHalf = e.wasDouble ? (TL / 2) : (TW / 2);
-        const newSideHalf = isD ? (TL / 2) : (TW / 2);
+        // Em curva, precisamos das extensoes da peca anterior nos dois eixos
+        const oldIsVertFlow = !isVertFlow;
+        const prevExtentInOldD = (e.lastIsV === oldIsVertFlow) ? (TL / 2) : (TW / 2);
+        const prevExtentInNewD = (e.lastIsV === isVertFlow) ? (TL / 2) : (TW / 2);
         
-        const cornerOffset = prevHalf - newSideHalf; 
-        const projection = prevSideHalf + currentHalf + 4;
+        const cornerOffset = prevExtentInOldD - currentExtentSideways; 
+        const projection = prevExtentInNewD + currentExtentInFlow + 4;
 
         nx = e.hscX + (cornerOffset * oldDX) + (projection * dx);
         ny = e.hscY + (cornerOffset * oldDY) + (projection * dy);
-    }
-
-    // Objeto de Posicao Final
-    // Se for uma peca de curva e for bucha, forca a orientacao para nao ficar paralela a anterior
-    let finalIsV = isVertFlow ? !isD : isD;
-    if (isTurning && isD) {
-        finalIsV = isVertFlow; // Fica paralela ao NOVO fluxo (transversal a anterior)
     }
 
     const nP = {
@@ -157,6 +168,7 @@ window.calculateTilePlacement = function(tile, side) {
     e.hscX = nx;
     e.hscY = ny;
     e.wasDouble = isD;
+    e.lastIsV = finalIsV;
     window.updateExtremes(tile, normalizedSide);
 
     return { nP, vOther };

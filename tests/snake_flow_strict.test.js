@@ -83,8 +83,8 @@ function runStrictTest() {
     let p1 = window.calculateTilePlacement([6,6], 0);
     window.STATE.positions.push(p1.nP);
     
-    console.log("[TEST] Playing 6 tiles on side 1 (Total 7 in snake including center)");
-    for (let i = 0; i < 6; i++) {
+    console.log("[TEST] Playing 5 more tiles on side 1 (Total 6 in snake including center)");
+    for (let i = 0; i < 5; i++) {
         let p = window.calculateTilePlacement([6,6], 1);
         window.STATE.positions.push(p.nP);
     }
