@@ -8,8 +8,8 @@
 ## 1. Mandatos de Seguranca e Estilo
 - **Padrao de Texto:** Todo o codigo e documentacao DEVEM usar apenas caracteres ASCII (sem acentos).
 - **Variaveis Globais:** Todos os modulos sao exportados via `window`. Proibido `import`/`export` ES6.
+- **Auto-Documentacao:** Ao resolver bugs complexos ou recorrentes (como geometria e alinhamento), voce DEVE atualizar o arquivo `LICOES_APRENDIDAS.txt` com a causa e a solucao tecnica para evitar regressoes. Este arquivo e o seu "diario de bordo" de engenharia.
 - **Ordem de Carregamento:** Respeite rigorosamente a ordem no `index.html`.
-- **Auto-Documentacao:** Ao resolver bugs complexos, atualize a secao 'Licoes Aprendidas'.
 
 ## 2. Arquitetura e Regras de Jogo
 - **Estado (window.STATE):** Fonte unica de verdade. Imutabilidade deve ser respeitada em loops de renderizacao.

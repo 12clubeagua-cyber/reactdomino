@@ -1,0 +1,27 @@
+# LICOES APRENDIDAS - PROTOCOLO DE PREVENCAO DE BUGS (REACTDOMINO)
+
+Este arquivo e uma base de conhecimento obrigatoria para evitar a reincidencia de bugs tecnicos. 
+Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa raiz e a solucao.
+
+## 1. GEOMETRIA E POSICIONAMENTO (logic.js)
+- **REGRA DE 6 (LINECOUNT):** A peca inicial (0,0) deve ser contabilizada no `lineCount` de ambos os lados (Side 0 e Side 1). Se for inicializada com 0, a primeira reta tera 7 pecas em vez de 6.
+- **DIMENSOES EM CURVA (L-SHAPE):** Nunca use `wasDouble` como unico indicador de dimensao para curvas. Salve a orientacao real (`lastIsV`) da peca anterior. Buchas em curvas mudam de orientacao (ficam transversais ao fluxo antigo), o que altera qual eixo usa `TILE_W` ou `TILE_L`.
+- **GAP DE SEGURANCA:** Mantenha sempre +2px em retas e +4px em projeções de curva para compensar bordas (1px cada lado) e evitar que o motor de colisao detecte sobreposicao.
+
+## 2. INTERFACE E UX (renderer.js / ui.js / flowui.js)
+- **DISPONIBILIDADE DE MENUS:** Botoes de configuracao (como Audio, Acessibilidade) devem ter seus containers de opcoes desacoplados do estado da partida (`STATE.isStarted`). Se o menu depende do DOM gerado no inicio do jogo, ele falhara no Lobby.
+- **SOBREPOSICAO DE Z-INDEX:** Menus globais (como o painel de Audio) devem ter um `z-index` superior a tela de Lobby/Splash (`#start-screen`), que e 9999. Use 10001+ para garantir visibilidade fora da partida.
+- **CACHE DO RENDERIZADOR:** O `Renderer._lastBoardState` deve ser limpo (`null`) sempre que houver uma mudanca estrutural no tabuleiro que o JSON.stringify nao pegue (ex: redimensionamento de janela ou limpeza manual do DOM).
+
+## 3. MULTIPLAYER E REDE (network.js / multiplayer.js)
+- **BLIND HANDS:** Nunca inclua o objeto `window.STATE.hands` no broadcast global. Filtre para enviar apenas a mao do jogador local (`myHand`) e o tamanho das maos dos outros (`handSize`).
+- **AUTORIDADE DO HOST:** O cliente nunca deve processar logica de posicionamento. Ele apenas recebe as coordenadas calculadas pelo Host para garantir sincronia visual total.
+
+## 4. AMBIENTE DE TESTES (tests/*.js)
+- **MOCKS DE DOM:** Sempre inclua `setAttribute`, `classList` e `appendChild` nos mocks de `createElement` para evitar `TypeError` durante auditorias de UI.
+- **REFERENCIA WINDOW:** Use `window.xxx` em vez de `global.xxx` nos testes para manter paridade com o ambiente real do browser.
+
+## 5. REGRAS DE OURO (GEMINI.md)
+- **ASCII APENAS:** Proibido caracteres acentuados.
+- **SEM IMPORTS:** Use apenas o objeto global `window`.
+- **DIRETRIZ DE AUTONOMIA:** Identificou o erro? Corrija, teste, documente no LICOES_APRENDIDAS.txt e de push.

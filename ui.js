@@ -14,10 +14,9 @@ window.AudioMenu = {
             panel = document.createElement('div');
             panel.id = 'audio-panel';
             panel.className = 'glass audio-menu';
-            panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:3000; padding:30px; display:flex; flex-direction:column; gap:20px; min-width:280px;';
-            
-            const sfxVol = window.safeGetStorage('domino_sfx_vol', 0.5);
-            const bgmVol = window.safeGetStorage('domino_bgm_vol', 0.3);
+            panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10001; padding:30px; display:flex; flex-direction:column; gap:20px; min-width:280px;';
+
+            const sfxVol = window.safeGetStorage('domino_sfx_vol', 0.5);            const bgmVol = window.safeGetStorage('domino_bgm_vol', 0.3);
 
             panel.innerHTML = `
                 <h2 style="margin:0; color:var(--gold); text-align:center;">AUDIO</h2>
