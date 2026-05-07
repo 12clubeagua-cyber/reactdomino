@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v121'; // v121: UI - Emote/Chat buttons moved to top right
+const CACHE_NAME = 'domino-felipe-v122'; // v122: Fixes for turn stall and UI layout overlap
 
 const ASSETS = [
   '/',

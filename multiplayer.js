@@ -214,7 +214,7 @@ window.setupHostEvents = function(conn) {
         }
 
         if (data.type === 'request_seat') {
-            conn.assignedIdx = data.seatIdx;
+            conn.assignedIdx = Number(data.seatIdx);
             if (typeof window.SeatManager !== 'undefined') {
                 conn.isActive = true;
                 window.SeatManager.renderSelectionUI();
@@ -286,7 +286,7 @@ window.setupClientEvents = function(conn) {
         if (!data) return;
 
         if (data.type === 'game_start') {
-            window.myPlayerIdx = data.yourIdx;
+            window.myPlayerIdx = Number(data.yourIdx ?? 0);
             if (data.names && typeof window.NameManager !== 'undefined') {
                 window.NameManager.updateAll(data.names);
             }

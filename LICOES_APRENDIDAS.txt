@@ -11,7 +11,8 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 ## 2. INTERFACE E UX (renderer.js / ui.js / flowui.js)
 - **DISPONIBILIDADE DE MENUS:** Botoes de configuracao (como Audio, Acessibilidade) devem ter seus containers de opcoes desacoplados do estado da partida (`STATE.isStarted`). Se o menu depende do DOM gerado no inicio do jogo, ele falhara no Lobby.
 - **SOBREPOSICAO DE Z-INDEX:** Menus globais (como o painel de Audio) devem ter um `z-index` superior a tela de Lobby/Splash (`#start-screen`), que e 9999. Use 10001+ para garantir visibilidade fora da partida.
-- **CACHE DO RENDERIZADOR:** O `Renderer._lastBoardState` deve ser limpo (`null`) sempre que houver uma mudanca estrutural no tabuleiro que o JSON.stringify nao pegue (ex: redimensionamento de janela ou limpeza manual do DOM).
+- **CACHE DO RENDERIZADOR (MAOS):** A otimizacao de renderizacao de maos (`drawHands`) deve incluir o conteudo das pecas locais no hash de estado (`JSON.stringify`). Se apenas `handSize` for verificado, a interface nao atualizara quando o Host enviar as pecas reais para o Cliente no inicio da rodada (pois o `handSize` ja era 7).
+- **POSICIONAMENTO DE UI:** Botoes de controle (Menu, Emotes) nunca devem usar `position: fixed` no topo se houver um `header` de placar. Use `position: absolute` dentro do conteiner de jogo e posicione-os abaixo do header para evitar sobreposicao em telas mobile.
 
 ## 3. MULTIPLAYER E REDE (network.js / multiplayer.js)
 - **BLIND HANDS:** Nunca inclua o objeto `window.STATE.hands` no broadcast global. Filtre para enviar apenas a mao do jogador local (`myHand`) e o tamanho das maos dos outros (`handSize`).

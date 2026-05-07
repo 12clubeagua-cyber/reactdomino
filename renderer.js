@@ -89,19 +89,21 @@ window.Renderer = {
         const picker = window.Renderer._getEl('side-picker');
         if (picker) picker.style.display = 'none';
 
-        const myIdx = window.myPlayerIdx ?? 0;
+        const myIdx = Number(window.myPlayerIdx ?? 0);
         const currentTurn = window.STATE?.current ?? 0;
         const isOver = window.STATE?.isOver ?? false;
         const isBlocked = window.STATE?.isBlocked ?? false;
+        const myHandHash = window.STATE?.hands?.[myIdx]?.map(t => t.join('')).join('|') || '';
 
-        // OTIMIZACAO: Verifica se houve mudanca nas maos ou status de turno
+        // OTIMIZACAO: Verifica se houve mudanca nas maos, status de turno ou pecas locais
         const currentState = JSON.stringify({
             h: window.STATE?.handSize,
             c: currentTurn,
             o: isOver,
             b: isBlocked,
             p: window.visualPass,
-            r: reveal
+            r: reveal,
+            m: myHandHash
         });
         if (window.Renderer._lastHandsState === currentState) {
             window.Renderer._checkLocalInteraction(); // Ainda verifica se precisa de highlights
@@ -112,10 +114,7 @@ window.Renderer = {
         // Determina quem venceu para o destaque visual
         let winTeam = -1;
         if (isOver && window.STATE.roundWinner !== undefined && window.STATE.roundWinner !== null) {
-            // Se roundWinner for player index (0-3), team e player % 2
-            // Se roundWinner for team index (0-1), team e ele mesmo
-            // Padronizamos aqui para sempre tentar obter o index do time
-            winTeam = (window.STATE.roundWinner < 2 && window.STATE.isBlocked) ? window.STATE.roundWinner : (window.STATE.roundWinner % 2);
+            winTeam = (window.STATE.roundWinner % 2);
         }
 
         for (let i = 0; i < 4; i++) {
@@ -147,7 +146,7 @@ window.Renderer = {
             const rack = document.createElement('div');
             rack.className = 'tiles-rack';
             
-            const isMe = (i === myIdx);
+            const isMe = (i == myIdx);
             const handData = window.STATE?.hands?.[i] || [];
             const canShow = isMe || isOver || reveal;
 
