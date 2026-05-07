@@ -49,6 +49,11 @@
 4. **Cache:** Atualize `sw.js`.
 5. **Git:** `add`, `commit`, `push`.
 
+## 9. Protocolo de Instalacao MCP
+- **NUNCA** utilize `npm install -g` para servidores MCP.
+- **SEMPRE** prefira a execucao direta via `npx -y @modelcontextprotocol/server-[nome]` ou utilize `pip` em ambientes virtuais.
+- Caso ocorra erro de "command deprecated", interrompa a tentativa e valide a documentacao oficial no repositorio `modelcontextprotocol/servers`.
+
 ---
 **Status Atual:** Estavel (v116). Motor de geometria corrigido para peca inicial e buchas em curvas.
 **Foco:** Refinamento de performance e expansao de recursos de acessibilidade.
