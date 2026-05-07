@@ -143,10 +143,12 @@
   <div id="a11y-announcer" class="sr-only" aria-live="assertive"></div>
   </header>
 <div id="game-area" role="application">
-    <button id="btn-exit" onclick="exitGame()" aria-label="Menu de jogo">Menu</button>
-    <div style="position:fixed; bottom:20px; right:20px; z-index:1000; display:flex; gap:10px;">
-        <button id="btn-emote" class="btn-side" onclick="showEmotePanel()" aria-label="Enviar Emote" style="padding:10px 15px;">😀</button>
-        <button id="btn-chat" class="btn-side" onclick="showQuickChatPanel()" aria-label="Chat rapido" style="padding:10px 15px;">💬</button>
+    <div class="top-controls">
+        <div class="emote-chat-container">
+            <button id="btn-emote" class="btn-side" onclick="showEmotePanel()" aria-label="Enviar Emote">😀</button>
+            <button id="btn-chat" class="btn-side" onclick="showQuickChatPanel()" aria-label="Chat rapido">💬</button>
+        </div>
+        <button id="btn-exit" onclick="exitGame()" aria-label="Menu de jogo">Menu</button>
     </div>
     <section id="hand-2" class="hand" aria-label="Mao do oponente 2"></section>
     <div id="mid-row">

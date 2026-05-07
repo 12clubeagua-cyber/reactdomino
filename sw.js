@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v120'; // v120: UI - Piece count relocated before player name
+const CACHE_NAME = 'domino-felipe-v121'; // v121: UI - Emote/Chat buttons moved to top right
 
 const ASSETS = [
   '/',

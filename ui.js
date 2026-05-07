@@ -60,7 +60,7 @@ window.showEmotePanel = function() {
         panel = document.createElement('div');
         panel.id = 'emote-panel';
         panel.className = 'glass';
-        panel.style.cssText = 'position:fixed; bottom:150px; right:120px; z-index:1000; padding:10px; display:grid; grid-template-columns:repeat(3, 1fr); gap:5px;';
+        panel.style.cssText = 'position:fixed; top:60px; right:10px; z-index:1000; padding:10px; display:grid; grid-template-columns:repeat(3, 1fr); gap:5px;';
         
         const emotes = ["😂", "😠", "👍", "👎", "🤔", "🔥"];
         emotes.forEach(emo => {
@@ -93,7 +93,7 @@ window.showQuickChatPanel = function() {
         panel = document.createElement('div');
         panel.id = 'chat-panel';
         panel.className = 'glass';
-        panel.style.cssText = 'position:fixed; bottom:150px; right:20px; z-index:1000; padding:10px; display:grid; gap:5px;';
+        panel.style.cssText = 'position:fixed; top:60px; right:10px; z-index:1000; padding:10px; display:grid; gap:5px;';
         
         const messages = ["Boa!", "Vamos!", "Desculpa", "Paciencia"];
         messages.forEach(msg => {

@@ -226,10 +226,27 @@ html, body {
     box-shadow: 0 0 10px var(--gold);
 }
 
-#btn-exit {
-  position: absolute;
+.top-controls {
+  position: fixed;
   top: 10px;
   right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.emote-chat-container {
+  display: flex;
+  gap: 6px;
+}
+
+.emote-chat-container .btn-side {
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+#btn-exit {
   width: auto;
   min-width: 60px;
   background: var(--glass-bg);
@@ -239,7 +256,6 @@ html, body {
   padding: 6px 12px;
   font-weight: bold;
   cursor: pointer;
-  z-index: 1000;
   text-transform: uppercase;
 }
 
