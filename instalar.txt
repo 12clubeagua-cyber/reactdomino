@@ -1,0 +1,76 @@
+Esse comportamento de loop geralmente acontece porque o agente está tentando utilizar métodos de instalação global (npm install -g) ou sintaxes de versões anteriores do protocolo que foram alteradas para garantir maior segurança e portabilidade.
+Como você está operando em um ambiente Windows 10, a forma mais estável de rodar esses servidores sem poluir seu PATH global (e evitar erros de permissão que travam o CLI) é via npx ou uv/pip.
+Aqui estão os comandos atualizados e válidos para você passar para o seu ciclo de engenharia:
+1. Comandos para o GitHub MCP
+O servidor oficial do GitHub agora deve ser executado preferencialmente via npx para garantir que a versão mais recente seja utilizada:
+Comando de execução (Node/npx):
+Bash
+npx -y @modelcontextprotocol/server-github
+
+
+
+
+Variáveis de ambiente necessárias:
+O agente precisará do GITHUB_PERSONAL_ACCESS_TOKEN configurado no ambiente.
+
+2. Comandos para o GitLab MCP
+Para o GitLab, o pacote oficial segue a mesma estrutura:
+Comando de execução (Node/npx):
+Bash
+npx -y @modelcontextprotocol/server-gitlab
+
+
+
+
+Variáveis de ambiente necessárias:
+GITLAB_PERSONAL_ACCESS_TOKEN e, se for auto-hospedado, o GITLAB_SITE_URL.
+
+3. Alternativa via Python (Se o Node falhar)
+Se o loop persistir devido a problemas no ambiente Node.js do Windows, você pode orientar o Gemini a usar a implementação em Python, que costuma ser mais resiliente em sistemas Windows:
+Instalação:
+PowerShell
+pip install mcp-server-github mcp-server-gitlab
+
+
+
+
+Execução:
+PowerShell
+   python -m mcp_server_github
+    ```
+
+---
+
+### Dica para o `GEMINI.md`
+Para evitar que o agente volte a tentar os comandos depreciados, adicione explicitamente esta regra no seu arquivo de diretivas:
+
+> **Protocolo de Instalação MCP:**
+> *   **NUNCA** utilize `npm install -g` para servidores MCP.
+> *   **SEMPRE** prefira a execução direta via `npx -y @modelcontextprotocol/server-[nome]` ou utilize `pip` em ambientes virtuais.
+> *   Caso ocorra erro de "command deprecated", interrompa a tentativa e valide a documentação oficial no repositório `modelcontextprotocol/servers`.
+
+### Por que o erro estava acontecendo?
+Muitos tutoriais antigos sugeriam instalar os servidores como pacotes globais. No entanto, o ecossistema MCP evoluiu para um modelo "on-the-fly". Quando o Gemini CLI tentava instalar globalmente no Windows, ele esbarrava em restrições de execução de scripts do PowerShell ou em pastas protegidas, entrava em erro, e a lógica de "auto-correção" dele o forçava a tentar a mesma coisa repetidamente.
+
+O uso do `npx -y` pula a etapa de instalação manual e resolve o problema do loop.
+
+
+Skill (Server)
+Comando de Execução (npx)
+Função Principal
+Google Maps
+@modelcontextprotocol/server-google-maps
+Localização (se o jogo for geo-localizado)
+Slack/Discord
+@modelcontextprotocol/server-slack
+Notificar você no celular quando um build terminar
+Postgres
+@modelcontextprotocol/server-postgres
+Gestão de dados complexos
+Everything
+@modelcontextprotocol/server-everything
+Um servidor de teste para validar se o MCP está funcionando
+
+
+
+
