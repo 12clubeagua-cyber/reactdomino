@@ -63,7 +63,23 @@ window.calculateTilePlacement = function(tile, side) {
 
     // --- CASO A: Primeira Peca da Mesa (Centro 0,0) ---
     if (!window.STATE.positions.length) {
-        const nP = { x: 0, y: 0, v1: tile[0], v2: tile[1], isV: isD }; // isV e true para buchas no centro
+        const e = window.STATE.ends[0];
+        const isVert = (e.dir === 90 || e.dir === 270);
+        
+        // Se comeca vertical, a primeira peca (se bucha) deve ser horizontal para ser transversal
+        // Se for normal, deve ser vertical para seguir o fluxo.
+        const nP = { 
+            x: 0, y: 0, 
+            v1: tile[0], v2: tile[1], 
+            isV: isVert ? !isD : isD 
+        };
+
+        // Reseta as coordenadas de controle para o centro da mesa
+        window.STATE.ends[0].hscX = 0;
+        window.STATE.ends[0].hscY = 0;
+        window.STATE.ends[1].hscX = 0;
+        window.STATE.ends[1].hscY = 0;
+        
         window.STATE.ends[0].wasDouble = isD;
         window.STATE.ends[1].wasDouble = isD;
         window.updateExtremes(tile, null);
@@ -83,7 +99,6 @@ window.calculateTilePlacement = function(tile, side) {
     const maxInLine = isVertFlow ? (window.CONFIG?.GAME?.MAX_VERT ?? 6) : (window.CONFIG?.GAME?.MAX_HORIZ ?? 6);
 
     let isTurning = false;
-    // Removida a restricao de buchas (!isD && !e.wasDouble) para garantir que o limite seja respeitado
     if (e.lineCount >= maxInLine) {
         isTurning = true;
         if (isVertFlow) {
@@ -97,7 +112,7 @@ window.calculateTilePlacement = function(tile, side) {
     }
     e.lineCount++;
 
-    // Vetores de Direcao (Onde a peca anterior aponta e para onde a nova vai)
+    // Vetores de Direcao
     const oldDX = (prevDir === 0) ? 1 : (prevDir === 180 ? -1 : 0);
     const oldDY = (prevDir === 90) ? 1 : (prevDir === 270 ? -1 : 0);
     const dx = (e.dir === 0) ? 1 : (e.dir === 180 ? -1 : 0);
@@ -105,35 +120,37 @@ window.calculateTilePlacement = function(tile, side) {
 
     let nx, ny;
 
-    // Dimensoes dinamicas para suportar curvas com buchas (carrocas)
+    // Dimensoes dinamicas
     const prevHalf = e.wasDouble ? (TW / 2) : (TL / 2);
     const currentHalf = isD ? (TW / 2) : (TL / 2);
 
     if (!isTurning) {
-        // Alinhamento em Reta
         const totalDist = prevHalf + currentHalf + 2; 
         nx = e.hscX + (totalDist * dx);
         ny = e.hscY + (totalDist * dy);
     } else {
-        // Alinhamento em Quina (L-Shape) Robusto
-        // Considera se a peca anterior ou a atual sao buchas para o calculo do offset
         const prevSideHalf = e.wasDouble ? (TL / 2) : (TW / 2);
         const newSideHalf = isD ? (TL / 2) : (TW / 2);
         
         const cornerOffset = prevHalf - newSideHalf; 
-        const projection = prevSideHalf + currentHalf + 4; // Aumentado para 4px para seguranca total
+        const projection = prevSideHalf + currentHalf + 4;
 
         nx = e.hscX + (cornerOffset * oldDX) + (projection * dx);
         ny = e.hscY + (cornerOffset * oldDY) + (projection * dy);
     }
 
     // Objeto de Posicao Final
+    // Se for uma peca de curva e for bucha, forca a orientacao para nao ficar paralela a anterior
+    let finalIsV = isVertFlow ? !isD : isD;
+    if (isTurning && isD) {
+        finalIsV = isVertFlow; // Fica paralela ao NOVO fluxo (transversal a anterior)
+    }
+
     const nP = {
         x: nx, y: ny,
-        // Inverte visualmente v1/v2 dependendo da direcao para os numeros baterem
         v1: (e.dir === 180 || e.dir === 270) ? vOther : vMatch,
         v2: (e.dir === 180 || e.dir === 270) ? vMatch : vOther,
-        isV: isVertFlow ? !isD : isD
+        isV: finalIsV
     };
 
     // Atualiza o estado da extremidade

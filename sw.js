@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v115'; // v115: Logic - Fix initial piece orientation and L-shape offsets
+const CACHE_NAME = 'domino-felipe-v116'; // v116: Logic - Fix initial tile orientation and corner double placement
 
 const ASSETS = [
   '/',
