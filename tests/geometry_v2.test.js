@@ -13,10 +13,10 @@ global.window = {
     },
     CONFIG: {
         GAME: {
-            TILE_W: 18,
-            TILE_L: 36,
-            MAX_VERT: 6,
-            MAX_HORIZ: 6
+            TILE_W: 40,
+            TILE_L: 80,
+            MAX_VERT: 12,
+            MAX_HORIZ: 12
         }
     },
     updateExtremes: (tile, side) => {
@@ -48,15 +48,15 @@ function runGeometryAudit() {
     const p1 = window.calculateTilePlacement(tile1, 0);
     window.STATE.positions.push(p1.nP);
 
-    // 2. Add 5 more pieces to the right to reach the limit (Total 6 pieces)
+    // 2. Add 11 more pieces to the right to reach the limit (Total 12 pieces)
     // Side 1 dir is 0. 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 11; i++) {
         const tile = [6, 6]; // Using doubles for simplicity in calculation
         const p = window.calculateTilePlacement(tile, 1);
         window.STATE.positions.push(p.nP);
     }
     
-    assert(window.STATE.ends[1].lineCount === 6, "Setup: Line count should be 6 at side 1");
+    assert(window.STATE.ends[1].lineCount === 12, "Setup: Line count should be 12 at side 1");
 
     // 3. Test: The 7th piece is a DOUBLE (Bucha) at the curve
     // According to rule: "ela DEVE ser posicionada paralela ao NOVO fluxo (transversal a linha anterior)"

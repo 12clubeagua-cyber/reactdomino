@@ -18,8 +18,8 @@ window.CONFIG = Object.freeze({
     // 2. REGRAS E PROPORCOES DO JOGO
     GAME: {
         // Dimensoes Fisicas das Pecas
-        TILE_W: 18,            // Largura (lado curto)
-        TILE_L: 36,            // Comprimento (lado longo)
+        TILE_W: 40,            // Largura (lado curto) - Aumentado para visibilidade
+        TILE_L: 80,            // Comprimento (lado longo) - Aumentado para visibilidade
         
         // Tempos de Fluxo (UX)
         RESULT_DISPLAY_TIME: 3, // Exibicao do placar final (segundos)
@@ -27,15 +27,14 @@ window.CONFIG = Object.freeze({
         START_DELAY: 800,       // Pausa para o cerebro processar a mao nova
         
         // Camera e Tabuleiro (Snake)
-        SNAKE_MAX_SCALE: 1.3,   // Permite zoom maior para pecas unicas ou poucas pecas
+        SNAKE_MAX_SCALE: 2.5,   // Permite zoom maior para dispositivos mobile
         
         /* 
            AJUSTE DE CURVA:
-           Valores maiores (6 a 8) criam retas mais elegantes.
-           Valores pequenos (2) fazem o jogo virar muito rapido.
+           Retirado limitador de 6 pecas por linha.
         */
-        MAX_VERT: 6,            
-        MAX_HORIZ: 6            
+        MAX_VERT: 12,            
+        MAX_HORIZ: 12            
     },
 
     // 3. SINTESE DE AUDIO (WEB AUDIO API)

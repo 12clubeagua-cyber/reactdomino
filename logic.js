@@ -212,15 +212,20 @@ window.getSnakeBounds = function() {
 
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
 
+    const TW = window.CONFIG?.GAME?.TILE_W ?? 40;
+    const TL = window.CONFIG?.GAME?.TILE_L ?? 80;
+
     window.STATE.positions.forEach(p => {
-        minX = Math.min(minX, p.x);
-        maxX = Math.max(maxX, p.x);
-        minY = Math.min(minY, p.y);
-        maxY = Math.max(maxY, p.y);
+        const halfW = p.isV ? (TW / 2) : (TL / 2);
+        const halfH = p.isV ? (TL / 2) : (TW / 2);
+
+        minX = Math.min(minX, p.x - halfW);
+        maxX = Math.max(maxX, p.x + halfW);
+        minY = Math.min(minY, p.y - halfH);
+        maxY = Math.max(maxY, p.y + halfH);
     });
 
-    // Adiciona uma margem de seguranca baseada no tamanho da peca
-    const padding = 50;
+    const padding = 60;
     return {
         minX, maxX, minY, maxY,
         width: (maxX - minX) + padding * 2,

@@ -46,39 +46,30 @@ window.updateCamera = function() {
         return;
     }
 
-    const tileW = window.CONFIG?.GAME?.TILE_W ?? 18;
-    const tileL = window.CONFIG?.GAME?.TILE_L ?? 36;
-    const tileHalfW = tileW / 2;
-    const tileHalfL = tileL / 2;
+    // Usa o calculo centralizado da logica para evitar duplicacao
+    const bounds = typeof window.getSnakeBounds === 'function' 
+        ? window.getSnakeBounds() 
+        : { minX: -100, maxX: 100, minY: -100, maxY: 100, centerX: 0, centerY: 0 };
 
-    let minX = 0, maxX = 0, minY = 0, maxY = 0;
-
-    const positions = window.STATE.positions;
-    for (let i = 0; i < positions.length; i++) {
-        const p = positions[i];
-        const w = p.isV ? tileHalfW : tileHalfL;
-        const h = p.isV ? tileHalfL : tileHalfW;
-        if (p.x - w < minX) minX = p.x - w;
-        if (p.x + w > maxX) maxX = p.x + w;
-        if (p.y - h < minY) minY = p.y - h;
-        if (p.y + h > maxY) maxY = p.y + h;
-    }
-
-    const padding = 30;
+    const padding = 100; // Margem maior para as pecas maiores
     const viewW = boardBox.clientWidth;
     const viewH = boardBox.clientHeight;
 
-    const contentW = (maxX - minX) + padding;
-    const contentH = (maxY - minY) + padding;
+    const contentW = (bounds.maxX - bounds.minX) + padding * 2;
+    const contentH = (bounds.maxY - bounds.minY) + padding * 2;
 
     const scaleX = viewW / contentW;
     const scaleY = viewH / contentH;
     
     const maxScaleConfig = window.CONFIG?.GAME?.SNAKE_MAX_SCALE ?? 1;
-    const finalScale = Math.min(scaleX, scaleY, maxScaleConfig);
+    const minScaleConfig = window.CONFIG?.GAME?.SNAKE_MIN_SCALE ?? 0.1;
+    
+    let finalScale = Math.min(scaleX, scaleY);
+    // Clamping do scale
+    finalScale = Math.max(minScaleConfig, Math.min(finalScale, maxScaleConfig));
 
-    const offsetX = -(minX + maxX) / 2;
-    const offsetY = -(minY + maxY) / 2;
+    const offsetX = -bounds.centerX;
+    const offsetY = -bounds.centerY;
     
     // Define variaveis CSS para a animacao de shake usar os valores atuais
     document.documentElement.style.setProperty('--cam-scale', finalScale);

@@ -187,8 +187,8 @@ html, body {
 }
 
 .pip {
-    width: 3px;
-    height: 3px;
+    width: 8px;
+    height: 8px;
     background: var(--pip); 
     border-radius: 50%;
 }
@@ -377,17 +377,23 @@ html, body {
   z-index: 20;
 }
 
-.hand-horiz { min-height: 55px; }
-.hand-side { width: 65px; }
-
 .tiles-rack {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2px;
+  gap: 4px;
+  transform: scale(0.65); /* Escala as pecas na mao para nao ocuparem a tela toda */
+  transform-origin: center top;
 }
 
-.hand-side .tiles-rack { flex-direction: column; }
+.hand-side .tiles-rack { 
+  flex-direction: column; 
+  transform: scale(0.6);
+  transform-origin: center center;
+}
+
+.hand-horiz { min-height: 80px; }
+.hand-side { width: 90px; }
 .player-name-tag { 
   display: flex; 
   justify-content: flex-start; 
