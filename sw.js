@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v117'; // v117: A11y & Performance - ARIA labels, pips cache, reduced motion
+const CACHE_NAME = 'domino-felipe-v118'; // v118: Audio Menu - SFX and BGM volume controls
 
 const ASSETS = [
   '/',

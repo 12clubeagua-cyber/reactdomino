@@ -5,6 +5,54 @@
 */
 
 /**
+ * Gerencia o Menu de Audio
+ */
+window.AudioMenu = {
+    show: function() {
+        let panel = document.getElementById('audio-panel');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'audio-panel';
+            panel.className = 'glass audio-menu';
+            panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:3000; padding:30px; display:flex; flex-direction:column; gap:20px; min-width:280px;';
+            
+            const sfxVol = window.safeGetStorage('domino_sfx_vol', 0.5);
+            const bgmVol = window.safeGetStorage('domino_bgm_vol', 0.3);
+
+            panel.innerHTML = `
+                <h2 style="margin:0; color:var(--gold); text-align:center;">AUDIO</h2>
+                
+                <div class="audio-control">
+                    <label>Efeitos (SFX)</label>
+                    <input type="range" id="sfx-slider" min="0" max="1" step="0.05" value="${sfxVol}">
+                </div>
+
+                <div class="audio-control">
+                    <label>Musica (BGM)</label>
+                    <input type="range" id="bgm-slider" min="0" max="1" step="0.05" value="${bgmVol}">
+                </div>
+
+                <button class="btn-side" style="width:100%;" onclick="window.AudioMenu.close()">FECHAR</button>
+            `;
+            document.body.appendChild(panel);
+
+            // Listeners para atualizacao em tempo real
+            const sfxSlider = document.getElementById('sfx-slider');
+            const bgmSlider = document.getElementById('bgm-slider');
+
+            sfxSlider.oninput = (e) => window.AudioManager.setVolumes(parseFloat(e.target.value), parseFloat(bgmSlider.value));
+            bgmSlider.oninput = (e) => window.AudioManager.setVolumes(parseFloat(sfxSlider.value), parseFloat(e.target.value));
+        }
+        panel.style.display = 'flex';
+    },
+
+    close: function() {
+        const panel = document.getElementById('audio-panel');
+        if (panel) panel.style.display = 'none';
+    }
+};
+
+/**
  * Exibe painel de chat rapido
  */
 window.showQuickChatPanel = function() {
