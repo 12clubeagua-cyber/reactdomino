@@ -117,6 +117,38 @@ window.showQuickChatPanel = function() {
 };
 
 /**
+ * Exibe o painel de estatisticas do jogador
+ */
+window.showStatsPanel = function() {
+    let panel = document.getElementById('stats-panel');
+    if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'stats-panel';
+        panel.className = 'glass audio-menu';
+        panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10002; padding:30px; display:flex; flex-direction:column; gap:15px; min-width:300px;';
+        document.body.appendChild(panel);
+    }
+    
+    const stats = window.StatsManager.get();
+    const winRate = stats.roundsPlayed > 0 ? ((stats.wins / stats.roundsPlayed) * 100).toFixed(1) : 0;
+
+    panel.innerHTML = `
+        <h2 style="margin:0; color:var(--gold); text-align:center;">ESTATISTICAS</h2>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.9rem;">
+            <span>Vitorias:</span> <span style="text-align:right; color:var(--gold);">${stats.wins}</span>
+            <span>Derrotas:</span> <span style="text-align:right;">${stats.losses}</span>
+            <span>Win Rate:</span> <span style="text-align:right; color:var(--gold);">${winRate}%</span>
+            <span>Pecas Jogadas:</span> <span style="text-align:right;">${stats.tilesPlayed}</span>
+            <span>Pontos Totais:</span> <span style="text-align:right; color:var(--gold);">${stats.totalScore}</span>
+        </div>
+
+        <button class="btn-side" style="width:100%; margin-top:10px;" onclick="document.getElementById('stats-panel').style.display='none'">FECHAR</button>
+    `;
+    panel.style.display = 'flex';
+};
+
+/**
  * 1. PONTES DE COMUNICACAO (WRAPPERS)
  * Usando window.* para garantir acesso seguro aos objetos em diferentes arquivos.
  */

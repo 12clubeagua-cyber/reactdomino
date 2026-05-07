@@ -57,3 +57,50 @@ window.getPips = function(val, color) {
     pipsCache[cacheKey] = html;
     return html;
 };
+
+/**
+ * 3. GESTOR DE ESTATISTICAS (PERSISTENCIA)
+ */
+window.StatsManager = {
+    _key: 'domino_stats',
+    
+    get: function() {
+        return window.safeGetStorage(this._key, {
+            wins: 0,
+            losses: 0,
+            tilesPlayed: 0,
+            roundsPlayed: 0,
+            totalScore: 0
+        });
+    },
+
+    save: function(data) {
+        window.safeSetStorage(this._key, data);
+    },
+
+    addWin: function() {
+        const s = this.get();
+        s.wins++;
+        s.roundsPlayed++;
+        this.save(s);
+    },
+
+    addLoss: function() {
+        const s = this.get();
+        s.losses++;
+        s.roundsPlayed++;
+        this.save(s);
+    },
+
+    addTilePlayed: function() {
+        const s = this.get();
+        s.tilesPlayed++;
+        this.save(s);
+    },
+
+    addScore: function(points) {
+        const s = this.get();
+        s.totalScore += points;
+        this.save(s);
+    }
+};

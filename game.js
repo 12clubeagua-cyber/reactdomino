@@ -240,6 +240,11 @@ window.play = function(pIdx, tIdx, side) {
     window.STATE.hands[pIdx].splice(tIdx, 1);
     window.STATE.handSize[pIdx]--;
     
+    // Registra estatistica se for o jogador local
+    if (pIdx === myIdx && typeof window.StatsManager !== 'undefined') {
+        window.StatsManager.addTilePlayed();
+    }
+    
     window.STATE.playerPassed.fill(false);
     window.STATE.passCount = 0;
     window.STATE.lastPlayed = pIdx;
@@ -375,6 +380,15 @@ window.endRound = function(reason, winnerIdx) {
 
     if (result.winTeam !== -1) {
         window.STATE.scores[result.winTeam]++;
+        
+        // Atualiza estatisticas persistentes
+        if (typeof window.StatsManager !== 'undefined') {
+            if (result.winTeam === (myIdx % 2)) {
+                window.StatsManager.addWin();
+            } else {
+                window.StatsManager.addLoss();
+            }
+        }
         
         // Confetes para a vitoria da dupla local
         if (result.winTeam === (myIdx % 2) && typeof window.spawnConfetti === 'function') {
