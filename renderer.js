@@ -32,7 +32,7 @@ window.Renderer = {
     },
 
     /**
-     * Renderiza o tabuleiro (as pecas jogadas).
+     * Renderiza o tabuleiro (as pecas jogadas) de forma incremental para performance.
      */
     drawBoard: function() {
         const board = window.Renderer._getEl('snake');
@@ -40,24 +40,33 @@ window.Renderer = {
 
         const positions = window.STATE?.positions || [];
         const isOver = window.STATE?.isOver || false;
-
-        // OTIMIZACAO: Verifica se o estado do tabuleiro mudou
-        const currentState = JSON.stringify({ p: positions.length, o: isOver });
-        if (window.Renderer._lastBoardState === currentState) return;
-        window.Renderer._lastBoardState = currentState;
-
-        // 1. Limpeza Seletiva: Preserva pecas em animacao para evitar "piscadas"
-        const staticTiles = board.querySelectorAll('.tile:not(.moving-proxy):not(.temp-hidden)');
-        staticTiles.forEach(tile => tile.remove());
         
-        if (positions.length === 0) return;
-        // ... (resto do loop de renderizacao)
+        // Se o tabuleiro foi resetado (ex: nova rodada)
+        if (positions.length === 0) {
+            board.innerHTML = '';
+            window.Renderer._lastBoardState = null;
+            window.Renderer._renderedTilesCount = 0;
+            return;
+        }
+
+        // Se o numero de peças diminuiu ou mudou drasticamente, limpa tudo
+        if (positions.length < (window.Renderer._renderedTilesCount || 0)) {
+            board.innerHTML = '';
+            window.Renderer._renderedTilesCount = 0;
+        }
+
+        const startIdx = window.Renderer._renderedTilesCount || 0;
+        if (startIdx >= positions.length && window.Renderer._lastIsOver === isOver) return;
+        
+        // Remove destaque da peca anterior
+        const lastMoveTile = board.querySelector('.last-move');
+        if (lastMoveTile) lastMoveTile.classList.remove('last-move');
 
         const fragment = document.createDocumentFragment();
         const W = window.CONFIG?.GAME?.TILE_W ?? 18;
         const L = window.CONFIG?.GAME?.TILE_L ?? 36;
 
-        for (let i = 0; i < positions.length; i++) {
+        for (let i = startIdx; i < positions.length; i++) {
             const nP = positions[i];
             const el = document.createElement('div');
             const isLast = (i === positions.length - 1 && !isOver);
@@ -79,6 +88,8 @@ window.Renderer = {
         }
 
         board.appendChild(fragment);
+        window.Renderer._renderedTilesCount = positions.length;
+        window.Renderer._lastIsOver = isOver;
 
         if (typeof window.updateCamera === 'function') {
             window.updateCamera();
