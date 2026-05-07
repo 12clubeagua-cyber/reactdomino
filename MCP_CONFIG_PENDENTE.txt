@@ -1,0 +1,39 @@
+# PENDENCIAS DE CONFIGURACAO - SERVIDORES MCP
+
+Para que eu possa ativar totalmente os recursos de integracao, voce precisa fornecer ou configurar as seguintes credenciais no arquivo 'reactdomino/.gemini/settings.json'.
+
+---
+
+### 1. GitHub (STATUS: OPERACIONAL)
+- **Token:** Ja configurado com seu PAT da memoria privada.
+- **Uso:** Posso criar issues, ler repositorios e gerenciar PRs.
+
+### 2. GitLab (STATUS: AGUARDANDO TOKEN)
+- **O que precisa:** 'GITLAB_PERSONAL_ACCESS_TOKEN'
+- **Onde conseguir:** No seu GitLab em Settings > Access Tokens (Escopo: api, read_repository).
+- **Variavel:** Substituir 'YOUR_GITLAB_TOKEN' no settings.json.
+
+### 3. Google Maps (STATUS: AGUARDANDO API KEY)
+- **O que precisa:** 'GOOGLE_MAPS_API_KEY'
+- **Onde conseguir:** Console do Google Cloud (Ativar Geocoding API, Places API, etc).
+- **Variavel:** Substituir 'YOUR_GOOGLE_MAPS_API_KEY' no settings.json.
+
+### 4. Slack (STATUS: DESCONECTADO)
+- **O que precisa:** 'SLACK_BOT_TOKEN'
+- **Onde conseguir:** Criar um App em api.slack.com, adicionar permissoes (chat:write) e instalar no workspace.
+- **Variavel:** Substituir 'YOUR_SLACK_BOT_TOKEN' no settings.json.
+
+### 5. Postgres (STATUS: DESCONECTADO)
+- **O que precisa:** 'DATABASE_URL'
+- **Formato:** postgresql://usuario:senha@host:porta/nome_do_banco
+- **Uso:** Necessario se voce quiser que eu gerencie dados diretamente em um banco de dados SQL.
+
+---
+
+### Como me passar essas informacoes com seguranca?
+Voce pode:
+1. Editar diretamente o arquivo `reactdomino/.gemini/settings.json`.
+2. Ou me dizer no chat: "O token do Slack e xoxb-..." (Eu usarei isso apenas para configurar o arquivo e nao salvarei em logs abertos).
+
+---
+*Gerado automaticamente pelo Gemini CLI em 7 de Maio de 2026.*

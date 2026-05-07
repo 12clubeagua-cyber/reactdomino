@@ -17,14 +17,17 @@ window.Renderer = {
     },
 
     /**
-     * Anuncia um evento para leitores de tela.
+     * Anuncia um evento para leitores de tela via AccessibilityManager.
      */
     announce: function(text) {
-        const announcer = window.Renderer._getEl('a11y-announcer');
-        if (announcer) {
-            announcer.textContent = text;
-            // Limpa apos um tempo para permitir repedicao da mesma mensagem
-            setTimeout(() => { if (announcer.textContent === text) announcer.textContent = ''; }, 3000);
+        if (typeof window.AccessibilityManager !== 'undefined' && typeof window.AccessibilityManager.announce === 'function') {
+            window.AccessibilityManager.announce(text);
+        } else {
+            const announcer = window.Renderer._getEl('a11y-announcer');
+            if (announcer) {
+                announcer.textContent = text;
+                setTimeout(() => { if (announcer.textContent === text) announcer.textContent = ''; }, 3000);
+            }
         }
     },
 
