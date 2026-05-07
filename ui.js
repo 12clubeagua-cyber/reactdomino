@@ -149,6 +149,121 @@ window.showStatsPanel = function() {
 };
 
 /**
+ * Gestor de Temas Visuais
+ */
+window.ThemeManager = {
+    set: function(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        window.safeSetStorage('domino_theme', theme);
+    },
+    init: function() {
+        const t = window.safeGetStorage('domino_theme', 'dark');
+        this.set(t);
+    }
+};
+
+/**
+ * Gestor de Idiomas (i18n)
+ */
+window.LanguageManager = {
+    _lang: 'pt',
+    _data: {
+        'pt': {
+            'play': 'Jogar',
+            'offline': 'Um Jogador',
+            'host': 'Criar Sala',
+            'client': 'Entrar na Sala',
+            'stats': 'Estatisticas',
+            'settings': 'Ajustes',
+            'themes': 'Temas',
+            'lang': 'Idioma',
+            'wins': 'Vitorias',
+            'losses': 'Derrotas',
+            'tiles': 'Pecas Jogadas',
+            'your_turn': 'Sua vez!',
+            'thinking': 'PENSANDO...'
+        },
+        'en': {
+            'play': 'Play',
+            'offline': 'Single Player',
+            'host': 'Host Room',
+            'client': 'Join Room',
+            'stats': 'Statistics',
+            'settings': 'Settings',
+            'themes': 'Themes',
+            'lang': 'Language',
+            'wins': 'Wins',
+            'losses': 'Losses',
+            'tiles': 'Tiles Played',
+            'your_turn': 'Your turn!',
+            'thinking': 'THINKING...'
+        }
+    },
+    set: function(lang) {
+        this._lang = lang;
+        window.safeSetStorage('domino_lang', lang);
+        this.updateUI();
+    },
+    get: function(key) {
+        return this._data[this._lang][key] || key;
+    },
+    init: function() {
+        this._lang = window.safeGetStorage('domino_lang', 'pt');
+        this.updateUI();
+    },
+    updateUI: function() {
+        // Logica para atualizar textos que ja estao no DOM
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            el.innerText = this.get(key);
+        });
+    }
+};
+
+/**
+ * Exibe painel de customizacao (Temas e Idioma)
+ */
+window.showSettingsPanel = function() {
+    let panel = document.getElementById('settings-panel');
+    if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'settings-panel';
+        panel.className = 'glass audio-menu';
+        panel.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10003; padding:30px; display:flex; flex-direction:column; gap:20px; min-width:300px;';
+        document.body.appendChild(panel);
+    }
+    
+    panel.innerHTML = `
+        <h2 style="margin:0; color:var(--gold); text-align:center;">AJUSTES</h2>
+        
+        <div class="audio-control">
+            <label>Tema Visual</label>
+            <select onchange="window.ThemeManager.set(this.value)" class="start-btn" style="padding:10px; font-size:0.9rem; background:var(--bg-dark); color:var(--gold); border:1px solid var(--gold);">
+                <option value="dark">Dark (Padrao)</option>
+                <option value="light">Light</option>
+                <option value="vintage">Vintage</option>
+                <option value="ocean">Ocean Blue</option>
+                <option value="midnight">Midnight Purple</option>
+            </select>
+        </div>
+
+        <div class="audio-control">
+            <label>Idioma / Language</label>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-side" style="flex:1" onclick="window.LanguageManager.set('pt')">PT-BR</button>
+                <button class="btn-side" style="flex:1" onclick="window.LanguageManager.set('en')">EN-US</button>
+            </div>
+        </div>
+
+        <button class="btn-side" style="width:100%;" onclick="document.getElementById('settings-panel').style.display='none'">FECHAR</button>
+    `;
+    panel.style.display = 'flex';
+};
+
+window.ThemeManager.init();
+window.LanguageManager.init();
+
+/**
  * 1. PONTES DE COMUNICACAO (WRAPPERS)
  * Usando window.* para garantir acesso seguro aos objetos em diferentes arquivos.
  */

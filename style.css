@@ -42,6 +42,28 @@
   --tile-border: #8d6e63;
 }
 
+[data-theme='ocean'] {
+  --bg-dark: #001f3f;
+  --glass-bg: rgba(0, 31, 63, 0.7);
+  --gold: #7FDBFF;
+  --text-main: #FFFFFF;
+  --text-dim: #7FDBFF;
+  --tile-bg: #E1F5FE;
+  --tile-border: #01579B;
+  --pip: #001f3f;
+}
+
+[data-theme='midnight'] {
+  --bg-dark: #121212;
+  --glass-bg: rgba(18, 18, 18, 0.8);
+  --gold: #BB86FC;
+  --text-main: #E0E0E0;
+  --text-dim: #B0B0B0;
+  --tile-bg: #1E1E1E;
+  --tile-border: #BB86FC;
+  --pip: #FFFFFF;
+}
+
 /* LOGICA DE EXIBICAO DO MENU */
 #start-screen {
   position: fixed; inset: 0; z-index: 9999;

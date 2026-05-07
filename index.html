@@ -57,18 +57,18 @@
         Continuar <span>Partida Salva</span>
       </button>
       <button class="start-btn" onclick="selectMode('offline')" aria-label="Modo Um Jogador, contra bots">
-        Um Jogador <span>Vs Bots</span>
+        <span data-i18n="offline">Um Jogador</span> <span>Vs Bots</span>
       </button>
       <button class="start-btn" onclick="selectMode('host')" aria-label="Criar sala multiplayer">
-        Criar Sala <span>Multiplayer Wi-Fi</span>
+        <span data-i18n="host">Criar Sala</span> <span>Multiplayer Wi-Fi</span>
       </button>
       <button class="start-btn" onclick="selectMode('client')" aria-label="Entrar em uma sala existente">
-        Entrar na Sala <span>Conectar Wi-Fi</span>
+        <span data-i18n="client">Entrar na Sala</span> <span>Conectar Wi-Fi</span>
       </button>
       <button class="start-btn" onclick="changeName()">Alterar Nome</button>
-      <button class="start-btn" onclick="window.showStatsPanel()">Estatisticas</button>
+      <button class="start-btn" onclick="window.showStatsPanel()" data-i18n="stats">Estatisticas</button>
+      <button class="start-btn" onclick="window.showSettingsPanel()" data-i18n="settings">Ajustes</button>
       <button class="start-btn" onclick="window.AudioMenu.show()">Ajustes de Som</button>
-      <button class="start-btn" onclick="window.AccessibilityManager.toggleHighContrast()">Acessibilidade: Alto Contraste</button>
     </div>
   </section>
 
