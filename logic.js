@@ -83,8 +83,8 @@ window.calculateTilePlacement = function(tile, side) {
     const maxInLine = isVertFlow ? (window.CONFIG?.GAME?.MAX_VERT ?? 6) : (window.CONFIG?.GAME?.MAX_HORIZ ?? 6);
 
     let isTurning = false;
-    // So vira se atingiu o limite, nao for bucha e a anterior nao foi bucha
-    if (e.lineCount >= maxInLine && !isD && !e.wasDouble) {
+    // Removida a restricao de buchas (!isD && !e.wasDouble) para garantir que o limite seja respeitado
+    if (e.lineCount >= maxInLine) {
         isTurning = true;
         if (isVertFlow) {
             e.lastVDir = e.dir;
@@ -105,21 +105,23 @@ window.calculateTilePlacement = function(tile, side) {
 
     let nx, ny;
 
+    // Dimensoes dinamicas para suportar curvas com buchas (carrocas)
+    const prevHalf = e.wasDouble ? (TW / 2) : (TL / 2);
+    const currentHalf = isD ? (TW / 2) : (TL / 2);
+
     if (!isTurning) {
         // Alinhamento em Reta
-        const prevHalf = e.wasDouble ? (TW / 2) : (TL / 2);
-        const currentHalf = isD ? (TW / 2) : (TL / 2);
-        
-        // ADICIONAMOS +2 para evitar que as bordas (1px cada) se sobreponham
         const totalDist = prevHalf + currentHalf + 2; 
-
         nx = e.hscX + (totalDist * dx);
         ny = e.hscY + (totalDist * dy);
     } else {
-        // Alinhamento em Quina (L-Shape)
-        // Recua para a quina da peca anterior e projeta para o lado
-        const cornerOffset = (TL / 2) - (TW / 2); 
-        const projection = (TL / 2) + (TW / 2) + 2; // +2 aqui tambem
+        // Alinhamento em Quina (L-Shape) Robusto
+        // Considera se a peca anterior ou a atual sao buchas para o calculo do offset
+        const prevSideHalf = e.wasDouble ? (TL / 2) : (TW / 2);
+        const newSideHalf = isD ? (TL / 2) : (TW / 2);
+        
+        const cornerOffset = prevHalf - newSideHalf; 
+        const projection = prevSideHalf + currentHalf + 2;
 
         nx = e.hscX + (cornerOffset * oldDX) + (projection * dx);
         ny = e.hscY + (cornerOffset * oldDY) + (projection * dy);

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v113'; // v113: UI - Maximize board area and Menu button adjustments
+const CACHE_NAME = 'domino-felipe-v114'; // v114: Logic - Strict vertical limit enforcement and robust L-shape math
 
 const ASSETS = [
   '/',
