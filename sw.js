@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v127'; // v127: Performance Native (Particle Pooling, O(1) Memory Lookup, Cache Clearing)
+const CACHE_NAME = 'domino-felipe-v128'; // v128: Advanced AI (Strategic Blocking) and Performance Refinements
 
 const ASSETS = [
   '/',

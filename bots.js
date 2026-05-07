@@ -186,9 +186,17 @@ window.calculateWeight = function(botIdx, tile, side) {
         if (tile[0] === tile[1]) weight += 40;
     }
 
-    // --- 2. INTELIGENCIA DE NAIPE ---
+    // --- 2. INTELIGENCIA DE NAIPE (ESTRATEGIA AVANCADA) ---
     const countInHand = hand.filter(t => t[0] === nextExtreme || t[1] === nextExtreme).length;
-    weight += (countInHand * 15); 
+    weight += (countInHand * 20); 
+
+    // Bloqueio Estrategico (Baseado em projetos GitHub):
+    // Se o bot percebe que o oponente nao tem esse naipe, ele prioriza jogar esse naipe para manter o bloqueio.
+    const knownBlocks = opponents.map(opp => {
+        const oppMem = window._getMemorySet(opp, currentState.playerMemory?.[opp]);
+        return oppMem.has(nextExtreme);
+    }).filter(Boolean).length;
+    weight += (knownBlocks * 40);
 
     // --- 3. LOGICA DE MEMORIA (OTIMIZADA) ---
     const memory = currentState.playerMemory;
