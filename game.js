@@ -169,6 +169,12 @@ window.processTurn = function() {
     if (isLocal) {
         if (netMode === 'client' || (netMode === 'host' && cur === myIdx) || netMode === 'offline') {
             if (typeof window.Dashboard !== 'undefined') window.Dashboard.setMessage('SUA VEZ', 'active');
+            
+            // Sincroniza estado de "pensando" no multiplayer
+            if (netMode !== 'offline') {
+                window.Network.request({ type: 'thinking', pIdx: cur });
+            }
+
             if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
                 window.Renderer.announce("E a sua vez de jogar!");
             }

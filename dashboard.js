@@ -62,6 +62,28 @@ window.Dashboard = {
     },
 
     /**
+     * Exibe um balao de "pensando" para um jogador.
+     */
+    showThinking: function(pIdx) {
+        const localIdx = window.myPlayerIdx ?? 0;
+        const viewIdx = (pIdx - localIdx + 4) % 4;
+        const handEl = window.Dashboard._getEl(`hand-${viewIdx}`);
+        if (!handEl) return;
+
+        // Evita duplicacao de baloes de pensamento
+        if (handEl.querySelector('.thinking-bubble:not(.chat-bubble):not(.emote-bubble)')) return;
+
+        if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'thinking-bubble';
+        bubble.innerText = '...';
+        
+        handEl.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 2000);
+    },
+
+    /**
      * Exibe uma mensagem de chat rapido para um jogador.
      */
     showQuickChat: function(pIdx, message) {
@@ -71,6 +93,10 @@ window.Dashboard = {
         if (!handEl) return;
 
         if (handEl.style.position !== 'relative') handEl.style.position = 'relative';
+
+        // Remove baloes de pensamento simples ao falar
+        const oldThinking = handEl.querySelector('.thinking-bubble:not(.chat-bubble):not(.emote-bubble)');
+        if (oldThinking) oldThinking.remove();
 
         const bubble = document.createElement('div');
         bubble.className = 'thinking-bubble chat-bubble';

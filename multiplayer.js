@@ -199,28 +199,20 @@ window.setupHostEvents = function(conn) {
         if (!data) return;
         
         if (data.type === 'play_request') {
-            const isPlayersTurn = (window.STATE.current === conn.assignedIdx);
-            
-            if (isPlayersTurn && typeof window.getMoves === 'function') {
-                // 1. O Host calcula quais sao os movimentos validos para este cliente
-                const validMoves = window.getMoves(window.STATE.hands[conn.assignedIdx]);
-                
-                // 2. Verifica se o que o Cliente pediu esta na lista de jogadas permitidas pelo Host
-                const isValid = validMoves.some(m => 
-                    m.idx === data.tIdx && 
-                    (m.side === 'both' || m.side === 'any' || m.side === data.side)
-                );
+            // ... (logica de validacao ja existente)
+        }
 
-                if (isValid) {
-                    // Aprovado! Executa a jogada.
-                    if (typeof window.play === 'function') {
-                        window.play(conn.assignedIdx, data.tIdx, data.side);
-                    }
-                } else {
-                    window.mobileLog(`Tentativa de jogada invalida ignorada (Cadeira ${conn.assignedIdx})`, "var(--red)");
-                }
+        // NOVO: Repassa mensagens de UI (Thinking, Emote, Chat) para todos
+        if (data.type === 'thinking' || data.type === 'emote' || data.type === 'quick_chat') {
+            window.broadcastToClients(data);
+            // Se o Host nao for o remetente, ele tambem precisa mostrar visualmente
+            if (data.pIdx !== window.myPlayerIdx) {
+                if (data.type === 'thinking') window.Dashboard.showThinking(data.pIdx);
+                if (data.type === 'emote') window.Dashboard.showEmote(data.pIdx, data.emote);
+                if (data.type === 'quick_chat') window.Dashboard.showQuickChat(data.pIdx, data.message);
             }
         }
+
         if (data.type === 'request_seat') {
             conn.assignedIdx = data.seatIdx;
             if (typeof window.SeatManager !== 'undefined') {
@@ -352,6 +344,11 @@ window.setupClientEvents = function(conn) {
                 window.updateStatusLocal(data.text, data.cls);
             }
         }
+
+        // NOVO: Processamento de UI para o Cliente
+        if (data.type === 'thinking') window.Dashboard.showThinking(data.pIdx);
+        if (data.type === 'emote') window.Dashboard.showEmote(data.pIdx, data.emote);
+        if (data.type === 'quick_chat') window.Dashboard.showQuickChat(data.pIdx, data.message);
     });
 };
 

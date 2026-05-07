@@ -53,6 +53,39 @@ window.AudioMenu = {
 };
 
 /**
+ * Exibe painel de emotes
+ */
+window.showEmotePanel = function() {
+    let panel = document.getElementById('emote-panel');
+    if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'emote-panel';
+        panel.className = 'glass';
+        panel.style.cssText = 'position:fixed; bottom:150px; right:120px; z-index:1000; padding:10px; display:grid; grid-template-columns:repeat(3, 1fr); gap:5px;';
+        
+        const emotes = ["😂", "😠", "👍", "👎", "🤔", "🔥"];
+        emotes.forEach(emo => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-side';
+            btn.style.padding = '10px';
+            btn.innerText = emo;
+            btn.onclick = () => {
+                window.Network.request({ type: 'emote', pIdx: window.myPlayerIdx, emote: emo });
+                window.Dashboard.showEmote(window.myPlayerIdx, emo);
+                panel.style.display = 'none';
+            };
+            panel.appendChild(btn);
+        });
+        document.body.appendChild(panel);
+    }
+    panel.style.display = (panel.style.display === 'none') ? 'grid' : 'none';
+    if (panel.style.display === 'grid') {
+        const chatPanel = document.getElementById('chat-panel');
+        if (chatPanel) chatPanel.style.display = 'none';
+    }
+};
+
+/**
  * Exibe painel de chat rapido
  */
 window.showQuickChatPanel = function() {
@@ -78,6 +111,10 @@ window.showQuickChatPanel = function() {
         document.body.appendChild(panel);
     }
     panel.style.display = (panel.style.display === 'none') ? 'grid' : 'none';
+    if (panel.style.display === 'grid') {
+        const emotePanel = document.getElementById('emote-panel');
+        if (emotePanel) emotePanel.style.display = 'none';
+    }
 };
 
 /**

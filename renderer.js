@@ -8,6 +8,8 @@
 window.Renderer = {
     // Cache de referencias do DOM para evitar buscas repetitivas
     _cache: {},
+    _lastBoardState: null,
+    _lastHandsState: null,
 
     _getEl: function(id) {
         if (!window.Renderer._cache[id]) window.Renderer._cache[id] = document.getElementById(id);
@@ -33,14 +35,20 @@ window.Renderer = {
         const board = window.Renderer._getEl('snake');
         if (!board) return;
 
+        const positions = window.STATE?.positions || [];
+        const isOver = window.STATE?.isOver || false;
+
+        // OTIMIZACAO: Verifica se o estado do tabuleiro mudou
+        const currentState = JSON.stringify({ p: positions.length, o: isOver });
+        if (window.Renderer._lastBoardState === currentState) return;
+        window.Renderer._lastBoardState = currentState;
+
         // 1. Limpeza Seletiva: Preserva pecas em animacao para evitar "piscadas"
         const staticTiles = board.querySelectorAll('.tile:not(.moving-proxy):not(.temp-hidden)');
         staticTiles.forEach(tile => tile.remove());
-
-        const positions = window.STATE?.positions || [];
-        const isOver = window.STATE?.isOver || false;
         
         if (positions.length === 0) return;
+        // ... (resto do loop de renderizacao)
 
         const fragment = document.createDocumentFragment();
         const W = window.CONFIG?.GAME?.TILE_W ?? 18;
@@ -85,6 +93,21 @@ window.Renderer = {
         const currentTurn = window.STATE?.current ?? 0;
         const isOver = window.STATE?.isOver ?? false;
         const isBlocked = window.STATE?.isBlocked ?? false;
+
+        // OTIMIZACAO: Verifica se houve mudanca nas maos ou status de turno
+        const currentState = JSON.stringify({
+            h: window.STATE?.handSize,
+            c: currentTurn,
+            o: isOver,
+            b: isBlocked,
+            p: window.visualPass,
+            r: reveal
+        });
+        if (window.Renderer._lastHandsState === currentState) {
+            window.Renderer._checkLocalInteraction(); // Ainda verifica se precisa de highlights
+            return;
+        }
+        window.Renderer._lastHandsState = currentState;
         
         // Determina quem venceu para o destaque visual
         let winTeam = -1;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v118'; // v118: Audio Menu - SFX and BGM volume controls
+const CACHE_NAME = 'domino-felipe-v119'; // v119: UX & Perf - Emotes, thinking sync and DOM caching
 
 const ASSETS = [
   '/',
