@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v114'; // v114: Logic - Strict vertical limit enforcement and robust L-shape math
+const CACHE_NAME = 'domino-felipe-v115'; // v115: Logic - Fix initial piece orientation and L-shape offsets
 
 const ASSETS = [
   '/',

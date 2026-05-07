@@ -63,7 +63,7 @@ window.calculateTilePlacement = function(tile, side) {
 
     // --- CASO A: Primeira Peca da Mesa (Centro 0,0) ---
     if (!window.STATE.positions.length) {
-        const nP = { x: 0, y: 0, v1: tile[0], v2: tile[1], isV: !isD };
+        const nP = { x: 0, y: 0, v1: tile[0], v2: tile[1], isV: isD }; // isV e true para buchas no centro
         window.STATE.ends[0].wasDouble = isD;
         window.STATE.ends[1].wasDouble = isD;
         window.updateExtremes(tile, null);
@@ -121,7 +121,7 @@ window.calculateTilePlacement = function(tile, side) {
         const newSideHalf = isD ? (TL / 2) : (TW / 2);
         
         const cornerOffset = prevHalf - newSideHalf; 
-        const projection = prevSideHalf + currentHalf + 2;
+        const projection = prevSideHalf + currentHalf + 4; // Aumentado para 4px para seguranca total
 
         nx = e.hscX + (cornerOffset * oldDX) + (projection * dx);
         ny = e.hscY + (cornerOffset * oldDY) + (projection * dy);
