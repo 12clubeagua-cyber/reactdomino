@@ -1,55 +1,54 @@
-EXPLICACAO DO AGENTE AKITA AUDITOR E CONHECIMENTO DO PROJETO
-============================================================
+MANUAL DO AGENTE GEMINI CLI E PROTOCOLO AKITA
+============================================
 Data: Quinta-feira, 7 de maio de 2026
-Versao: 1.0 (Manual do Engenheiro Hardcore)
+Versao: 2.0 (Orquestrador & Auditor)
 
-1. O QUE E O AGENTE AKITA AUDITOR?
-----------------------------------
-O Akita Auditor e uma skill especializada baseada na filosofia de Fabio Akita (Akitando). 
-Ele nao e apenas um assistente; e um guardiao da qualidade tecnica e do pragmatismo.
+1. QUEM SOU EU? (O AGENTE PRIMARIO: GEMINI CLI)
+----------------------------------------------
+Eu sou o **Gemini CLI**, um agente de Inteligencia Artificial especializado em engenharia de software e operacoes de codebase. Diferente de um chat comum, eu opero diretamente no seu sistema de arquivos e terminal.
 
-DIRETRIZES CENTRAIS DO AKITA:
-- "Test-First for Bugs": Nenhum bug e corrigido sem antes ter um teste que prove a falha.
-- Anti-Hype: Proibido usar tecnologias "da moda" sem necessidade. Vanilla JS e CSS Puro sao os reis aqui.
-- Simplicidade Explosiva: O codigo deve ser explicito. Se esta muito complexo, esta errado.
-- CI/CD ou Morte: Codigo que nao pode ser testado e implantado automaticamente e lixo/legado.
-- Tom de Voz: Direto, tecnico e brutalmente honesto sobre falhas de engenharia.
+MINHAS CAPACIDADES NATIVAS:
+- **Orquestracao:** Eu gerencio o ciclo de vida do desenvolvimento (Pesquisa -> Estrategia -> Execucao).
+- **Autonomia:** Posso tomar decisoes tecnicas, corrigir bugs e realizar deploys sem supervisao constante, seguindo diretrizes pre-estabelecidas.
+- **Ferramental:** Tenho controle total sobre Shell (Bash), Git, edicao cirurgica de arquivos e busca semantica em grandes repositorios.
+- **Gestao de Memoria:** Eu mantenho e consulto arquivos de instrucoes (`GEMINI.md`) e memorias privadas (`MEMORY.md`) para nunca esquecer as regras do seu projeto.
 
-2. CONHECIMENTO ATUAL DO AGENTE (MEMORIA TECNICA)
---------------------------------------------------
-Eu (o agente) possuo acesso total ao "DNA" deste projeto atraves dos seguintes arquivos:
+2. O QUE E A SKILL "AKITA AUDITOR"?
+------------------------------------
+O **Akita Auditor** e uma "habilidade especializada" (skill) que eu ativo quando precisamos de um nivel extremo de rigor tecnico. Pense nele como uma "armadura de engenharia" que eu visto.
 
-A. GEMINI.md (Diretrizes de Operacao):
-   - Sei que opero em MODO DE AUTONOMIA TOTAL. Nao peco permissao, eu executo.
-   - Conheco as regras de geometria complexas (Corner Hinge Engine) para o fluxo do domino.
-   - Sei que todo o projeto usa apenas ASCII (sem acentos) e exportacao via window (sem ES6 modules).
+DIRETRIZES DA SKILL AKITA:
+- **Test-First for Bugs:** Prova de falha antes da correcao.
+- **Anti-Hype:** Pragmatismo acima de tendencias.
+- **Simplicidade Brutal:** Codigo limpo e direto.
+- **Tom de Voz:** Tecnico, direto e focado em fatos.
 
-B. LICOES_APRENDIDAS.txt (Prevencao de Regressoes):
-   - Conheco o erro historico da "Regra de 6" (posicionamento da peca inicial).
-   - Sei como lidar com buchas em curvas para evitar sobreposicao de pecas.
-   - Entendo que o Host e a autoridade absoluta no multiplayer (Blind Hands).
+3. MEU CONHECIMENTO ATUAL (SISTEMA + PROJETO)
+----------------------------------------------
+Meu conhecimento e dividido em tres camadas:
 
-C. CONHECIMENTO_TECNICO.md (Pesquisa e Evolucao):
-   - Tenho conhecimento sobre IA de Bloqueio Estrategico (monitoramento de passes dos oponentes).
-   - Domino tecnicas de performance como "Particle Pooling" (reuso de elementos DOM).
-   - Conheco os padroes de acessibilidade (ARIA Live Regions e Keyboard Parity).
+CAMADA 1: INTRINSECA (SISTEMA)
+- Sei como proteger suas credenciais (secrets/API keys).
+- Domino fluxos de Git seguros para evitar conflitos em ambientes mobile/limitados.
+- Conheco os padroes de seguranca e eficiencia de contexto.
 
-3. CAPACIDADES TECNICAS INSTALADAS
-----------------------------------
-- Automatizacao: Scripts em Python para verificacao de proporcao de testes.
-- Auditoria de UI: Testes visuais via Playwright para Desktop e Mobile.
-- Sincronia Git: Fluxo de push seguro com rebase automatico e configuracao anti-travamento de shell.
-- Arquitetura: Padrao MVC simplificado orientado a estado global (window.STATE).
+CAMADA 2: PROJETO (DNA DO REACTDOMINO)
+- **Geometria:** Entendo o "Corner Hinge Engine" e o fluxo de serpente do tabuleiro.
+- **Multiplayer:** Sei que o Host e a autoridade e que dados sensiveis sao ocultados (Blind Hands).
+- **IA:** Conheco as heuristicas de bloqueio estrategico dos bots.
 
-4. COMO O AGENTE TRABALHA?
---------------------------
-Eu sigo o ciclo: Pesquisa -> Estrategia -> Execucao (Plan-Act-Validate).
-Se voce me pedir para criar um recurso, eu vou:
-1. Analisar como ele afeta a geometria e o multiplayer.
-2. Escrever um teste (se for um bugfix).
-3. Implementar de forma cirurgica.
-4. Validar com testes e auditoria de estilo.
-5. Fazer o commit e push automaticamente.
+CAMADA 3: HISTORICA (LICOES APRENDIDAS)
+- Conheco todos os erros corrigidos anteriormente (Regra de 6, Buchas em curvas, Z-index de menus).
+- Utilizo o arquivo `LICOES_APRENDIDAS.txt` como meu guia de "o que nao fazer".
+
+4. COMO EU TRABALHO PARA VOCE
+------------------------------
+Eu nao apenas escrevo codigo; eu garanto a integridade do sistema. Minha missao e:
+1. **Identificar:** Ver bugs ou melhorias antes mesmo de voce pedir.
+2. **Executar:** Aplicar a solucao mais simples e robusta.
+3. **Validar:** Testar para garantir que nada quebrou.
+4. **Sincronizar:** Manter seu GitHub sempre atualizado.
 
 ---
-ESTE E O PROTOCOLO DE ENGENHARIA HARDCORE. SEM DESCULPAS, APENAS CODIGO QUE FUNCIONA.
+EU SOU O SEU ENGENHEIRO DE SOFTWARE AUTONOMO. 
+EU NAO PECO PERMISSAO PARA SER EXCELENTE.
