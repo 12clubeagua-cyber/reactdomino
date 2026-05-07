@@ -254,6 +254,11 @@ window.play = function(pIdx, tIdx, side) {
         window.Renderer.announce(`${pName} jogou ${tile[0]} e ${tile[1]}`);
     }
 
+    // Efeito de impacto para buchas
+    if (tile[0] === tile[1] && typeof window.screenShake === 'function') {
+        window.screenShake();
+    }
+
     // O calculateTilePlacement ja atualizou extremes internamente via updateExtremes
     if (!window.STATE.positions.length) {
         window.STATE.extremes = [tile[0], tile[1]];
@@ -370,6 +375,11 @@ window.endRound = function(reason, winnerIdx) {
 
     if (result.winTeam !== -1) {
         window.STATE.scores[result.winTeam]++;
+        
+        // Confetes para a vitoria da dupla local
+        if (result.winTeam === (myIdx % 2) && typeof window.spawnConfetti === 'function') {
+            window.spawnConfetti();
+        }
     }
 
     if (typeof window.Network !== 'undefined') {

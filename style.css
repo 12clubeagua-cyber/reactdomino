@@ -451,3 +451,24 @@ input[type="range"]::-webkit-slider-thumb {
   animation: win-glow 1s infinite;
   z-index: 50;
 }
+
+/* --- ANIMATIONS & EFFECTS --- */
+@keyframes shake {
+  0% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
+  25% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 4px), calc(var(--cam-y) - 4px)); }
+  50% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) - 4px), calc(var(--cam-y) + 4px)); }
+  75% { transform: scale(var(--cam-scale)) translate(calc(var(--cam-x) + 2px), calc(var(--cam-y) + 2px)); }
+  100% { transform: scale(var(--cam-scale)) translate(var(--cam-x), var(--cam-y)); }
+}
+
+.shake {
+  animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10002;
+  border-radius: 50%;
+  will-change: transform, opacity;
+}

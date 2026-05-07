@@ -176,3 +176,76 @@ window.animateTile = function(pIdx, targetData, onComplete) {
     
     requestAnimationFrame(step);
 };
+
+/**
+ * 4. EFEITOS ESPECIAIS (PARTICULAS E SHAKE)
+ */
+
+window.screenShake = function() {
+    const snakeEl = document.getElementById('snake');
+    if (!snakeEl) return;
+    
+    snakeEl.classList.remove('shake');
+    void snakeEl.offsetWidth; // Trigger reflow
+    snakeEl.classList.add('shake');
+    
+    if (window.HapticEngine) window.HapticEngine.vibrate('error');
+    
+    setTimeout(() => {
+        snakeEl.classList.remove('shake');
+    }, 500);
+};
+
+window.spawnConfetti = function() {
+    const colors = ['#FFD700', '#FFA500', '#FF4500', '#00FF00', '#00BFFF', '#FF1493'];
+    const count = 50;
+
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = Math.random() * 8 + 4;
+        
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.background = color;
+        p.style.left = `${Math.random() * 100}vw`;
+        p.style.top = `-20px`;
+        
+        document.body.appendChild(p);
+
+        const velocityX = (Math.random() - 0.5) * 10;
+        const velocityY = Math.random() * 5 + 5;
+        const rotation = Math.random() * 360;
+        const rotationSpeed = (Math.random() - 0.5) * 10;
+        
+        let posX = parseFloat(p.style.left);
+        let posY = -20;
+        let angle = rotation;
+
+        const startTime = performance.now();
+        const duration = 2000 + Math.random() * 1000;
+
+        function animate(now) {
+            const elapsed = now - startTime;
+            const t = elapsed / duration;
+
+            if (t >= 1) {
+                p.remove();
+                return;
+            }
+
+            posY += velocityY;
+            posX += velocityX + Math.sin(elapsed / 200) * 2;
+            angle += rotationSpeed;
+
+            p.style.transform = `translate3d(${posX}px, ${posY}px, 0) rotate(${angle}deg)`;
+            p.style.opacity = 1 - Math.pow(t, 2);
+
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+    }
+};
+
