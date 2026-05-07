@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v126'; // v126: Visual Juice (Isometric Hand, Particles, Bot Reactions)
+const CACHE_NAME = 'domino-felipe-v127'; // v127: Performance Native (Particle Pooling, O(1) Memory Lookup, Cache Clearing)
 
 const ASSETS = [
   '/',

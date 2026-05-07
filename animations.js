@@ -188,6 +188,25 @@ window.animateTile = function(pIdx, targetData, onComplete) {
  * 4. EFEITOS ESPECIAIS (PARTICULAS E SHAKE)
  */
 
+// POOL DE PARTICULAS: Reutiliza elementos DOM para evitar GC jank (Best Practice 2026)
+window._particlePool = [];
+window._getParticleFromPool = function() {
+    if (window._particlePool.length > 0) {
+        const p = window._particlePool.pop();
+        p.style.display = 'block';
+        return p;
+    }
+    const p = document.createElement('div');
+    p.className = 'particle';
+    return p;
+};
+
+window._returnParticleToPool = function(p) {
+    p.style.display = 'none';
+    p.style.transform = '';
+    window._particlePool.push(p);
+};
+
 window.screenShake = function() {
     const snakeEl = document.getElementById('snake');
     if (!snakeEl) return;
@@ -211,8 +230,7 @@ window.spawnImpactParticles = function(x, y, isDouble = false) {
     const colors = isDouble ? ['#ffcc33', '#ffffff', '#ff5722'] : ['#a8b4a8', '#f0ede0'];
     
     for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
+        const p = window._getParticleFromPool();
         const color = colors[Math.floor(Math.random() * colors.length)];
         const size = Math.random() * (isDouble ? 6 : 4) + 2;
         
@@ -223,7 +241,7 @@ window.spawnImpactParticles = function(x, y, isDouble = false) {
         p.style.top = `${y}px`;
         p.style.opacity = '1';
         
-        document.body.appendChild(p);
+        if (!p.parentNode) document.body.appendChild(p);
 
         const angle = Math.random() * Math.PI * 2;
         const force = Math.random() * (isDouble ? 8 : 4) + 2;
@@ -240,7 +258,7 @@ window.spawnImpactParticles = function(x, y, isDouble = false) {
         function step(now) {
             const t = (now - startTime) / duration;
             if (t >= 1) {
-                p.remove();
+                window._returnParticleToPool(p);
                 return;
             }
 

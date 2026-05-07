@@ -190,21 +190,34 @@ window.calculateWeight = function(botIdx, tile, side) {
     const countInHand = hand.filter(t => t[0] === nextExtreme || t[1] === nextExtreme).length;
     weight += (countInHand * 15); 
 
-    // --- 3. LOGICA DE MEMORIA ---
+    // --- 3. LOGICA DE MEMORIA (OTIMIZADA) ---
     const memory = currentState.playerMemory;
     if (Array.isArray(memory)) {
         opponents.forEach(opp => {
-            if (Array.isArray(memory[opp]) && memory[opp].includes(nextExtreme)) {
+            // Usa Set para busca instantanea (Best Practice)
+            const oppMem = window._getMemorySet(opp, memory[opp]);
+            if (oppMem.has(nextExtreme)) {
                 weight += 50; 
             }
         });
 
-        if (Array.isArray(memory[partner]) && memory[partner].includes(nextExtreme)) {
+        const partnerMem = window._getMemorySet(partner, memory[partner]);
+        if (partnerMem.has(nextExtreme)) {
             weight -= 40; 
         }
     }
 
     return weight;
+};
+
+// Cache de Sets de memoria para evitar reconstrucao a cada calculo
+window._memorySets = [null, null, null, null];
+window._getMemorySet = function(pIdx, data) {
+    if (!window._memorySets[pIdx] || window._memorySets[pIdx].source !== data) {
+        window._memorySets[pIdx] = new Set(data || []);
+        window._memorySets[pIdx].source = data;
+    }
+    return window._memorySets[pIdx];
 };
 
 /**

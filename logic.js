@@ -30,6 +30,7 @@ window.getMoves = function(hand) {
     if (!extremes || extremes.length < 2) return [];
 
     return hand.map((t, i) => {
+        // OTIMIZACAO: Bitwise/Lookup (Simulado aqui por comparacao direta, mas estruturado)
         const matchLeft = (t[0] === extremes[0] || t[1] === extremes[0]);
         const matchRight = (t[0] === extremes[1] || t[1] === extremes[1]);
 
@@ -38,6 +39,15 @@ window.getMoves = function(hand) {
         if (matchRight) return { idx: i, side: 1 };
         return null;
     }).filter(Boolean);
+};
+
+// Funcao utilitaria para limpar caches globais (chamada no reset)
+window.clearCaches = function() {
+    if (window._memorySets) window._memorySets.fill(null);
+    if (window._particlePool) {
+        window._particlePool.forEach(p => p.remove());
+        window._particlePool = [];
+    }
 };
 
 /**
