@@ -32,8 +32,8 @@
 - **Match State:** Persistencia via `localStorage` ('domino_match_state'). `loadMatchState()` deve ser robusto a dados corrompidos.
 
 ## 6. Licoes Aprendidas (Prevencao de Regressoes)
-- **Geometria de Quinas:** O calculo de `cornerOffset` deve considerar se a peca anterior OU a atual sao buchas para ajustar o eixo corretamente.
-- **Sobreposicao Inicial:** Nunca assuma que a 1a peca e sempre horizontal. A orientacao depende da direcao de saida dos `ends`.
+- **Geometria de Quinas:** O calculo de `cornerOffset` e `projection` deve usar a extensao real da peca anterior nos dois eixos (baseado em `lastIsV`), especialmente para buchas em curvas que mudam de orientacao.
+- **Regra de 6:** A peca inicial (0,0) DEVE ser contabilizada no `lineCount` de ambos os lados para que a primeira reta respeite o limite de 6 pecas.
 - **Contexto 'this':** NUNCA use `this` em callbacks de rede ou timers; use referencias globais expliticas (ex: `window.Renderer`).
 - **Seguranca P2P:** Nunca envie a mao completa de outros jogadores no `syncState` para evitar inspect-element cheats.
 
