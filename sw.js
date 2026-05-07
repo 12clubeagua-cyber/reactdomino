@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v112'; // v112: Perf - GPU acceleration for animations and Layout Thrashing fixes
+const CACHE_NAME = 'domino-felipe-v113'; // v113: UI - Maximize board area and Menu button adjustments
 
 const ASSETS = [
   '/',

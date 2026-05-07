@@ -226,27 +226,44 @@ html, body {
     box-shadow: 0 0 10px var(--gold);
 }
 
+#btn-exit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: auto;
+  min-width: 60px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  color: var(--text-main);
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  text-transform: uppercase;
+}
+
 .hand {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.08);
   border-radius: var(--radius);
   transition: background 0.3s;
   z-index: 20;
 }
 
-.hand-horiz { min-height: 80px; }
-.hand-side { width: 90px; }
+.hand-horiz { min-height: 55px; }
+.hand-side { width: 65px; }
 
 .tiles-rack {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 5px;
+  gap: 2px;
 }
 
 .hand-side .tiles-rack { flex-direction: column; }
@@ -255,18 +272,18 @@ html, body {
   justify-content: space-between; 
   align-items: center; 
   width: 100%;
-  font-size: 11px; 
+  font-size: 9px; 
   color: var(--text-dim); 
-  margin-bottom: 8px; 
+  margin-bottom: 2px; 
   text-transform: uppercase; 
 }
 .p-count { 
   background: rgba(255,255,255,0.1); 
-  padding: 2px 6px; 
-  border-radius: 10px; 
+  padding: 1px 4px; 
+  border-radius: 8px; 
   color: var(--gold); 
   font-weight: bold;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .active-turn { background: rgba(255, 204, 51, 0.12); }
