@@ -129,6 +129,12 @@ window.Dashboard = {
      * Atualiza os valores do placar e ajusta os nomes das duplas.
      */
     updateScore: function() {
+        const scores = window.STATE?.scores || [0, 0];
+        const scoreHash = `${scores[0]}-${scores[1]}-${window.myPlayerIdx}`;
+        
+        if (window.Dashboard._lastScoreHash === scoreHash) return;
+        window.Dashboard._lastScoreHash = scoreHash;
+
         requestAnimationFrame(() => {
             const scoreA = window.Dashboard._getEl('scoreA');
             const scoreB = window.Dashboard._getEl('scoreB');
@@ -160,6 +166,11 @@ window.Dashboard = {
      */
     setMessage: function(text, cls = '') {
         requestAnimationFrame(() => window.Dashboard._renderStatusLocal(text, cls));
+
+        // Anuncio de acessibilidade
+        if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
+            window.Renderer.announce(text);
+        }
 
         if (typeof window.Network !== 'undefined' && window.Network.isHost && window.Network.isHost()) {
             window.Network.sync({ type: 'status', text, cls });

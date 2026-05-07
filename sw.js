@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v124'; // v124: Bot name variety and intelligent randomization
+const CACHE_NAME = 'domino-felipe-v125'; // v125: Dashboard optimizations and expanded bot name pool
 
 const ASSETS = [
   '/',
