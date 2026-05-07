@@ -587,3 +587,70 @@ input[type="range"]::-webkit-slider-thumb {
   outline: 4px solid #ff0 !important;
   outline-offset: 4px;
 }
+/* EFEITOS ESPECIAIS (2026) */
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+}
+
+.particle-sparkle {
+    animation: sparkle-anim 0.8s ease-out forwards;
+}
+
+.particle-impact {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    box-shadow: 0 0 10px #fff, 0 0 20px var(--gold);
+    animation: impact-anim 0.5s ease-out forwards;
+}
+
+@keyframes sparkle-anim {
+    0% { transform: scale(1) translate(0,0); opacity: 1; }
+    100% { transform: scale(0) translate(var(--tw, 20px), var(--th, -20px)); opacity: 0; }
+}
+
+@keyframes impact-anim {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes screen-shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+.match-point-aura {
+    box-shadow: inset 0 0 150px rgba(255, 204, 51, 0.2);
+    border: 2px solid var(--gold);
+    animation: aura-pulse 2s infinite alternate;
+}
+
+@keyframes aura-pulse {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.shake-anim {
+    animation: screen-shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+}

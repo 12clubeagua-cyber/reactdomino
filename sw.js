@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v128'; // v128: Advanced AI (Strategic Blocking) and Performance Refinements
+const CACHE_NAME = 'domino-felipe-v129'; // v129: Particle Pooling, Geometry Refinements (Rule of 6), and A11Y Enhancements
 
 const ASSETS = [
   '/',

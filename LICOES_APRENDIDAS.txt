@@ -31,3 +31,11 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 - **ASCII APENAS:** Proibido caracteres acentuados.
 - **SEM IMPORTS:** Use apenas o objeto global `window`.
 - **DIRETRIZ DE AUTONOMIA:** Identificou o erro? Corrija, teste, documente no LICOES_APRENDIDAS.txt e de push.
+
+## 7. PERFORMANCE E OTIMIZACAO (renderer.js)
+- **PARTICLE POOLING:** Implementado sistema de reaproveitamento de elementos DOM para efeitos visuais (`spawnEffect`). Isso reduz a carga no coletor de lixo e mantem a fluidez em dispositivos mobile.
+- **INCREMENTAL RENDERING:** O tabuleiro so renderiza as novas pecas (`_renderedTilesCount`), preservando o que ja estava no DOM.
+
+## 8. ACESSIBILIDADE AVANCADA (renderer.js / ui.js)
+- **ARIA-LIVE DINAMICO:** O sistema de anuncios agora cria um elemento `aria-live="polite"` automaticamente se o gestor de acessibilidade estiver ausente.
+- **HIERARQUIA DE FOCO:** Botoes de ajuste (Audio/Temas) agora possuem IDs e labels ARIA explicitos para facilitar o uso por tecnologias assistivas.

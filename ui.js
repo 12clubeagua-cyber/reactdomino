@@ -233,30 +233,30 @@ window.showSettingsPanel = function() {
         document.body.appendChild(panel);
     }
     
-    panel.innerHTML = `
-        <h2 style="margin:0; color:var(--gold); text-align:center;">AJUSTES</h2>
-        
-        <div class="audio-control">
-            <label>Tema Visual</label>
-            <select onchange="window.ThemeManager.set(this.value)" class="start-btn" style="padding:10px; font-size:0.9rem; background:var(--bg-dark); color:var(--gold); border:1px solid var(--gold);">
-                <option value="dark">Dark (Padrao)</option>
-                <option value="light">Light</option>
-                <option value="vintage">Vintage</option>
-                <option value="ocean">Ocean Blue</option>
-                <option value="midnight">Midnight Purple</option>
-            </select>
-        </div>
+            panel.innerHTML = `
+                <h2 style="margin:0; color:var(--gold); text-align:center;" data-i18n="settings">AJUSTES</h2>
+                
+                <div class="audio-control">
+                    <label id="label-theme">Tema Visual</label>
+                    <select aria-labelledby="label-theme" onchange="window.ThemeManager.set(this.value)" class="start-btn" style="padding:10px; font-size:0.9rem; background:var(--bg-dark); color:var(--gold); border:1px solid var(--gold);">
+                        <option value="dark">Dark (Padrao)</option>
+                        <option value="light">Light</option>
+                        <option value="vintage">Vintage</option>
+                        <option value="ocean">Ocean Blue</option>
+                        <option value="midnight">Midnight Purple</option>
+                    </select>
+                </div>
 
-        <div class="audio-control">
-            <label>Idioma / Language</label>
-            <div style="display:flex; gap:10px;">
-                <button class="btn-side" style="flex:1" onclick="window.LanguageManager.set('pt')">PT-BR</button>
-                <button class="btn-side" style="flex:1" onclick="window.LanguageManager.set('en')">EN-US</button>
-            </div>
-        </div>
+                <div class="audio-control">
+                    <label id="label-lang">Idioma / Language</label>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-side" style="flex:1" onclick="window.LanguageManager.set('pt')" aria-label="Português Brasil">PT-BR</button>
+                        <button class="btn-side" style="flex:1" onclick="window.LanguageManager.set('en')" aria-label="English US">EN-US</button>
+                    </div>
+                </div>
 
-        <button class="btn-side" style="width:100%;" onclick="document.getElementById('settings-panel').style.display='none'">FECHAR</button>
-    `;
+                <button class="btn-side" style="width:100%;" onclick="document.getElementById('settings-panel').style.display='none'" aria-label="Fechar Ajustes">FECHAR</button>
+            `;
     panel.style.display = 'flex';
 };
 

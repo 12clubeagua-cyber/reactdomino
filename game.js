@@ -260,6 +260,17 @@ window.play = function(pIdx, tIdx, side) {
         window.Renderer.drawHands(); 
     }
 
+    // --- EFEITOS VISUAIS (POOLING) ---
+    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.spawnEffect === 'function') {
+        const isDouble = tile[0] === tile[1];
+        window.Renderer.spawnEffect(placement.nP.x, placement.nP.y, isDouble ? 'impact' : 'sparkle');
+        
+        // Tremor de tela apenas para buchas (impacto real)
+        if (isDouble && typeof window.Animations !== 'undefined' && typeof window.Animations.screenShake === 'function') {
+            window.Animations.screenShake();
+        }
+    }
+
     // Anuncio de acessibilidade
     if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
         const pName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(pIdx) : `Jogador ${pIdx}`;

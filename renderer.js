@@ -10,6 +10,7 @@ window.Renderer = {
     _cache: {},
     _lastBoardState: null,
     _lastHandsState: null,
+    _particlePool: [],
 
     _getEl: function(id) {
         if (!window.Renderer._cache[id]) window.Renderer._cache[id] = document.getElementById(id);
@@ -17,18 +18,60 @@ window.Renderer = {
     },
 
     /**
-     * Anuncia um evento para leitores de tela via AccessibilityManager.
+     * Anuncia um evento para leitores de tela de forma robusta.
      */
     announce: function(text) {
+        if (!text) return;
+        
+        // 1. Tenta usar o AccessibilityManager se existir
         if (typeof window.AccessibilityManager !== 'undefined' && typeof window.AccessibilityManager.announce === 'function') {
             window.AccessibilityManager.announce(text);
-        } else {
-            const announcer = window.Renderer._getEl('a11y-announcer');
-            if (announcer) {
-                announcer.textContent = text;
-                setTimeout(() => { if (announcer.textContent === text) announcer.textContent = ''; }, 3000);
-            }
+            return;
         }
+
+        // 2. Fallback: Cria ou usa um elemento aria-live dedicado
+        let announcer = window.Renderer._getEl('a11y-announcer');
+        if (!announcer) {
+            announcer = document.createElement('div');
+            announcer.id = 'a11y-announcer';
+            announcer.className = 'sr-only'; // Visivel apenas para screen readers
+            announcer.setAttribute('aria-live', 'polite');
+            announcer.setAttribute('aria-atomic', 'true');
+            document.body.appendChild(announcer);
+            window.Renderer._cache['a11y-announcer'] = announcer;
+        }
+        
+        // Pequeno delay para garantir que o leitor perceba a mudanca de texto
+        announcer.textContent = '';
+        setTimeout(() => {
+            announcer.textContent = text;
+            console.log("A11Y:", text);
+        }, 50);
+    },
+
+    /**
+     * Sistema de Particle Pooling para efeitos visuais (Performance O(1)).
+     */
+    spawnEffect: function(x, y, type = 'sparkle') {
+        let p = window.Renderer._particlePool.find(el => el.style.display === 'none');
+        
+        if (!p) {
+            if (window.Renderer._particlePool.length > 50) return; // Limite de seguranca
+            p = document.createElement('div');
+            p.className = 'particle';
+            document.getElementById('game-area').appendChild(p);
+            window.Renderer._particlePool.push(p);
+        }
+
+        p.className = `particle particle-${type}`;
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        p.style.display = 'block';
+
+        // Reutiliza o elemento apos a animacao
+        setTimeout(() => {
+            p.style.display = 'none';
+        }, 1000);
     },
 
     /**

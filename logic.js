@@ -90,6 +90,7 @@ window.calculateTilePlacement = function(tile, side) {
         window.STATE.ends[1].hscX = 0;
         window.STATE.ends[1].hscY = 0;
         
+        // REGRA DE OURO: A peca inicial (0,0) deve ser contabilizada no lineCount de ambos os lados (Side 0 e Side 1).
         window.STATE.ends[0].lineCount = 1;
         window.STATE.ends[1].lineCount = 1;
         
@@ -117,6 +118,7 @@ window.calculateTilePlacement = function(tile, side) {
     const maxInLine = isVertFlow ? (window.CONFIG?.GAME?.MAX_VERT ?? 6) : (window.CONFIG?.GAME?.MAX_HORIZ ?? 6);
 
     let isTurning = false;
+    // Se atingiu o limite, vira 90 graus
     if (e.lineCount >= maxInLine) {
         isTurning = true;
         if (isVertFlow) {
@@ -125,15 +127,16 @@ window.calculateTilePlacement = function(tile, side) {
         } else {
             e.dir = (e.lastVDir === 90 ? 270 : 90); // Vira para vertical
         }
-        e.lineCount = 0;
+        e.lineCount = 0; // Reinicia contagem para a nova reta
         isVertFlow = (e.dir === 90 || e.dir === 270);
     }
     e.lineCount++;
 
-    // Objeto de Posicao Final - CALCULADO ANTES DAS DIMENSOES
+    // Objeto de Posicao Final
     let finalIsV = isVertFlow ? !isD : isD;
+    // Buchas em curvas devem ser paralelas ao NOVO fluxo (transversais ao fluxo antigo)
     if (isTurning && isD) {
-        finalIsV = isVertFlow; // Fica paralela ao NOVO fluxo (transversal a anterior)
+        finalIsV = isVertFlow; 
     }
 
     // Vetores de Direcao
@@ -151,16 +154,18 @@ window.calculateTilePlacement = function(tile, side) {
     if (!isTurning) {
         // Em reta, prevHalf e a extensao da peca anterior no fluxo atual
         const prevHalf = (e.lastIsV === isVertFlow) ? (TL / 2) : (TW / 2);
+        // GAP de seguranca (+2px) para evitar colisoes visuais
         const totalDist = prevHalf + currentExtentInFlow + 2; 
         nx = e.hscX + (totalDist * dx);
         ny = e.hscY + (totalDist * dy);
     } else {
-        // Em curva, precisamos das extensoes da peca anterior nos dois eixos
+        // Em curva, usamos a extensao real da peca anterior nos dois eixos (lastIsV)
         const oldIsVertFlow = !isVertFlow;
         const prevExtentInOldD = (e.lastIsV === oldIsVertFlow) ? (TL / 2) : (TW / 2);
         const prevExtentInNewD = (e.lastIsV === isVertFlow) ? (TL / 2) : (TW / 2);
         
         const cornerOffset = prevExtentInOldD - currentExtentSideways; 
+        // PROJECAO de curva (+4px) para garantir espaco de giro
         const projection = prevExtentInNewD + currentExtentInFlow + 4;
 
         nx = e.hscX + (cornerOffset * oldDX) + (projection * dx);

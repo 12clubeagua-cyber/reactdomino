@@ -96,6 +96,27 @@ window.updateCamera = function() {
 };
 
 /**
+ * Efeito de tremor de tela (Screen Shake) para eventos de impacto.
+ */
+window.Animations.screenShake = function(intensity = 10, duration = 300) {
+    const gameArea = document.getElementById('game-area');
+    if (!gameArea) return;
+    
+    gameArea.classList.remove('shake-anim');
+    void gameArea.offsetWidth; // Trigger reflow
+    gameArea.classList.add('shake-anim');
+    
+    // Feedback haptico se disponivel
+    if (typeof window.HapticEngine !== 'undefined') {
+        window.HapticEngine.vibrate('error');
+    }
+
+    setTimeout(() => {
+        gameArea.classList.remove('shake-anim');
+    }, duration);
+};
+
+/**
  * 3. ANIMACOES DE JOGADA (FLYING TILES)
  * Move a peca da mao do jogador ate a posicao exata na mesa.
  */
