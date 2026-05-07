@@ -49,6 +49,7 @@
 - **Seguranca de Acesso a Objetos:** Sempre verifique a existencia de uma chave (ex: `Achievements.list[id]`) antes de acessar suas propriedades para evitar erros de 'undefined'.
 - **Estado de Atributos DOM:** Ao desativar recursos via atributos `data-*`, defina o valor como vazio ou remova-o explicitamente em vez de apenas ignorar a atualizacao.
 - **Regressao e Auditoria:** Bugs complexos devem ser validados com scripts de teste unitario dedicados (`tests/*.test.js`) sob o Protocolo Akita.
+- **Geometria Inicial e Curvas (logic.js):** A primeira peca da mesa deve ter sua orientacao (`isV`) definida com base no fluxo inicial dos `ends`. Se for bucha, deve ser transversal. Testes devem verificar se a 2a peca nao sobrepoe a 1a (erro de `prevHalf`). Em curvas, buchas devem ser paralelas ao NOVO fluxo (transversais a linha anterior) para evitar pecas paralelas.
 
 # PROTOCOLO DE EXPANSAO E VALIDACAO
 - **Ciclo de Evolucao:** Estabilidade (v6+) -> Expansao Funcional Autonoma.
