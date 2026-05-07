@@ -271,6 +271,45 @@ html, body {
 
 .active-turn { background: rgba(255, 204, 51, 0.12); }
 
+/* --- ACESSIBILIDADE: ALTO CONTRASTE --- */
+[data-a11y="high-contrast"] {
+  --bg-dark: #000;
+  --glass-bg: #000;
+  --glass-border: #fff;
+  --gold: #ff0;
+  --gold-glow: rgba(255, 255, 0, 0.5);
+  --text-main: #fff;
+  --text-dim: #fff;
+  --tile-bg: #fff;
+  --tile-border: #000;
+  --pip: #000;
+}
+
+[data-a11y="high-contrast"] .tile {
+  border: 2px solid #000 !important;
+  box-shadow: none !important;
+}
+
+[data-a11y="high-contrast"] .tile.playable {
+  border: 4px solid #ff0 !important;
+  outline: 4px solid #000;
+}
+
+[data-a11y="high-contrast"] .hand {
+  background: #000 !important;
+  border: 1px solid #fff;
+}
+
+[data-a11y="high-contrast"] .score-val {
+  color: #ff0 !important;
+}
+
+/* --- ANIMACAO: FLYING TILES (SEM TRANSITION PARA EVITAR VOLTAS) --- */
+.moving-proxy {
+  transition: none !important;
+  will-change: transform;
+}
+
 /* --- ELEMENTOS DE UI --- */
 #side-picker {
   position: absolute;

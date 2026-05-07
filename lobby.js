@@ -110,6 +110,14 @@ window.loadMatchState = function() {
 document.addEventListener('DOMContentLoaded', () => {
     const saved = window.safeGetStorage('domino_match_state', null);
     const btn = document.getElementById('btn-continue');
+    
+    // REQUISITO: Se a partida salva for offline, limpamos o legado para evitar inconsistencias
+    if (saved && !saved.isMultiplayer) {
+        localStorage.removeItem('domino_match_state');
+        if (btn) btn.style.display = 'none';
+        return;
+    }
+
     if (saved && btn) {
         btn.style.display = 'flex';
     }

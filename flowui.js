@@ -79,7 +79,7 @@ window.FlowUI = {
                 // O Host ou o sistema local inicia a nova rodada
                 if (window.Network && window.Network.isHost) {
                     if (typeof window.startRound === 'function') window.startRound();
-                } else if (!window.STATE.isMultiplayer) {
+                } else if (window.netMode === 'offline') {
                     if (typeof window.startRound === 'function') window.startRound();
                 }
             }
@@ -124,10 +124,15 @@ window.FlowUI = {
      */
     saveMatchState: function() {
         if (!window.STATE) return;
+        
+        // REQUISITO: Nao salvar partidas offline para evitar poluir o localStorage
+        // e impedir que o botao 'Continuar' apareca para versoes locais.
+        if (window.netMode === 'offline') return;
+
         const data = {
             scores: window.STATE.scores,
             targetScore: window.STATE.targetScore,
-            isMultiplayer: window.STATE.isMultiplayer,
+            isMultiplayer: (window.netMode !== 'offline'),
             names: window.NameManager ? window.NameManager.getAll() : {}
         };
         localStorage.setItem('domino_match_state', JSON.stringify(data));
