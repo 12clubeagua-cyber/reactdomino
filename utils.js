@@ -25,10 +25,14 @@ window.safeGetStorage = function(key, defaultValue) {
     }
 };
 
+const pipsCache = {};
+
 window.getPips = function(val, color) {
+    const cacheKey = `${val}-${color || 'default'}`;
+    if (pipsCache[cacheKey]) return pipsCache[cacheKey];
+
     if (val === 0) return ''; // Peca branca
 
-    // Mapeamento de posicoes para cada numero (1-6) num grid 3x3
     const layouts = {
         1: [5],
         2: [1, 9],
@@ -40,17 +44,16 @@ window.getPips = function(val, color) {
 
     const activePips = layouts[val] || [];
     let html = '';
-
-    // Define a cor se for passada (ex: para pecas bucha/carroca)
     const style = color ? `style="background:${color}"` : '';
 
-    // Gera 9 espacos de grid, mas so coloca a classe 'pip' nos indices ativos
     for (let i = 1; i <= 9; i++) {
         if (activePips.includes(i)) {
             html += `<div class="pip" ${style}></div>`;
         } else {
-            html += `<div></div>`; // Espaco vazio para manter o grid
+            html += `<div></div>`;
         }
     }
+    
+    pipsCache[cacheKey] = html;
     return html;
 };

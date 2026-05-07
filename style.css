@@ -367,6 +367,21 @@ html, body {
     z-index: 100;
 }
 
+/* --- ACESSIBILIDADE: UTILITARIOS --- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+.reduced-motion * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
 @keyframes win-glow {
   0% { box-shadow: 0 0 10px rgba(255, 204, 51, 0.4); }
   50% { box-shadow: 0 0 30px rgba(255, 204, 51, 0.9); }

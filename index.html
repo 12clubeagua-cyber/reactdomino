@@ -135,11 +135,12 @@
   </div>
   <div id="game-status" aria-live="polite">domino Master</div>
   <div class="score-block right" aria-label="Placar dos oponentes">
-    <span class="score-name" id="label-team-b">Oponentes</span>
-    <span class="score-val" id="scoreB">0</span>
+  <span class="score-name" id="label-team-b">Oponentes</span>
+  <span class="score-val" id="scoreB">0</span>
   </div>
-</header>
-
+  <!-- Regiao para anuncios criticos de acessibilidade (jogadas, vitorias) -->
+  <div id="a11y-announcer" class="sr-only" aria-live="assertive"></div>
+  </header>
 <div id="game-area" role="application">
     <button id="btn-exit" onclick="exitGame()" aria-label="Menu de jogo">Menu</button>
     <button id="btn-chat" onclick="showQuickChatPanel()" style="position:fixed; bottom:20px; right:20px; z-index:1000;" aria-label="Chat rapido"></button>

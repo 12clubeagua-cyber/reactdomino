@@ -15,6 +15,18 @@ window.Renderer = {
     },
 
     /**
+     * Anuncia um evento para leitores de tela.
+     */
+    announce: function(text) {
+        const announcer = window.Renderer._getEl('a11y-announcer');
+        if (announcer) {
+            announcer.textContent = text;
+            // Limpa apos um tempo para permitir repedicao da mesma mensagem
+            setTimeout(() => { if (announcer.textContent === text) announcer.textContent = ''; }, 3000);
+        }
+    },
+
+    /**
      * Renderiza o tabuleiro (as pecas jogadas).
      */
     drawBoard: function() {
@@ -40,6 +52,8 @@ window.Renderer = {
             const isLast = (i === positions.length - 1 && !isOver);
             
             el.className = `tile ${nP.isV ? 'tile-v' : 'tile-h'} ${isLast ? 'last-move' : ''}`;
+            el.setAttribute('role', 'img');
+            el.setAttribute('aria-label', `Peca ${nP.v1} e ${nP.v2}${nP.isV ? ' vertical' : ''}`);
             
             const offX = nP.isV ? (W / 2) : (L / 2);
             const offY = nP.isV ? (L / 2) : (W / 2);
@@ -154,16 +168,21 @@ window.Renderer = {
         }, passDelay);
     },
 
-    /**
-     * @private Cria o elemento HTML de uma peca individual.
-     */
     _createTileElement: function(tile, isSide, isMe, idx) {
         const el = document.createElement('div');
         const isDouble = tile[0] === tile[1];
         const pipColor = isMe && isDouble ? 'var(--red)' : null;
         
         el.className = `tile tile-rel ${isSide ? 'tile-v' : 'tile-h'} ${isDouble ? 'tile-double' : ''}`;
-        if (isMe) el.id = `my-tile-${idx}`;
+        if (isMe) {
+            el.id = `my-tile-${idx}`;
+            el.setAttribute('tabindex', '0');
+            el.setAttribute('role', 'button');
+        } else {
+            el.setAttribute('role', 'img');
+        }
+        
+        el.setAttribute('aria-label', `${isMe ? 'Sua peca ' : 'Peca '} ${tile[0]} e ${tile[1]}`);
 
         el.innerHTML = `
             <div class="half">${window.Renderer._getPips(tile[0], pipColor)}</div>

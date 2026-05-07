@@ -169,6 +169,9 @@ window.processTurn = function() {
     if (isLocal) {
         if (netMode === 'client' || (netMode === 'host' && cur === myIdx) || netMode === 'offline') {
             if (typeof window.Dashboard !== 'undefined') window.Dashboard.setMessage('SUA VEZ', 'active');
+            if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
+                window.Renderer.announce("E a sua vez de jogar!");
+            }
             if (typeof window.highlight === 'function') window.highlight(moves); // Ativa as pecas
             
             // Notifica se a pagina estiver oculta
@@ -239,6 +242,12 @@ window.play = function(pIdx, tIdx, side) {
         window.Renderer.drawHands(); 
     }
 
+    // Anuncio de acessibilidade
+    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
+        const pName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(pIdx) : `Jogador ${pIdx}`;
+        window.Renderer.announce(`${pName} jogou ${tile[0]} e ${tile[1]}`);
+    }
+
     // O calculateTilePlacement ja atualizou extremes internamente via updateExtremes
     if (!window.STATE.positions.length) {
         window.STATE.extremes = [tile[0], tile[1]];
@@ -293,6 +302,11 @@ window.doPass = function(pIdx) {
 
     window.STATE.playerPassed[pIdx] = true;
     window.STATE.passCount++;
+
+    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
+        const pName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(pIdx) : `Jogador ${pIdx}`;
+        window.Renderer.announce(`${pName} passou a vez.`);
+    }
 
     if (typeof playPass === 'function') playPass(); 
     

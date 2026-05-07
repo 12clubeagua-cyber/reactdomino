@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v116'; // v116: Logic - Fix initial tile orientation and corner double placement
+const CACHE_NAME = 'domino-felipe-v117'; // v117: A11y & Performance - ARIA labels, pips cache, reduced motion
 
 const ASSETS = [
   '/',
