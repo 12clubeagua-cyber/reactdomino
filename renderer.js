@@ -109,6 +109,19 @@ window.Renderer = {
         const isBlocked = window.STATE?.isBlocked ?? false;
         const myHandHash = window.STATE?.hands?.[myIdx]?.map(t => t.join('')).join('|') || '';
 
+        // --- DINAMICA DE AURA (Match Point) ---
+        const gameArea = window.Renderer._getEl('game-area');
+        if (gameArea) {
+            const targetScore = window.CONFIG?.GAME?.WIN_SCORE ?? 100;
+            const scores = window.STATE?.score || [0, 0];
+            const threshold = targetScore * 0.8;
+            if (scores[0] >= threshold || scores[1] >= threshold) {
+                gameArea.classList.add('match-point-aura');
+            } else {
+                gameArea.classList.remove('match-point-aura');
+            }
+        }
+
         // OTIMIZACAO: Verifica se houve mudanca nas maos, status de turno ou pecas locais
         const currentState = JSON.stringify({
             h: window.STATE?.handSize,

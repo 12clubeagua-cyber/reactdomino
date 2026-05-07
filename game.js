@@ -266,9 +266,18 @@ window.play = function(pIdx, tIdx, side) {
         window.Renderer.announce(`${pName} jogou ${tile[0]} e ${tile[1]}`);
     }
 
-    // Efeito de impacto para buchas
-    if (tile[0] === tile[1] && typeof window.screenShake === 'function') {
-        window.screenShake();
+    // Efeito de impacto para buchas e reacao dos bots
+    if (tile[0] === tile[1]) {
+        if (typeof window.screenShake === 'function') window.screenShake();
+        
+        // Reacao dos bots se for uma bucha alta (ex: 6-6)
+        if (tile[0] >= 5 && typeof window.botReact === 'function') {
+            for (let i = 0; i < 4; i++) {
+                if (i !== pIdx && (window.STATE.botPersonalities?.[i])) {
+                    if (Math.random() > 0.5) window.botReact(i, 'double_six');
+                }
+            }
+        }
     }
 
     // O calculateTilePlacement ja atualizou extremes internamente via updateExtremes

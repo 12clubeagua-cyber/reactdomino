@@ -101,28 +101,37 @@ window.handleBotTurn = function(botIdx, moves) {
         window.Dashboard.setMessage(`${botName} PENSANDO...`);
     }
 
-    // Balao de pensamento visual
+    // Balao de pensamento visual com variacao emocional
     const localIdx = window.myPlayerIdx ?? 0;
     const viewIdx = (botIdx - localIdx + 4) % 4;
     const handEl = document.getElementById(`hand-${viewIdx}`);
     if (handEl) {
-        handEl.style.position = 'relative';
         const bubble = document.createElement('div');
         bubble.className = 'thinking-bubble';
         
         const personality = window.STATE.botPersonalities?.[botIdx] || 'normal';
+        const random = Math.random();
         let text = '...';
-        if (Math.random() > 0.7) {
-            if (personality === 'aggressive') text = 'Vou fechar!';
-            if (personality === 'defensive') text = 'Calma...';
-            if (personality === 'random') text = 'Sera?';
+
+        if (random > 0.6) {
+            if (personality === 'aggressive') {
+                const msgs = ['Vou fechar!', 'Minha vez!', 'Prepara...', 'Toma essa! 👊', '😎'];
+                text = msgs[Math.floor(Math.random() * msgs.length)];
+            } else if (personality === 'defensive') {
+                const msgs = ['Calma...', 'Deixa eu ver...', 'Segurando o jogo', '🤔', 'Cautela...'];
+                text = msgs[Math.floor(Math.random() * msgs.length)];
+            } else if (personality === 'random') {
+                const msgs = ['Sera?', 'Oops!', 'Hehe', '🤪', 'Vamo que vamo!'];
+                text = msgs[Math.floor(Math.random() * msgs.length)];
+            } else {
+                const msgs = ['Pensando...', 'Hm...', 'Vejamos...', '🧐'];
+                text = msgs[Math.floor(Math.random() * msgs.length)];
+            }
         }
-        bubble.innerText = text;
-        bubble.style.left = '50%';
-        bubble.style.transform = 'translateX(-50%)';
         
+        bubble.innerText = text;
         handEl.appendChild(bubble);
-        setTimeout(() => bubble.remove(), 1000);
+        setTimeout(() => bubble.remove(), 1500);
     }
 
     const minDelay = (window.CONFIG?.BOT?.MIN_DELAY) || 500;
@@ -196,6 +205,30 @@ window.calculateWeight = function(botIdx, tile, side) {
     }
 
     return weight;
+};
+
+/**
+ * Faz um bot reagir emocionalmente a um evento (ex: bloqueio, bucha alta).
+ */
+window.botReact = function(botIdx, type) {
+    const localIdx = window.myPlayerIdx ?? 0;
+    const viewIdx = (botIdx - localIdx + 4) % 4;
+    const handEl = document.getElementById(`hand-${viewIdx}`);
+    if (!handEl) return;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'thinking-bubble';
+    bubble.style.background = '#ffeb3b'; // Destaque amarelo para reacao
+
+    let text = '!';
+    if (type === 'blocked') text = 'Vixi... 😶';
+    if (type === 'double_six') text = 'Pesado! 😱';
+    if (type === 'pass') text = 'Passou? 😮';
+    if (type === 'win_round') text = 'Ganhamos! 🏆';
+
+    bubble.innerText = text;
+    handEl.appendChild(bubble);
+    setTimeout(() => bubble.remove(), 2000);
 };
 
 /**

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v125'; // v125: Dashboard optimizations and expanded bot name pool
+const CACHE_NAME = 'domino-felipe-v126'; // v126: Visual Juice (Isometric Hand, Particles, Bot Reactions)
 
 const ASSETS = [
   '/',

@@ -164,6 +164,13 @@ window.animateTile = function(pIdx, targetData, onComplete) {
             requestAnimationFrame(step); 
         } else {
             if (typeof window.playClack === 'function') window.playClack();
+            
+            // Trigger particulas no destino
+            if (typeof window.spawnImpactParticles === 'function') {
+                const isDouble = targetData.v1 === targetData.v2;
+                window.spawnImpactParticles(destX, destY, isDouble);
+            }
+
             if (typeof onComplete === 'function') onComplete();
             requestAnimationFrame(() => proxy.remove());
         }
@@ -194,6 +201,60 @@ window.screenShake = function() {
     setTimeout(() => {
         snakeEl.classList.remove('shake');
     }, 500);
+};
+
+/**
+ * Cria particulas de impacto (poeira/faiscas) no local da jogada.
+ */
+window.spawnImpactParticles = function(x, y, isDouble = false) {
+    const count = isDouble ? 15 : 8;
+    const colors = isDouble ? ['#ffcc33', '#ffffff', '#ff5722'] : ['#a8b4a8', '#f0ede0'];
+    
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = Math.random() * (isDouble ? 6 : 4) + 2;
+        
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.background = color;
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        p.style.opacity = '1';
+        
+        document.body.appendChild(p);
+
+        const angle = Math.random() * Math.PI * 2;
+        const force = Math.random() * (isDouble ? 8 : 4) + 2;
+        const vx = Math.cos(angle) * force;
+        const vy = Math.sin(angle) * force;
+        
+        let curX = x;
+        let curY = y;
+        let opacity = 1;
+
+        const startTime = performance.now();
+        const duration = 600 + Math.random() * 400;
+
+        function step(now) {
+            const t = (now - startTime) / duration;
+            if (t >= 1) {
+                p.remove();
+                return;
+            }
+
+            curX += vx;
+            curY += vy + (t * 2); // Gravidade leve
+            opacity = 1 - t;
+
+            p.style.transform = `translate3d(${curX - x}px, ${curY - y}px, 0)`;
+            p.style.opacity = opacity;
+
+            requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
 };
 
 window.spawnConfetti = function() {
