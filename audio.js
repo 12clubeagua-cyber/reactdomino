@@ -47,20 +47,40 @@ window.AudioManager = {
         if (!window.AudioManager.isInitialized) window.AudioManager.init();
         window.AudioManager.resume();
 
+        const now = window.AudioManager.ctx.currentTime;
+        
+        // 1. Oscilador Principal (Corpo do som)
         const osc = window.AudioManager.ctx.createOscillator();
         const gain = window.AudioManager.ctx.createGain();
-
         osc.type = type;
-        osc.frequency.setValueAtTime(freq, window.AudioManager.ctx.currentTime);
+        osc.frequency.setValueAtTime(freq, now);
         
-        gain.gain.setValueAtTime(0.3, window.AudioManager.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, window.AudioManager.ctx.currentTime + dur);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
 
         osc.connect(gain);
-        gain.connect(window.AudioManager.sfxGain); // Conecta ao canal SFX
+        gain.connect(window.AudioManager.sfxGain);
 
-        osc.start();
-        osc.stop(window.AudioManager.ctx.currentTime + dur);
+        // 2. Ruido Branco (Impacto da peca)
+        const bufferSize = window.AudioManager.ctx.sampleRate * 0.02; // 20ms de impacto
+        const buffer = window.AudioManager.ctx.createBuffer(1, bufferSize, window.AudioManager.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+        const noise = window.AudioManager.ctx.createBufferSource();
+        const noiseGain = window.AudioManager.ctx.createGain();
+        noise.buffer = buffer;
+        
+        noiseGain.gain.setValueAtTime(0.15, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+
+        noise.connect(noiseGain);
+        noiseGain.connect(window.AudioManager.sfxGain);
+
+        osc.start(now);
+        osc.stop(now + dur);
+        noise.start(now);
+        noise.stop(now + 0.02);
     },
 
     startBGM: function() {

@@ -31,12 +31,26 @@ window.chooseBotMove = function(botIdx, moves) {
             sidesToTry.forEach(s => {
                 let score = window.calculateWeight(safeBotIdx, tile, s);
                 
-                // Simulacao de Obstrucao: avalia o proximo oponente
+                // --- 1. Simulacao de Obstrucao: avalia o proximo oponente ---
                 const nextOpponent = (safeBotIdx + 1) % 4;
                 const simExtremes = [...(currentState.extremes || [null, null])];
                 simExtremes[s] = (tile[0] === currentState.extremes?.[s]) ? tile[1] : tile[0];
                 
-                score += window.evaluateOpponentObstruction(nextOpponent, simExtremes);
+                // Bônus agressivo por trancar o oponente
+                score += window.evaluateOpponentObstruction(nextOpponent, simExtremes) * 1.5;
+                
+                // --- 2. Controle de Pontuacao (End-game) ---
+                // Se o bot tem poucas pecas, foca em descartar as maiores
+                if (hand.length <= 3) {
+                    score += (tile[0] + tile[1]) * 5;
+                }
+
+                // --- 3. Bonus de "Bucha" (Double) estrategica ---
+                if (tile[0] === tile[1]) {
+                    // Prioriza soltar buchas se ja tivermos muitas pecas do mesmo naipe
+                    const sameSuitCount = hand.filter(t => t[0] === tile[0] || t[1] === tile[0]).length;
+                    score += (sameSuitCount * 20);
+                }
                 
                 if (score > highestScore) {
                     highestScore = score;
