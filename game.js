@@ -178,7 +178,14 @@ window.processTurn = function() {
             if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
                 window.Renderer.announce("E a sua vez de jogar!");
             }
-            if (typeof window.highlight === 'function') window.highlight(moves); // Ativa as pecas
+            if (typeof window.highlight === 'function') {
+                window.highlight(moves); // Ativa as pecas
+                // OTIMIZACAO ACESSIBILIDADE: Foca na primeira peca jogavel
+                setTimeout(() => {
+                    const firstPlayable = document.querySelector('.playable[tabindex="0"]');
+                    if (firstPlayable) firstPlayable.focus();
+                }, 100);
+            }
             
             // Notifica se a pagina estiver oculta
             if (document.hidden) {

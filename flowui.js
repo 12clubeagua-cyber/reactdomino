@@ -45,6 +45,12 @@ window.FlowUI = {
 
         const isMatchOver = (scoreA >= target || scoreB >= target);
 
+        // Anuncio de acessibilidade
+        if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.announce === 'function') {
+            const finalMsg = `${msg}. ${detail}. Placar: ${scoreA} a ${scoreB}.`;
+            window.Renderer.announce(finalMsg);
+        }
+
         if (isMatchOver) {
             window.FlowUI._handleMatchEnd(target);
         } else {

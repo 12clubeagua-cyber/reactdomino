@@ -19,10 +19,15 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 - **AUTORIDADE DO HOST:** O cliente nunca deve processar logica de posicionamento. Ele apenas recebe as coordenadas calculadas pelo Host para garantir sincronia visual total.
 
 ## 4. AMBIENTE DE TESTES (tests/*.js)
-- **MOCKS DE DOM:** Sempre inclua `setAttribute`, `classList` e `appendChild` nos mocks de `createElement` para evitar `TypeError` durante auditorias de UI.
+- **MOCKS DE DOM:** Sempre inclua `setAttribute`, `classList`, `appendChild` e `getElementById` nos mocks de `createElement` e do `document` global para evitar `TypeError` durante auditorias de UI em Node.js.
 - **REFERENCIA WINDOW:** Use `window.xxx` em vez de `global.xxx` nos testes para manter paridade com o ambiente real do browser.
 
-## 5. REGRAS DE OURO (GEMINI.md)
+## 5. ACESSIBILIDADE E UX (accessibilitymanager.js / flowui.js / game.js)
+- **ANUNCIOS DE FIM DE RODADA:** O motor de acessibilidade deve anunciar explicitamente o resultado final, placar e motivo do encerramento no `FlowUI.endRound`. Apenas feedback visual e insuficiente para inclusao.
+- **FOCO AUTOMATICO (KEYBOARD NAV):** Ao iniciar o turno do jogador local, o sistema deve focar automaticamente na primeira peca jogavel (`.playable[tabindex="0"]`). Isso reduz drasticamente o numero de tabs necessarios para jogar via teclado.
+- **REFORCO DE FOCO VISIVEL:** Use `:focus-visible` com `outline-offset` e `box-shadow` (glow) para garantir que o cursor de selecao seja visivel em todos os temas, especialmente para usuarios com baixa visao.
+
+## 6. REGRAS DE OURO (GEMINI.md)
 - **ASCII APENAS:** Proibido caracteres acentuados.
 - **SEM IMPORTS:** Use apenas o objeto global `window`.
 - **DIRETRIZ DE AUTONOMIA:** Identificou o erro? Corrija, teste, documente no LICOES_APRENDIDAS.txt e de push.

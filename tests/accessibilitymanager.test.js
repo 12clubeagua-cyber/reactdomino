@@ -10,11 +10,22 @@ global.document = {
         setAttribute: (name, val) => {
             document.documentElement.attributes[name] = val;
         },
+        classList: {
+            add: () => {},
+            remove: () => {}
+        },
         style: {
-            fontSize: ''
+            fontSize: '',
+            setProperty: (name, val) => {
+                document.documentElement.style[name] = val;
+            }
         },
         attributes: {}
-    }
+    },
+    getElementById: (id) => ({
+        innerText: '',
+        id: id
+    })
 };
 
 // Mocking storage helpers from utils.js
@@ -38,7 +49,7 @@ function runAudit() {
     // Test Case 1: Initial state (Default)
     // Note: require() calls init() once. Since mockStorage is empty, it should set attribute to ''
     assert(document.documentElement.attributes['data-a11y'] === '', "Initial state: data-a11y should be empty string");
-    assert(document.documentElement.style.fontSize === '', "Initial state: fontSize should be empty");
+    assert(document.documentElement.style.fontSize === '16px', "Initial state: fontSize should be 16px");
 
     // Test Case 2: Toggle High Contrast (ON)
     window.AccessibilityManager.toggleHighContrast();

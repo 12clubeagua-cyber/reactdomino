@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v122'; // v122: Fixes for turn stall and UI layout overlap
+const CACHE_NAME = 'domino-felipe-v123'; // v123: Accessibility expansion and performance refinements
 
 const ASSETS = [
   '/',

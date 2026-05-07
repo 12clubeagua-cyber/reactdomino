@@ -494,3 +494,21 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   will-change: transform, opacity;
 }
+
+/* ACCESSIBILITY REINFORCEMENT */
+:focus-visible {
+  outline: 3px solid var(--gold) !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 10px var(--gold-glow) !important;
+}
+
+.tile.playable:focus-visible {
+  outline: 4px solid #fff !important;
+  outline-offset: 0;
+  z-index: 1000;
+}
+
+[data-a11y="high-contrast"] :focus-visible {
+  outline: 4px solid #ff0 !important;
+  outline-offset: 4px;
+}
