@@ -203,17 +203,6 @@ window.Renderer = {
                                    ${isPassing ? 'hand-passed' : ''}
                                    ${isWinner ? 'hand-win-blink' : ''}`;
 
-            const fragment = document.createDocumentFragment();
-
-            // A) Nome do Jogador
-            const label = document.createElement('div');
-            label.className = 'player-name-tag';
-            const playerName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(i) : `Jogador ${i}`;
-            const tileCount = window.STATE?.handSize?.[i] || 0;
-            label.innerHTML = `<span class="p-count">${tileCount}</span><span class="p-name">${playerName}</span>`;
-            fragment.appendChild(label);
-
-            // B) Rack de Pecas
             const rack = document.createElement('div');
             rack.className = 'tiles-rack';
             
@@ -235,10 +224,9 @@ window.Renderer = {
                     rack.appendChild(darkTile);
                 }
             }
-            fragment.appendChild(rack);
             
             container.innerHTML = '';
-            container.appendChild(fragment);
+            container.appendChild(rack);
         }
 
         window.Renderer._checkLocalInteraction();

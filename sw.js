@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v130'; // v130: Sparkle effect removed by user request
+const CACHE_NAME = 'domino-felipe-v131'; // v131: Hand layout refactor (parallel tiles, edge alignment)
 
 const ASSETS = [
   '/',
