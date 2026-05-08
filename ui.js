@@ -9,6 +9,8 @@ window.i18n = {
         'pt': {
             'passed': 'PASSOU A VEZ!',
             'searching': 'Buscando salas...',
+            'shuffling': 'Embaralhando...',
+            'ready': 'TUDO PRONTO!',
             'no_rooms': 'Nenhuma sala ativa.',
             'connecting': 'Conectando ao servidor...',
             'game_over': 'FIM DE JOGO',

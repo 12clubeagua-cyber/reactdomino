@@ -39,3 +39,9 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 ## 8. ACESSIBILIDADE AVANCADA (renderer.js / ui.js)
 - **ARIA-LIVE DINAMICO:** O sistema de anuncios agora cria um elemento `aria-live="polite"` automaticamente se o gestor de acessibilidade estiver ausente.
 - **HIERARQUIA DE FOCO:** Botoes de ajuste (Audio/Temas) agora possuem IDs e labels ARIA explicitos para facilitar o uso por tecnologias assistivas.
+
+## 9. CORRECOES DE LIAYOUT E FLUXO (renderer.js / style.css / dashboard.js)
+- **ALINHAMENTO DE MAOS (PARALELISMO):** Para garantir que as pecas fiquem em uma única linha (paralelas), use `flex-wrap: nowrap` no `.tiles-rack` e reduza o `gap`. O uso de `transform: scale` e essencial para caber 7 pecas em telas pequenas sem quebrar a linha.
+- **VISIBILIDADE EM LATERAIS:** Maos laterais (`hand-side`) devem usar `flex-direction: column` com `flex-wrap: wrap` e uma escala menor (`0.6`) para garantir que todas as 7 pecas sejam visiveis mesmo em telas com altura reduzida.
+- **CONSISTENCIA DE ORIENTACAO:** Pecas na mao devem ser sempre `tile-v` (verticais). Forçar a classe `tile-v` no `Renderer` evita problemas de layout causados por rotacoes via CSS (`transform: rotate(90deg)`) que nao alteram o espaco ocupado no fluxo do flexbox.
+- **INTEGRIDADE DE FUNCOES GLOBAIS:** Nunca chame funcoes de modulos externos (ex: `window.Dashboard.updateTurnIndicator`) sem garantir sua existencia no arquivo de origem. A ausencia de uma funcao chamada no loop de turnos causa o travamento silencioso do jogo ("Searching" hang).

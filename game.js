@@ -26,7 +26,8 @@ window.startRound = function() {
     }
     
     if (typeof window.Dashboard !== 'undefined' && typeof window.Dashboard.setMessage === 'function') {
-        window.Dashboard.setMessage(window.i18n.t('searching').toUpperCase());
+        const msgKey = (window.netMode === 'offline') ? 'shuffling' : 'searching';
+        window.Dashboard.setMessage(window.i18n.t(msgKey).toUpperCase());
     }
 
     // Som de embaralhar (Fase Final: Polimento)
