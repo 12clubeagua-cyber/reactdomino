@@ -122,7 +122,7 @@ window.animateTile = function(pIdx, targetData, onComplete, overrideStart) {
 
     const proxy = document.createElement('div');
     proxy.className = `tile moving-proxy ${targetData.isV ? 'tile-v' : 'tile-h'}`;
-    proxy.style.cssText = `z-index: 9999; position: fixed; pointer-events: none;`;
+    proxy.style.cssText = `z-index: 9999; position: fixed; pointer-events: none; transition: none !important;`;
     
     let pipsHTML = "";
     if (typeof window.Renderer !== 'undefined' && typeof window.Renderer._getPips === 'function') {

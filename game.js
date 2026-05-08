@@ -170,6 +170,12 @@ window.playTile = function(pIdx, tIdx, side) {
     }
     window.STATE.positions.push(placement.nP);
 
+    // Atualiza a camera imediatamente para que o calculo do destino na animacao
+    // ja considere o novo zoom/posicao necessario para a peca nova.
+    if (typeof window.updateCamera === 'function') {
+        window.updateCamera();
+    }
+
     if (typeof window.animateTile === 'function') {
         window.animateTile(pIdx, placement.nP, () => {
             if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawBoard === 'function') {

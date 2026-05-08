@@ -158,7 +158,7 @@ window.updateExtremes = function(tile, side) {
  * 4. BOUNDING BOX OTIMIZADO
  */
 window.getSnakeBounds = function() {
-    if (!window.STATE.positions?.length) return { width: 0, height: 0, centerX: 0, centerY: 0 };
+    if (!window.STATE.positions?.length) return { minX: -100, maxX: 100, minY: -100, maxY: 100, centerX: 0, centerY: 0 };
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     const TW = window.CONFIG?.GAME?.TILE_W ?? 40;
     const TL = window.CONFIG?.GAME?.TILE_L ?? 80;
@@ -174,5 +174,12 @@ window.getSnakeBounds = function() {
     }
 
     const pad = 60;
-    return { width: (maxX - minX) + pad*2, height: (maxY - minY) + pad*2, centerX: (minX + maxX)/2, centerY: (minY + maxY)/2 };
+    return { 
+        minX: minX - pad, 
+        maxX: maxX + pad, 
+        minY: minY - pad, 
+        maxY: maxY + pad, 
+        centerX: (minX + maxX)/2, 
+        centerY: (minY + maxY)/2 
+    };
 };

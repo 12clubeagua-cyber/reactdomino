@@ -160,10 +160,16 @@ body {
   border-radius: 3px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   display: flex; position: absolute;
-  transition: transform 0.2s ease-out;
+  /* Removido transition global para evitar conflito com animations.js */
+}
+
+.moving-proxy {
+    transition: none !important;
+    z-index: 10000;
 }
 
 .tile-h { width: var(--tile-height); height: var(--tile-width); }
+
 .tile-v { width: var(--tile-width); height: var(--tile-height); flex-direction: column; }
 
 /* Grid Interno para os Pontos */

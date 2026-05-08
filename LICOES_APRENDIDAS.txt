@@ -55,7 +55,12 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 - **ESTABILIDADE DE DRAG (INITDRAG):** Ao transformar um elemento de `relative` para `fixed` no inicio de um drag, defina imediatamente suas coordenadas `left` e `top`. Caso contrario, o elemento pode "pular" para a origem da pagina antes do primeiro movimento do mouse.
 - **PECAS DESAPARECENDO POS-ANIMACAO:** O desaparecimento de pecas apos a animacao ocorria porque a `drawBoard` era chamada antes do termino do movimento. A `drawBoard` renderiza apenas o estado estatico do tabuleiro; se chamada durante o voo, ela pode tentar desenhar uma peca que o proxy ainda esta movendo, causando conflito visual ou remocao prematura. A solucao e invocar a renderizacao final apenas no callback `onComplete` da animacao.
 
-## 11. REFATORACAO E LIMPEZA (DEBT TECH)
+## 11. ESTABILIDADE DE CAMERA E ANIMACAO (animations.js / logic.js)
+- **INTEGRIDADE DE BOUNDS (getSnakeBounds):** O calculo de zoom e pan depende da integridade dos limites do tabuleiro (`minX`, `maxX`, `minY`, `maxY`). Se a funcao retornar apenas dimensoes calculadas, o motor de camera falhara ao tentar centralizar o `centerX/Y`. O retorno deve ser sempre o conjunto completo de coordenadas extremas. Corrigido em 8 de Maio de 2026.
+- **CONFLITO DE TRANSICAO (CSS VS JS):** O efeito de "peca fazendo curvas" ou "lag" em animacoes de voo e causado por conflitos entre `transition: transform` no CSS e atualizacoes de `requestAnimationFrame` no JS. Proxy de animacao deve SEMPRE ter `transition: none !important` para garantir trajetoria linear e fluida.
+- **PROATIVIDADE DE ZOOM:** Para que o zoom out pareca "automatico" e fluido, a camera deve ser atualizada (`updateCamera`) no momento em que a peca e adicionada ao estado, e nao apenas quando a animacao termina. Isso garante que a peça voe para o local correto ja considerando o novo enquadramento do tabuleiro.
+
+## 12. REFATORACAO E LIMPEZA (DEBT TECH)
 - **REMOCAO DE LEGADO (PEERJS):** Com a migracao para WebSocket/Go Server, variaveis como `myPeer`, `sessions` e `connectedClients` no `state.js` tornaram-se obsoletas. Manter codigo morto causa confusao e bugs de "fantasma". Limpeza realizada em 8 de Maio de 2026.
 - **SINCRONIA DE REGRAS (CONFIG VS DOC):** Sempre garanta que limites numericos (ex: pecas por linha) definidos no `config.js` estejam refletidos no `GEMINI.md`. A discrepancia entre "Regra de 6" e o valor real de 12 foi corrigida para "Regra de Limite".
 
