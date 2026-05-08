@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v137'; // v137: High visibility player labels (black bg, white bold, front layer)
+const CACHE_NAME = 'domino-felipe-v138'; // v138: Synchronized player labels (move with highlighted tiles)
 
 const ASSETS = [
   '/',
