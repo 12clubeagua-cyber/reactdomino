@@ -198,28 +198,6 @@ window.Dashboard = {
     },
 
     /**
-     * Destaca visualmente de quem e o turno atual.
-     */
-    updateTurnIndicator: function(currentIdx) {
-        const myIdx = window.myPlayerIdx ?? 0;
-        const viewIdx = (currentIdx - myIdx + 4) % 4;
-        
-        // Remove destaque anterior
-        document.querySelectorAll('.hand').forEach(el => el.classList.remove('active-turn'));
-        
-        // Adiciona destaque ao jogador atual
-        const activeHand = window.Dashboard._getEl(`hand-${viewIdx}`);
-        if (activeHand) {
-            activeHand.classList.add('active-turn');
-        }
-
-        // Anuncio de acessibilidade
-        const playerName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(currentIdx) : `Jogador ${currentIdx}`;
-        const msg = (currentIdx === myIdx) ? "SEU TURNO!" : `Turno de: ${playerName}`;
-        window.Dashboard.setMessage(msg);
-    },
-
-    /**
      * Inicializa os estilos CSS baseados nas configuracoes globais.
      */
     init: function() {

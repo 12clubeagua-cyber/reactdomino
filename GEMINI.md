@@ -33,7 +33,7 @@
 
 ## 6. Licoes Aprendidas (Prevencao de Regressoes)
 - **Geometria de Quinas:** O calculo de `cornerOffset` e `projection` deve usar a extensao real da peca anterior nos dois eixos (baseado em `lastIsV`), especialmente para buchas em curvas que mudam de orientacao.
-- **Regra de Limite:** A peca inicial (0,0) DEVE ser contabilizada no `lineCount` de ambos os lados para que a primeira reta respeite o limite definido no `CONFIG.js` (atualmente 12).
+- **Regra de 6:** A peca inicial (0,0) DEVE ser contabilizada no `lineCount` de ambos os lados para que a primeira reta respeite o limite de 6 pecas.
 - **Contexto 'this':** NUNCA use `this` em callbacks de rede ou timers; use referencias globais expliticas (ex: `window.Renderer`).
 - **Seguranca P2P:** Nunca envie a mao completa de outros jogadores no `syncState` para evitar inspect-element cheats.
 
@@ -53,7 +53,7 @@
 - **NUNCA** utilize `npm install -g` para servidores MCP.
 - **SEMPRE** prefira a execucao direta via `npx -y @modelcontextprotocol/server-[nome]` ou utilize `pip` em ambientes virtuais.
 - Caso ocorra erro de "command deprecated", interrompa a tentativa e valide a documentacao oficial no repositorio `modelcontextprotocol/servers`.
+
 ---
-**Status Atual:** Estavel (v136). Refinamento de UI (Modo Compacto), alertas responsivos e ajuste de destaque para pecas jogaveis.
-**Foco:** Monitoramento de estabilidade e preparacao para novos recursos de acessibilidade.
----
+**Status Atual:** Estavel (v116). Motor de geometria corrigido para peca inicial e buchas em curvas.
+**Foco:** Refinamento de performance e expansao de recursos de acessibilidade.

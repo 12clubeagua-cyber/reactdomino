@@ -53,33 +53,6 @@ window.selectMode = function(mode) {
         window.goToStep('step-diff');
     } else if (mode === 'client') {
         window.goToStep('step-lobby-client');
-        window.fetchPublicRooms();
-    }
-};
-
-/**
- * Busca salas ativas no servidor Go (Fase Final: Matchmaking)
- */
-window.fetchPublicRooms = async function() {
-    const listEl = document.getElementById('public-rooms-list');
-    if (!listEl) return;
-
-    try {
-        const response = await fetch("http://localhost:8080/rooms");
-        const rooms = await response.json();
-
-        if (rooms.length === 0) {
-            listEl.innerHTML = '<div class="start-sub">Nenhuma sala ativa no momento.</div>';
-            return;
-        }
-
-        listEl.innerHTML = rooms.map(id => `
-            <div class="player-item" style="cursor:pointer; border:1px solid var(--gold);" onclick="window.Multiplayer.initClient('${id}')">
-                SALA: ${id} <span style="font-size:0.7rem; color:var(--gold); margin-left:auto;">CLIQUE PARA ENTRAR</span>
-            </div>
-        `).join('');
-    } catch (e) {
-        listEl.innerHTML = '<div class="start-sub" style="color:var(--red);">Erro ao conectar ao servidor de salas.</div>';
     }
 };
 
@@ -198,7 +171,7 @@ window.startMatch = function(isRestoring = false) {
 
     // --- Logica de Rede (Host) ---
     if (window.netMode === 'host') {
-        if (typeof window.Network !== 'undefined' && window.Network.isHost) {
+        if (typeof window.Network !== 'undefined' && window.Network.isHost()) {
             
             // Reune os nomes para enviar aos clientes
             let finalNames = {};
@@ -206,12 +179,19 @@ window.startMatch = function(isRestoring = false) {
                 finalNames = window.NameManager.getAll();
             }
             
-            // O Servidor Go agora cuida da distribuicao (broadcast)
-            window.Network.request({
-                type: 'game_start',
-                names: finalNames,
-                targetScore: window.STATE ? window.STATE.targetScore : 3
-            });
+            // Envia comando game_start INDIVIDUALMENTE para cada cliente (para passar o yourIdx correto)
+            if (Array.isArray(window.connectedClients)) {
+                window.connectedClients.forEach(conn => {
+                    if (conn && conn.open) {
+                        conn.send({
+                            type: 'game_start',
+                            yourIdx: conn.assignedIdx,
+                            names: finalNames,
+                            targetScore: window.STATE ? window.STATE.targetScore : 3
+                        });
+                    }
+                });
+            }
 
             // O Host roda a funcao de inicio apos um breve delay
             setTimeout(doStartRound, 600);
@@ -221,6 +201,9 @@ window.startMatch = function(isRestoring = false) {
     } else if (window.netMode === 'offline') {
         doStartRound();
     }
+    
+    // NOTA: Se netMode === 'client', ele nao roda o `doStartRound`. Ele apenas 
+    // esconde a tela inicial e aguarda o Host enviar o pacote `state_update` com as pecas!
 };
 
 /**
@@ -228,9 +211,9 @@ window.startMatch = function(isRestoring = false) {
  */
 
 window.cancelHosting = function() {
-    if (window.Network && window.Network.socket) {
-        window.Network.socket.close();
-    }
+    window.ResourceManager.cleanup();
+    window.connectedClients = [];
     window.netMode = 'offline';
+    localStorage.removeItem('domino_host_id'); // Garante novo codigo na proxima vez
     window.goToStep('step-mode');
 };

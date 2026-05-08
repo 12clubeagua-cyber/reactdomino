@@ -120,14 +120,8 @@
   <div class="start-step" id="step-lobby-client">
     <div class="start-options">
       <div class="start-label">Entrar em uma Sala</div>
-      <input type="text" id="join-code-input" class="input-code" placeholder="CODIGO MANUAL">
+      <input type="text" id="join-code-input" class="input-code" placeholder="CODIGO">
       <button class="start-btn" onclick="connectToHost()" id="btn-connect" style="justify-content:center;">CONECTAR</button>
-      
-      <div class="start-label" style="margin-top:20px;">Ou escolha uma sala ativa:</div>
-      <div id="public-rooms-list" class="player-list" style="max-height: 150px; overflow-y: auto;">
-          <div class="start-sub">Buscando salas...</div>
-      </div>
-
       <div class="start-sub" id="client-status" style="margin-top:10px; color:var(--gold);"></div>
       <div class="player-list" id="client-player-list"></div>
     </div>
@@ -191,21 +185,6 @@
 </div>
 
 <!-- SCRIPTS (A ordem abaixo garante o funcionamento da camera e interacoes) -->
-<!-- 0. Wasm Engine (Phase 1: Mastering the Machine) -->
-<script type="module">
-    import init, { GameLogic, Tile } from './wasm/domino_core_wasm.js';
-    async function run() {
-        try {
-            await init();
-            window.WasmCore = { GameLogic, Tile };
-            console.log("Wasm Engine (Rust) Initialized successfully.");
-        } catch (e) {
-            console.error("Failed to load Wasm Engine:", e);
-        }
-    }
-    run();
-</script>
-
 <!-- 1. Dados e Configuracoes Base -->
 <script src="config.js" defer></script>
 <script src="state.js" defer></script>

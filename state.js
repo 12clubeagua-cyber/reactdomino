@@ -22,6 +22,7 @@ window.STATE = {
     playerPassed: [false, false, false, false], 
     isBlocked: false,             // Trava interacoes durante animacoes
     isShuffling: false,           // Estado de embaralhamento inicial
+    sessions: {},                 // Mapeamento: seatIdx -> peerId (para reconexao)
     
     // --- Regras e Metas ---
     scores: [0, 0],               // Placar: [Time A+C, Time B+D]
@@ -45,9 +46,12 @@ window.STATE = {
 // --- Audio e Sistema ---
 window.audioCtx = null;
 
-// --- Variaveis de Rede / Multiplayer (WebSocket Go Server) ---
+// --- Variaveis de Rede / Multiplayer ---
 window.netMode = 'offline';       // 'offline', 'host' ou 'client'
-window.myPlayerIdx = 0;           // Sua posicao na mesa
+window.myPlayerIdx = 0;           // Sua posicao na mesa (definida no Seat Selection)
+window.myPeer = null;             // Instancia do PeerJS
+window.myConnToHost = null;       // Conexao do Cliente com o Host
+window.connectedClients = [];     // Lista de conexoes no celular do Host
 window.client_predicted = false;  // Otimizacao de interface para o cliente
 
 // --- Sistema de Reconexao (Resiliencia Mobile) ---

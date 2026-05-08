@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v136'; // v136: Compact UI mode, responsive alerts and playable highlights.
+const CACHE_NAME = 'domino-felipe-v129'; // v129: Particle Pooling, Geometry Refinements (Rule of 6), and A11Y Enhancements
 
 const ASSETS = [
   '/',

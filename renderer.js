@@ -156,7 +156,7 @@ window.Renderer = {
         const gameArea = window.Renderer._getEl('game-area');
         if (gameArea) {
             const targetScore = window.CONFIG?.GAME?.WIN_SCORE ?? 100;
-            const scores = window.STATE?.scores || [0, 0];
+            const scores = window.STATE?.score || [0, 0];
             const threshold = targetScore * 0.8;
             if (scores[0] >= threshold || scores[1] >= threshold) {
                 gameArea.classList.add('match-point-aura');
@@ -229,7 +229,7 @@ window.Renderer = {
                 const count = window.STATE?.handSize?.[i] || 0;
                 for (let k = 0; k < count; k++) {
                     const darkTile = document.createElement('div');
-                    darkTile.className = `tile tile-rel tile-v tile-back`;
+                    darkTile.className = `tile tile-rel ${isSide ? 'tile-v' : 'tile-h'} tile-back`;
                     darkTile.innerHTML = '<div class="half"></div><div class="half"></div>';
                     rack.appendChild(darkTile);
                 }
@@ -265,8 +265,7 @@ window.Renderer = {
         const isDouble = tile[0] === tile[1];
         const pipColor = isMe && isDouble ? 'var(--red)' : null;
         
-        // REQUISITO: Na mao, pecas sao sempre verticais para economizar espaco horizontal
-        el.className = `tile tile-rel tile-v ${isDouble ? 'tile-double' : ''}`;
+        el.className = `tile tile-rel ${isSide ? 'tile-v' : 'tile-h'} ${isDouble ? 'tile-double' : ''}`;
         if (isMe) {
             el.id = `my-tile-${idx}`;
             el.setAttribute('tabindex', '0');
@@ -289,15 +288,11 @@ window.Renderer = {
      */
     _checkLocalInteraction: function() {
         const myIdx = window.myPlayerIdx ?? 0;
-        const state = window.STATE;
-        if (!state) return;
-
-        const isMyTurn = (state.current === myIdx && !state.isOver && !state.isBlocked);
+        const isMyTurn = (window.STATE?.current === myIdx && !window.STATE?.isOver && !window.STATE?.isBlocked);
         
         if (isMyTurn && typeof window.getMoves === 'function') {
-            const myHand = state.hands ? state.hands[myIdx] : [];
-            const moves = window.getMoves(myHand);
-            if (moves && moves.length > 0 && typeof window.highlight === 'function') {
+            const moves = window.getMoves(window.STATE.hands[myIdx]);
+            if (moves.length > 0 && typeof window.highlight === 'function') {
                 window.highlight(moves);
             }
         }

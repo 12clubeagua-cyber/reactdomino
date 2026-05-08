@@ -144,43 +144,7 @@ window.safeAudioInit = () => window.AudioManager.init();
 
 window.playClack = (freq, dur) => {
     if (navigator.vibrate) try { navigator.vibrate(30); } catch (e) {}
-    
-    // Impacto refinado: Frequencia alta + Ruido de fundo (The Carmack Way)
-    const f = freq ?? (800 + Math.random() * 200);
-    window.AudioManager.playTone(f, dur ?? 0.08, 'sine');
-};
-
-/**
- * Som de embaralhar as pecas na mesa
- */
-window.playShuffle = function() {
-    if (!window.AudioManager.isInitialized) window.AudioManager.init();
-    const ctx = window.AudioManager.ctx;
-    const now = ctx.currentTime;
-    
-    // Gera 1 segundo de "ruido de atrito"
-    const bufferSize = ctx.sampleRate * 1.0;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.15;
-
-    const noise = ctx.createBufferSource();
-    const filter = ctx.createBiquadFilter();
-    const gain = ctx.createGain();
-    
-    noise.buffer = buffer;
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(1000, now);
-    filter.frequency.exponentialRampToValueAtTime(400, now + 1.0); // Efeito de abafamento
-
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(window.AudioManager.sfxGain);
-
-    noise.start();
+    window.AudioManager.playTone(freq ?? 800, dur ?? 0.1);
 };
 
 window.playPass = () => {

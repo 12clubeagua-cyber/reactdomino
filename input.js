@@ -57,14 +57,8 @@ window.initDrag = function(e, tileIdx) {
     if (window.STATE?.isBlocked) return;
     draggedTile = e.target;
     
-    const rect = draggedTile.getBoundingClientRect();
-    draggedTile.style.width = `${rect.width}px`;
-    draggedTile.style.height = `${rect.height}px`;
-    draggedTile.style.left = `${rect.left}px`;
-    draggedTile.style.top = `${rect.top}px`;
     draggedTile.style.zIndex = '1000';
     draggedTile.style.position = 'fixed';
-    draggedTile.style.margin = '0';
 
     // Adiciona listeners apenas durante o arrasto
     window.addEventListener('mousemove', window.handleDrag);
@@ -123,8 +117,9 @@ window.highlight = function(moves) {
                     if (firstBtn) firstBtn.focus();
                 }
             } else {
+                window.STATE.isBlocked = true;
                 const side = (move.side === 'both' || move.side === 'any') ? 0 : move.side;
-                if (typeof window.playTile === 'function') window.playTile(window.myPlayerIdx ?? 0, move.idx, side);
+                if (typeof window.play === 'function') window.play(window.myPlayerIdx ?? 0, move.idx, side);
             }
         };
 
@@ -146,8 +141,7 @@ window.executeMove = function(side) {
     if (window.STATE && window.STATE.pendingIdx !== null) {
         const idx = window.STATE.pendingIdx;
         window.STATE.pendingIdx = null;
-        window.STATE.isBlocked = false; // Garante que playTile nao seja bloqueado
-        if (typeof window.playTile === 'function') window.playTile(window.myPlayerIdx ?? 0, idx, side);
+        if (typeof window.play === 'function') window.play(window.myPlayerIdx ?? 0, idx, side);
     }
 };
 

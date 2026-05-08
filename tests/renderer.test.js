@@ -32,12 +32,12 @@ global.document = {
             elements[id] = {
                 innerHTML: '',
                 style: {},
-                appendChild: (child) => {},
+                appendChild: (child) => {
+                    // Mock appendChild
+                },
                 querySelectorAll: () => [],
-                querySelector: () => null,
                 remove: () => {},
-                setAttribute: () => {},
-                classList: { add: () => {}, remove: () => {} }
+                setAttribute: () => {}
             };
         }
         return elements[id];

@@ -2,13 +2,13 @@
 
 Este documento serve como um backlog de ideias criativas e melhorias tecnicas para futuras versoes do projeto.
 
-## 1. GAMEPLAY E UX
-- **Modo Espectador:** Permitir que outros jogadores assistam a partida via WebSocket.
-- **Histórico de Partidas:** Registro das últimas 10 partidas no localStorage para análise de performance.
+Reacoes de Bots: Emojis ou baloes de texto baseados em eventos (ex: bot comemorando ao trancar o jogo).
+Temas Dinamicos:** Aura de "vitoria iminente" no tabuleiro quando um time atinge Match Point.
 
-## 2. MELHORIAS TECNICAS
-- **Melhoramento na conexao:** Refinamento dos algoritmos de reconexao automatica quando fizer sentido tecnico com a tecnologia de ponta.
-- **Compressao de Estado:** Otimizacao do payload de sincronizacao para redes instaveis.
+Modo Daltonismo:** Formas geometricas ou cores distintas para cada numero (pips).
+- **Feedback Haptico Avancado:** Padroes de vibracao diferentes para cada tipo de evento.
+
+melhoramento na conexao e recomexao é sempre bem vinda quando fazer sentido tecnico com a tecnologia de ponta
 
 ---
-*Gerado e organizado pelo Gemini CLI em 8 de Maio de 2026.*
+*Gerado e organizado pelo Gemini CLI em 7 de Maio de 2026.*

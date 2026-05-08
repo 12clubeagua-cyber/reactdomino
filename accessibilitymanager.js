@@ -8,8 +8,7 @@
 window.AccessibilityManager = {
     init: function() {
         const settings = window.safeGetStorage('domino_a11y', { highContrast: false, fontSize: 16 });
-        const a11yVal = settings.highContrast ? 'high-contrast' : '';
-        document.documentElement.setAttribute('data-a11y', a11yVal);
+        document.documentElement.setAttribute('data-a11y', settings.highContrast ? 'high-contrast' : '');
         if (settings.fontSize) document.documentElement.style.fontSize = settings.fontSize + 'px';
         
         // Inicializa o leitor de tela se houver conteiner
