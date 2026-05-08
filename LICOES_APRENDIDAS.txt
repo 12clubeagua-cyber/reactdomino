@@ -38,8 +38,8 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 
 ## 9. PERSONALIZACAO E REQUISITOS DO USUARIO
 ## 10. ANIMACAO E FEEDBACK VISUAL
-- **VOO DA PECA (FLYING TILE):** NUNCA simplifique a animacao para movimento linear. O padrao exigido pelo usuario inclui:
-    1. **EASING:** Cubic Out (`1 - Math.pow(1 - t, 3)`) para suavidade.
-    2. **ARCO:** Pulo de -150px usando `Math.sin(t * Math.PI)` somado ao eixo Y.
-    3. **ESCALA:** Pulsacao ate 1.4x no meio do voo para simular profundidade.
+- **VOO DA PECA (FLYING TILE):** O trajeto DEVE ser em **LINHA RETA** absoluta. 
+    1. **CAMINHO:** Saida da mao do jogador -> Posicao final na mesa sem desvios.
+    2. **PROIBIDO:** Math.sin, arcos, parabolas ou pulos.
+    3. **EASING:** Cubic Out apenas na velocidade (acelera no inicio, desacelera no fim).
     4. **FLICKER:** A remocao do proxy DEVE ocorrer um frame apos o `onComplete`.

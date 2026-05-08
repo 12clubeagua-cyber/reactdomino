@@ -25,7 +25,7 @@
 ## 4. Renderizacao e UX (Renderer.js / Animations.js)
 - **Renderizacao Defensiva:** `drawBoard` deve limpar o DOM seletivamente, preservando pecas em animacao (`.moving-proxy`).
 - **Responsive Camera:** Zoom e centralizacao automatica via variaveis CSS. Efeitos visuais (shake, confetes) devem respeitar o contexto de zoom.
-- **Flying Tiles (Juice Maximo):** Animacoes de jogada DEVEM seguir o padrao: Easing `Cubic Out`, Arco parabolico (`Math.sin` com pico de -150px) e Pulsacao de Escala (pico de 1.4x). A peca temporaria (`proxy`) deve ser removida via `requestAnimationFrame` apos o `onComplete` para evitar flicker.
+- **Flying Tiles:** Animacoes de jogada DEVEM seguir o trajeto em **LINHA RETA** absoluta saindo da mao do jogador ate a mesa. Proibido o uso de arcos, parabolas ou pulos. Use easing `Cubic Out` apenas para suavizar a velocidade, mas nunca o trajeto.
 
 ## 5. Resiliencia e Persistencia
 - **Service Worker (sw.js):** Incremente `CACHE_NAME` a cada mudanca em JS/CSS para forcar atualizacao nos clientes.
