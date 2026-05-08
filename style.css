@@ -302,6 +302,25 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 
+/* DESTAQUE DE PECAS JOGAVEIS */
+.playable {
+  border: 2px solid var(--gold) !important;
+  box-shadow: 0 0 15px var(--gold-glow) !important;
+  cursor: pointer;
+  animation: playable-pulse 1.5s infinite ease-in-out;
+}
+
+.playable:hover {
+  transform: translateY(-15px) scale(1.05) !important;
+  box-shadow: 0 15px 30px var(--gold-glow) !important;
+  border-color: #fff !important;
+}
+
+@keyframes playable-pulse {
+  0%, 100% { box-shadow: 0 0 5px var(--gold-glow); }
+  50% { box-shadow: 0 0 20px var(--gold); }
+}
+
 /* CABECALHO */
 header {
   height: 60px;

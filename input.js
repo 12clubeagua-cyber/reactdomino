@@ -119,7 +119,7 @@ window.highlight = function(moves) {
             } else {
                 window.STATE.isBlocked = true;
                 const side = (move.side === 'both' || move.side === 'any') ? 0 : move.side;
-                if (typeof window.play === 'function') window.play(window.myPlayerIdx ?? 0, move.idx, side);
+                if (typeof window.playTile === 'function') window.playTile(window.myPlayerIdx ?? 0, move.idx, side);
             }
         };
 
@@ -141,7 +141,7 @@ window.executeMove = function(side) {
     if (window.STATE && window.STATE.pendingIdx !== null) {
         const idx = window.STATE.pendingIdx;
         window.STATE.pendingIdx = null;
-        if (typeof window.play === 'function') window.play(window.myPlayerIdx ?? 0, idx, side);
+        if (typeof window.playTile === 'function') window.playTile(window.myPlayerIdx ?? 0, idx, side);
     }
 };
 

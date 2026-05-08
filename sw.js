@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v130'; // v130: Fix offline hang, horizontal piece alignment, and side hand visibility.
+const CACHE_NAME = 'domino-felipe-v131'; // v131: Fix unresponsive clicks and implement playable piece highlights.
 
 const ASSETS = [
   '/',

@@ -45,3 +45,8 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 - **VISIBILIDADE EM LATERAIS:** Maos laterais (`hand-side`) devem usar `flex-direction: column` com `flex-wrap: wrap` e uma escala menor (`0.6`) para garantir que todas as 7 pecas sejam visiveis mesmo em telas com altura reduzida.
 - **CONSISTENCIA DE ORIENTACAO:** Pecas na mao devem ser sempre `tile-v` (verticais). Forçar a classe `tile-v` no `Renderer` evita problemas de layout causados por rotacoes via CSS (`transform: rotate(90deg)`) que nao alteram o espaco ocupado no fluxo do flexbox.
 - **INTEGRIDADE DE FUNCOES GLOBAIS:** Nunca chame funcoes de modulos externos (ex: `window.Dashboard.updateTurnIndicator`) sem garantir sua existencia no arquivo de origem. A ausencia de uma funcao chamada no loop de turnos causa o travamento silencioso do jogo ("Searching" hang).
+
+## 10. INTERATIVIDADE E FEEDBACK VISUAL (input.js / style.css)
+- **TYPOS EM CHAMADAS DE API:** O erro de clique ("clico e nada acontece") foi causado por uma chamada a `window.play` em vez de `window.playTile`. Sempre verifique se o nome da funcao exportada no `game.js` coincide exatamente com a chamada no `input.js`.
+- **HIGHLIGHT DE PECAS JOGAVEIS:** O feedback visual para pecas que podem ser jogadas e CRITICO para a experiencia do usuario. A classe `.playable` deve ser definida no CSS com animacoes de pulso (`@keyframes`) e mudancas de estado no `:hover` para indicar claramente que o elemento e interativo.
+
