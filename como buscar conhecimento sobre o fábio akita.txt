@@ -1,0 +1,32 @@
+Direto ao ponto. Se o objetivo é alimentar o "Akita Auditor" com o conhecimento cru e o pragmatismo do próprio Fábio Akita, você precisa ir direto nas fontes originais. O Akita tem décadas de produção de conteúdo focado em fundamentos de computação, sem espaço para amadorismo.
+
+Aqui estão os repositórios e bases de conhecimento oficiais para você extrair o seu "Protocolo de Engenharia Hardcore":
+
+### 1. O Código e o Setup (GitHub)
+
+* **Perfil Principal:** [github.com/akitaonrails](https://github.com/akitaonrails)
+* **O que buscar aqui:** O Akita não mantém um GitHub cheio de "projetinhos de portfólio" de tutoriais. O repositório dele é rico em *dotfiles* extremamente otimizados (configurações paranoicas de Vim, Tmux e Zsh), scripts de automação e contribuições históricas (especialmente no ecossistema Ruby). Analisar os repositórios de infraestrutura e *dotfiles* dele é uma aula sobre como um engenheiro domina e automatiza o próprio ambiente de trabalho no terminal.
+
+### 2. A Filosofia e os Fundamentos (YouTube)
+
+* **Canal AkitaOnRails:** [youtube.com/@AkitaOnRails](https://www.google.com/search?q=https://www.youtube.com/%40AkitaOnRails)
+* **O que buscar aqui:** Esta é a essência do verbo "Akitando". É onde ele destrói *hypes* de mercado, explica como sistemas operacionais gerenciam memória de verdade, como redes funcionam por baixo dos panos (TCP/IP) e a história da computação. Para o seu agente, o conhecimento extraído dos vídeos sobre *Gerenciamento de Memória*, *Concorrência* e *Bancos de Dados* é crítico para validar a arquitetura de projetos complexos.
+
+### 3. O Acervo Histórico (Blog Pessoal)
+
+* **AkitaOnRails Blog:** [akitaonrails.com]()
+* **O que buscar aqui:** Ele mantém este blog desde o início dos anos 2000. É um arquivo textual brutal sobre engenharia de software pragmática, os problemas da má interpretação dos métodos Ágeis e arquitetura de sistemas. Tem muito conteúdo técnico denso em formato de texto que é perfeito para alimentar a base de conhecimento de um LLM.
+
+### 4. A Engenharia Aplicada (Codeminer 42)
+
+* **Blog da Codeminer 42:** [blog.codeminer42.com]()
+* **O que buscar aqui:** A Codeminer 42 é a boutique de software de alta performance que ele fundou. O blog não é escrito só por ele, mas reflete 100% a régua de qualidade que ele exige. São artigos extremamente técnicos escritos por desenvolvedores sobre Elixir, Ruby, Rust, concorrência e testes automatizados. É a "Diretriz de Ferro" operando em escala comercial.
+
+### 5. Opiniões e Filtro de Mercado (X/Twitter)
+
+* **Perfil:** [@AkitaOnRails]()
+* **O que buscar aqui:** Opiniões sem filtro sobre as bizarrices e fragilidades do mercado de tecnologia atual. É excelente para calibrar o tom "Sem Mimimi" e "Anti-Hype" do seu agente.
+
+---
+
+Para que o "Akita Auditor" processe esse volume de informações e incorpore de vez esse conhecimento no seu fluxo, você pretende usar algum script no seu ambiente CLI para fazer o *scraping* desses textos e injetá-los diretamente no contexto do agente?
