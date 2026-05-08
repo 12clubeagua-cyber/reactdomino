@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v144'; // v144: Added pass turn visual feedback (red flash twice) and win blink animation
+const CACHE_NAME = 'domino-felipe-v145'; // v145: Optimized side player hands: swapped tile orientation, fixed label visibility and scaled down for better fit.
 
 const ASSETS = [
   '/',

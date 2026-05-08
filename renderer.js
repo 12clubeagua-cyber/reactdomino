@@ -227,7 +227,7 @@ window.Renderer = {
                 const count = window.STATE?.handSize?.[i] || 0;
                 for (let k = 0; k < count; k++) {
                     const darkTile = document.createElement('div');
-                    darkTile.className = `tile tile-rel ${isSide ? 'tile-v' : 'tile-h'} tile-back`;
+                    darkTile.className = `tile tile-rel ${isSide ? 'tile-h' : 'tile-v'} tile-back`;
                     darkTile.innerHTML = '<div class="half"></div><div class="half"></div>';
                     rack.appendChild(darkTile);
                 }
@@ -263,7 +263,7 @@ window.Renderer = {
         const isDouble = tile[0] === tile[1];
         const pipColor = isMe && isDouble ? 'var(--red)' : null;
         
-        el.className = `tile tile-rel ${isSide ? 'tile-v' : 'tile-h'} ${isDouble ? 'tile-double' : ''}`;
+        el.className = `tile tile-rel ${isSide ? 'tile-h' : 'tile-v'} ${isDouble ? 'tile-double' : ''}`;
         if (isMe) {
             el.id = `my-tile-${idx}`;
             el.setAttribute('tabindex', '0');

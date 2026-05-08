@@ -298,6 +298,10 @@ body {
   transition: transform 0.2s ease-out, box-shadow 0.2s;
 }
 
+.tile .half {
+  flex: 1;
+}
+
 .moving-proxy {
     transition: none !important;
     animation: none !important;
@@ -309,18 +313,6 @@ body {
   border-color: var(--gold) !important;
   box-shadow: 0 0 15px var(--gold-glow) !important;
   z-index: 100;
-}
-
-/* Forçamos todas as pecas na mao a serem verticais (tile-v) para ocupar 40x80 */
-.hand .tile-h {
-  width: var(--tile-width) !important;
-  height: var(--tile-height) !important;
-  flex-direction: column !important;
-}
-
-.hand .tile-h .half {
-  width: 100% !important;
-  height: 50% !important;
 }
 
 #hand-0 .tile {
@@ -363,14 +355,14 @@ body {
 
 /* Jogador da Direita: Vertical, Baixo -> Cima */
 .hand-3 { margin-right: 30px; }
+.hand-3 .tiles-rack { transform: scale(0.85); }
 .hand-3 .player-label {
-  left: 100%;
-  top: 50%;
-  transform: translate(5px, -50%) rotate(-90deg);
-  transform-origin: center;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
 }
 .hand-3.active-turn .player-label {
-  transform: translate(20px, -50%) rotate(-90deg);
+  transform: translate(-50%, -10px);
 }
 
 /* Jogador do Topo: Horizontal, Dir -> Esq */
@@ -386,14 +378,14 @@ body {
 
 /* Jogador da Esquerda: Vertical, Cima -> Baixo */
 .hand-1 { margin-left: 30px; }
+.hand-1 .tiles-rack { transform: scale(0.85); }
 .hand-1 .player-label {
-  right: 100%;
-  top: 50%;
-  transform: translate(-5px, -50%) rotate(90deg);
-  transform-origin: center;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
 }
 .hand-1.active-turn .player-label {
-  transform: translate(-20px, -50%) rotate(90deg);
+  transform: translate(-50%, -10px);
 }
 
 /* CABECALHO */
