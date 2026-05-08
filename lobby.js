@@ -53,6 +53,33 @@ window.selectMode = function(mode) {
         window.goToStep('step-diff');
     } else if (mode === 'client') {
         window.goToStep('step-lobby-client');
+        window.fetchPublicRooms();
+    }
+};
+
+/**
+ * Busca salas ativas no servidor Go (Fase Final: Matchmaking)
+ */
+window.fetchPublicRooms = async function() {
+    const listEl = document.getElementById('public-rooms-list');
+    if (!listEl) return;
+
+    try {
+        const response = await fetch("http://localhost:8080/rooms");
+        const rooms = await response.json();
+
+        if (rooms.length === 0) {
+            listEl.innerHTML = '<div class="start-sub">Nenhuma sala ativa no momento.</div>';
+            return;
+        }
+
+        listEl.innerHTML = rooms.map(id => `
+            <div class="player-item" style="cursor:pointer; border:1px solid var(--gold);" onclick="window.Multiplayer.initClient('${id}')">
+                SALA: ${id} <span style="font-size:0.7rem; color:var(--gold); margin-left:auto;">CLIQUE PARA ENTRAR</span>
+            </div>
+        `).join('');
+    } catch (e) {
+        listEl.innerHTML = '<div class="start-sub" style="color:var(--red);">Erro ao conectar ao servidor de salas.</div>';
     }
 };
 

@@ -175,6 +175,19 @@ func main() {
 		fmt.Fprintf(w, "OK - Active Rooms: %d", len(hub.Rooms))
 	})
 
+	// FASE FINAL: Lista de Salas Públicas (Matchmaking)
+	http.HandleFunc("/rooms", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		roomList := []string{}
+		hub.Mutex.Lock()
+		for id := range hub.Rooms {
+			roomList = append(roomList, id)
+		}
+		hub.Mutex.Unlock()
+		json.NewEncoder(w).Encode(roomList)
+	})
+
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		handleWebSocket(hub, w, r)
 	})
