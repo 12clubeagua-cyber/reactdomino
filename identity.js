@@ -36,9 +36,8 @@ window.Identity = {
     promptChange: function() {
         const input = prompt("Digite seu apelido (ate 10 letras):", window.Identity.get());
         if (input !== null && window.Identity.set(input)) {
-            // Nova logica para avatar simples
-            const avatar = prompt("Escolha um emoji de avatar:", '');
-            window.Identity.setProfile(avatar || '', '#ffcc33');
+            // Removido prompt de emoji a pedido do usuario - Definindo perfil padrao silenciosamente
+            window.Identity.setProfile('', '#ffcc33');
             window.Dashboard?.updateScore?.();
         }
     },

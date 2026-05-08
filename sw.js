@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v140'; // v140: UI Refinement - Repositioned player labels to be outside hand areas
+const CACHE_NAME = 'domino-felipe-v141'; // v141: Removed emoji selection screen during onboarding
 
 const ASSETS = [
   '/',
