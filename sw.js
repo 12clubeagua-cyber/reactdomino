@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v134'; // v134: Fix highlights, animation origin and remove rising effect.
+const CACHE_NAME = 'domino-felipe-v135'; // v135: Fix animation curves and camera auto-zoom stability.
 
 const ASSETS = [
   '/',
