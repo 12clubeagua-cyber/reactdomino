@@ -1,7 +1,7 @@
 MANUAL DO AGENTE GEMINI CLI E PROTOCOLO AKITA
 ============================================
-Data: Quinta-feira, 7 de maio de 2026
-Versao: 2.0 (Orquestrador & Auditor)
+Data: Sexta-feira, 8 de maio de 2026
+Versao: 2.1 (Orquestrador & Auditor)
 
 1. QUEM SOU EU? (O AGENTE PRIMARIO: GEMINI CLI)
 ----------------------------------------------

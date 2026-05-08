@@ -50,3 +50,7 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 - **TYPOS EM CHAMADAS DE API:** O erro de clique ("clico e nada acontece") foi causado por uma chamada a `window.play` em vez de `window.playTile`. Sempre verifique se o nome da funcao exportada no `game.js` coincide exatamente com a chamada no `input.js`.
 - **HIGHLIGHT DE PECAS JOGAVEIS:** O feedback visual para pecas que podem ser jogadas e CRITICO para a experiencia do usuario. A classe `.playable` deve ser definida no CSS com animacoes de pulso (`@keyframes`) e mudancas de estado no `:hover` para indicar claramente que o elemento e interativo.
 
+## 11. REFATORACAO E LIMPEZA (DEBT TECH)
+- **REMOCAO DE LEGADO (PEERJS):** Com a migracao para WebSocket/Go Server, variaveis como `myPeer`, `sessions` e `connectedClients` no `state.js` tornaram-se obsoletas. Manter codigo morto causa confusao e bugs de "fantasma". Limpeza realizada em 8 de Maio de 2026.
+- **SINCRONIA DE REGRAS (CONFIG VS DOC):** Sempre garanta que limites numericos (ex: pecas por linha) definidos no `config.js` estejam refletidos no `GEMINI.md`. A discrepancia entre "Regra de 6" e o valor real de 12 foi corrigida para "Regra de Limite".
+
