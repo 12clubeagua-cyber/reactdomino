@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v134'; // v134: Rotated player names at screen edges
+const CACHE_NAME = 'domino-felipe-v135'; // v135: Zoom logic adjustment (padding = 1 tile length)
 
 const ASSETS = [
   '/',

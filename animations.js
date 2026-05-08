@@ -51,7 +51,8 @@ window.updateCamera = function() {
         ? window.getSnakeBounds() 
         : { minX: -100, maxX: 100, minY: -100, maxY: 100, centerX: 0, centerY: 0 };
 
-    const padding = 100; // Margem maior para as pecas maiores
+    const TILE_L = window.CONFIG?.GAME?.TILE_L ?? 80;
+    const padding = TILE_L; // Espaco para exatamente mais uma peca de cada lado
     const viewW = boardBox.clientWidth;
     const viewH = boardBox.clientHeight;
 
