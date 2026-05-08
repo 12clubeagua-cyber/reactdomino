@@ -38,7 +38,11 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 
 ## 9. PERSONALIZACAO E REQUISITOS DO USUARIO
 ## 10. ANIMACAO E FEEDBACK VISUAL
-- **VOO DA PECA (FLYING TILE):** O trajeto DEVE ser em **LINHA RETA** absoluta. 
+- **VOO DA PECA (FLYING TILE):** O trajeto DEVE ser em **LINHA RETA** absoluta.
+    1. **CAUSA DO BUG (2026-05-08):** A classe `.tile` no CSS tinha `transition: transform 0.2s`, o que causava interferencia e suavizacao indesejada (curvas/atraso) nas atualizacoes feitas via `requestAnimationFrame`.
+    2. **SOLUCAO:** Desativar explicitamente as transicoes no `.moving-proxy` via CSS e JS.
+    3. **MELHORIA:** Agora a animacao comeca na posicao exata do clique (salva no `input.js`) em vez de sempre no centro da mao, eliminando saltos visuais.
+ 
     1. **CAMINHO:** Saida da mao do jogador -> Posicao final na mesa sem desvios.
     2. **PROIBIDO:** Math.sin, arcos, parabolas ou pulos.
     3. **EASING:** Cubic Out apenas na velocidade (acelera no inicio, desacelera no fim).

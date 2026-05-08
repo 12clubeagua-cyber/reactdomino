@@ -100,8 +100,18 @@ window.highlight = function(moves) {
 
         el.onmousedown = (e) => window.initDrag(e, move.idx);
         
-        const action = () => {
+        const action = (e) => {
             if (window.STATE?.isBlocked) return;
+
+            // Salva a posicao exata do clique para o animations.js usar como ponto de partida
+            const clickedEl = e.currentTarget || el;
+            const rect = clickedEl.getBoundingClientRect();
+            window._lastClickedTileRect = {
+                left: rect.left,
+                top: rect.top,
+                width: rect.width,
+                height: rect.height
+            };
             
             const extremesAreDiff = window.STATE?.extremes?.[0] !== window.STATE?.extremes?.[1];
             const needsPicker = move.side === 'both' && extremesAreDiff && window.STATE?.positions?.length > 0;

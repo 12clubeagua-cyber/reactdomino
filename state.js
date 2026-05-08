@@ -11,7 +11,7 @@ window.STATE = {
     hands: [[], [], [], []],      // Pecas fisicas nas maos
     handSize: [7, 7, 7, 7],       // Contagem (essencial para sincronizar Clientes)
     extremes: [null, null],       // Numeros das duas pontas da mesa
-    ends: [],                     // Dados vetoriais para o animations.js (curvas)
+    ends: [],                     // Dados vetoriais para controle de fluxo da serpente
     positions: [],                // Historico de coordenadas das pecas jogadas
     
     // --- Controle de Turno e Fluxo ---
@@ -64,6 +64,7 @@ window.isReconnecting = false;
 
 // --- Interface Global ---
 window.visualPass = [false, false, false, false];
+window._lastClickedTileRect = null;
 
 /* 
    ========================================================================

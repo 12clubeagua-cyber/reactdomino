@@ -298,6 +298,12 @@ body {
   transition: transform 0.2s ease-out, box-shadow 0.2s;
 }
 
+.moving-proxy {
+    transition: none !important;
+    animation: none !important;
+    z-index: 10000 !important;
+}
+
 .playable {
   transform: translateY(-15px) !important;
   border-color: var(--gold) !important;

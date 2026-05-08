@@ -125,7 +125,8 @@ window.animateTile = function(pIdx, targetData, onComplete) {
     // Cria a peca 'fantasma' que fara o trajeto visual
     const proxy = document.createElement('div');
     proxy.className = `tile moving-proxy ${targetData.isV ? 'tile-v' : 'tile-h'}`;
-    proxy.style.cssText = `z-index: 9999; position: fixed; pointer-events: none;`;
+    // Forcamos transition none no JS por seguranca maxima contra regressoes de CSS
+    proxy.style.cssText = `z-index: 10000; position: fixed; pointer-events: none; transition: none !important; animation: none !important;`;
     
     // Preenche a peca fantasma com os pontos de forma segura
     let pipsHTML = "";
@@ -137,15 +138,24 @@ window.animateTile = function(pIdx, targetData, onComplete) {
     proxy.innerHTML = pipsHTML;
     document.body.appendChild(proxy);
 
-    // 1. Define o PONTO DE PARTIDA (Mao do Jogador)
+    // 1. Define o PONTO DE PARTIDA
     const localIdx = window.myPlayerIdx ?? 0;
-    const viewIdx = (pIdx - localIdx + 4) % 4; // Qual mao na tela representa esse jogador?
-    const handEl = document.getElementById(`hand-${viewIdx}`);
-    
-    // Se a mao nao for encontrada, parte do centro da tela
-    const hRect = handEl ? handEl.getBoundingClientRect() : { left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0 };
-    const startX = hRect.left + (hRect.width / 2);
-    const startY = hRect.top + (hRect.height / 2);
+    let startX, startY;
+
+    // Se for o jogador local, usa a posicao exata do clique capturada no input.js
+    if (pIdx === localIdx && window._lastClickedTileRect) {
+        const r = window._lastClickedTileRect;
+        startX = r.left + (r.width / 2);
+        startY = r.top + (r.height / 2);
+        window._lastClickedTileRect = null; // Consome para a proxima
+    } else {
+        // Fallback: Centro da mao do jogador (para bots ou se o clique nao foi capturado)
+        const viewIdx = (pIdx - localIdx + 4) % 4;
+        const handEl = document.getElementById(`hand-${viewIdx}`);
+        const hRect = handEl ? handEl.getBoundingClientRect() : { left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0 };
+        startX = hRect.left + (hRect.width / 2);
+        startY = hRect.top + (hRect.height / 2);
+    }
 
     // 2. Define o PONTO DE CHEGADA (Posicao logica traduzida para pixel e escala)
     const cRect = containerEl.getBoundingClientRect();

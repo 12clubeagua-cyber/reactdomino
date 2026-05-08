@@ -12,7 +12,18 @@ global.window = {
     innerWidth: 1024,
     innerHeight: 768,
     myPlayerIdx: 0,
-    currentCamera: { scale: 1, x: 0, y: 0 }
+    currentCamera: { scale: 1, x: 0, y: 0 },
+    getSnakeBounds: () => {
+        if (!global.window.STATE.positions.length) return { minX: 0, maxX: 0, minY: 0, maxY: 0, centerX: 0, centerY: 0 };
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        global.window.STATE.positions.forEach(p => {
+            minX = Math.min(minX, p.x - 20);
+            maxX = Math.max(maxX, p.x + 20);
+            minY = Math.min(minY, p.y - 40);
+            maxY = Math.max(maxY, p.y + 40);
+        });
+        return { minX, maxX, minY, maxY, centerX: (minX + maxX) / 2, centerY: (minY + maxY) / 2 };
+    }
 };
 
 global.document = {
