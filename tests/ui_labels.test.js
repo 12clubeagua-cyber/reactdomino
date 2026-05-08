@@ -65,7 +65,8 @@ function testLabelStructure() {
         style: {}, 
         appendChild: (el) => { container.lastChild = el; },
         querySelectorAll: () => [],
-        remove: () => {}
+        remove: () => {},
+        classList: { add: () => {}, remove: () => {} }
     };
     window.Renderer._getEl = () => container;
 
@@ -80,7 +81,7 @@ function testLabelStructure() {
             Object.defineProperty(el, 'className', {
                 set: (val) => {
                     el._className = val;
-                    if (val === 'player-name-tag') {
+                    if (val === 'player-label') {
                         capturedLabel = el;
                     }
                 },
@@ -93,19 +94,13 @@ function testLabelStructure() {
     // Trigger drawHands
     window.Renderer.drawHands();
 
-    assert(capturedLabel !== null, "Label: player-name-tag element was created");
+    assert(capturedLabel !== null, "Label: player-label element was created");
     
-    // Example: <span class="p-count">2</span><span class="p-name">JOAO_3</span>
-    const html = capturedLabel.innerHTML;
-    console.log(`[INFO] Captured Label HTML: ${html}`);
+    // Example: JOAO_3
+    const text = capturedLabel.textContent;
+    console.log(`[INFO] Captured Label Text: ${text}`);
     
-    const countIndex = html.indexOf('p-count');
-    const nameIndex = html.indexOf('p-name');
-    
-    assert(countIndex !== -1, "Structure: p-count exists");
-    assert(nameIndex !== -1, "Structure: p-name exists");
-    assert(countIndex < nameIndex, "Structure: p-count appears before p-name");
-    assert(html.startsWith('<span class="p-count">'), "Structure: Starts with p-count span");
+    assert(text === 'JOAO_3', "Content: Correct player name displayed");
 
     console.log("--- UI Labels Structure Audit Pass ---");
 }

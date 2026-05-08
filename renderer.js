@@ -102,9 +102,11 @@ window.Renderer = {
         const startIdx = window.Renderer._renderedTilesCount || 0;
         if (startIdx >= positions.length && window.Renderer._lastIsOver === isOver) return;
         
-        // Remove destaque da peca anterior
-        const lastMoveTile = board.querySelector('.last-move');
-        if (lastMoveTile) lastMoveTile.classList.remove('last-move');
+        // Remove destaque da peca anterior (se existir)
+        const lastMoveTile = (typeof board.querySelector === 'function') ? board.querySelector('.last-move') : null;
+        if (lastMoveTile && lastMoveTile.classList) {
+            lastMoveTile.classList.remove('last-move');
+        }
 
         const fragment = document.createDocumentFragment();
         const W = window.CONFIG?.GAME?.TILE_W ?? 18;
@@ -155,7 +157,7 @@ window.Renderer = {
 
         // --- DINAMICA DE AURA (Match Point) ---
         const gameArea = window.Renderer._getEl('game-area');
-        if (gameArea) {
+        if (gameArea && gameArea.classList) {
             const targetScore = window.CONFIG?.GAME?.WIN_SCORE ?? 100;
             const scores = window.STATE?.score || [0, 0];
             const threshold = targetScore * 0.8;
