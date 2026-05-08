@@ -12,44 +12,157 @@ export class GameLogic {
         wasm.__wbg_gamelogic_free(ptr, 0);
     }
     /**
-     * Lógica de pontuação baseada na soma das peças (Hardcore Strategy)
-     * @param {Uint8Array} hand
-     * @returns {number}
+     * @param {number} v1
+     * @param {number} v2
+     * @param {number} _side
+     * @param {number} last_x
+     * @param {number} last_y
+     * @param {number} _dir
+     * @param {number} _line_count
+     * @param {boolean} _is_double
+     * @param {boolean} last_is_v
+     * @param {number} _tile_w
+     * @param {number} _tile_l
+     * @returns {Placement}
      */
-    static calculate_hand_score(hand) {
-        const ptr0 = passArray8ToWasm0(hand, wasm.__wbindgen_malloc);
-        const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.gamelogic_calculate_hand_score(ptr0, len0);
-        return ret >>> 0;
+    static calculate_step(v1, v2, _side, last_x, last_y, _dir, _line_count, _is_double, last_is_v, _tile_w, _tile_l) {
+        const ret = wasm.gamelogic_calculate_step(v1, v2, _side, last_x, last_y, _dir, _line_count, _is_double, last_is_v, _tile_w, _tile_l);
+        return Placement.__wrap(ret);
     }
     /**
-     * Verifica se uma peça pode ser jogada em uma das extremidades.
-     * @param {Tile} tile
-     * @param {Uint8Array} extremes
+     * Pure validation logic
+     * @param {number} v1
+     * @param {number} v2
+     * @param {number} e1
+     * @param {number} e2
      * @returns {boolean}
      */
-    static can_play(tile, extremes) {
-        _assertClass(tile, Tile);
-        var ptr0 = tile.__destroy_into_raw();
-        const ptr1 = passArray8ToWasm0(extremes, wasm.__wbindgen_malloc);
-        const len1 = WASM_VECTOR_LEN;
-        const ret = wasm.gamelogic_can_play(ptr0, ptr1, len1);
+    static can_play(v1, v2, e1, e2) {
+        const ret = wasm.gamelogic_can_play(v1, v2, e1, e2);
         return ret !== 0;
     }
     /**
-     * Retorna o valor que ficará na nova extremidade após a jogada.
-     * @param {Tile} tile
-     * @param {number} current_extreme
-     * @returns {number}
+     * Optimized move finder
+     * @param {Uint8Array} hand
+     * @param {number} e1
+     * @param {number} e2
+     * @returns {Int32Array}
      */
-    static get_new_extreme(tile, current_extreme) {
-        _assertClass(tile, Tile);
-        var ptr0 = tile.__destroy_into_raw();
-        const ret = wasm.gamelogic_get_new_extreme(ptr0, current_extreme);
-        return ret;
+    static find_moves(hand, e1, e2) {
+        const ptr0 = passArray8ToWasm0(hand, wasm.__wbindgen_malloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.gamelogic_find_moves(ptr0, len0, e1, e2);
+        var v2 = getArrayI32FromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v2;
+    }
+    /**
+     * PHASE 3: HARDCORE AI SEARCH (Minimax with Alpha-Beta Pruning)
+     * hand: [v1, v2, ...]
+     * extremes: [e1, e2]
+     * returns: [best_tile_idx, best_side]
+     * @param {Uint8Array} hand
+     * @param {Uint8Array} extremes
+     * @param {number} difficulty
+     * @returns {Int32Array}
+     */
+    static think(hand, extremes, difficulty) {
+        const ptr0 = passArray8ToWasm0(hand, wasm.__wbindgen_malloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ptr1 = passArray8ToWasm0(extremes, wasm.__wbindgen_malloc);
+        const len1 = WASM_VECTOR_LEN;
+        const ret = wasm.gamelogic_think(ptr0, len0, ptr1, len1, difficulty);
+        var v3 = getArrayI32FromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v3;
     }
 }
 if (Symbol.dispose) GameLogic.prototype[Symbol.dispose] = GameLogic.prototype.free;
+
+export class Placement {
+    static __wrap(ptr) {
+        const obj = Object.create(Placement.prototype);
+        obj.__wbg_ptr = ptr;
+        PlacementFinalization.register(obj, obj.__wbg_ptr, obj);
+        return obj;
+    }
+    __destroy_into_raw() {
+        const ptr = this.__wbg_ptr;
+        this.__wbg_ptr = 0;
+        PlacementFinalization.unregister(this);
+        return ptr;
+    }
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_placement_free(ptr, 0);
+    }
+    /**
+     * @returns {boolean}
+     */
+    get is_v() {
+        const ret = wasm.__wbg_get_placement_is_v(this.__wbg_ptr);
+        return ret !== 0;
+    }
+    /**
+     * @returns {number}
+     */
+    get v1() {
+        const ret = wasm.__wbg_get_placement_v1(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    get v2() {
+        const ret = wasm.__wbg_get_placement_v2(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    get x() {
+        const ret = wasm.__wbg_get_placement_x(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    get y() {
+        const ret = wasm.__wbg_get_placement_y(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @param {boolean} arg0
+     */
+    set is_v(arg0) {
+        wasm.__wbg_set_placement_is_v(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {number} arg0
+     */
+    set v1(arg0) {
+        wasm.__wbg_set_placement_v1(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {number} arg0
+     */
+    set v2(arg0) {
+        wasm.__wbg_set_placement_v2(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {number} arg0
+     */
+    set x(arg0) {
+        wasm.__wbg_set_placement_x(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {number} arg0
+     */
+    set y(arg0) {
+        wasm.__wbg_set_placement_y(this.__wbg_ptr, arg0);
+    }
+}
+if (Symbol.dispose) Placement.prototype[Symbol.dispose] = Placement.prototype.free;
 
 export class Tile {
     __destroy_into_raw() {
@@ -125,14 +238,24 @@ function __wbg_get_imports() {
 const GameLogicFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_gamelogic_free(ptr, 1));
+const PlacementFinalization = (typeof FinalizationRegistry === 'undefined')
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry(ptr => wasm.__wbg_placement_free(ptr, 1));
 const TileFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_tile_free(ptr, 1));
 
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
+function getArrayI32FromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    return getInt32ArrayMemory0().subarray(ptr / 4, ptr / 4 + len);
+}
+
+let cachedInt32ArrayMemory0 = null;
+function getInt32ArrayMemory0() {
+    if (cachedInt32ArrayMemory0 === null || cachedInt32ArrayMemory0.byteLength === 0) {
+        cachedInt32ArrayMemory0 = new Int32Array(wasm.memory.buffer);
     }
+    return cachedInt32ArrayMemory0;
 }
 
 function getStringFromWasm0(ptr, len) {
@@ -175,6 +298,7 @@ function __wbg_finalize_init(instance, module) {
     wasmInstance = instance;
     wasm = instance.exports;
     wasmModule = module;
+    cachedInt32ArrayMemory0 = null;
     cachedUint8ArrayMemory0 = null;
     wasm.__wbindgen_start();
     return wasm;

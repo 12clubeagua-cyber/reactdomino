@@ -5,18 +5,33 @@ export class GameLogic {
     private constructor();
     free(): void;
     [Symbol.dispose](): void;
+    static calculate_step(v1: number, v2: number, _side: number, last_x: number, last_y: number, _dir: number, _line_count: number, _is_double: boolean, last_is_v: boolean, _tile_w: number, _tile_l: number): Placement;
     /**
-     * Lógica de pontuação baseada na soma das peças (Hardcore Strategy)
+     * Pure validation logic
      */
-    static calculate_hand_score(hand: Uint8Array): number;
+    static can_play(v1: number, v2: number, e1: number, e2: number): boolean;
     /**
-     * Verifica se uma peça pode ser jogada em uma das extremidades.
+     * Optimized move finder
      */
-    static can_play(tile: Tile, extremes: Uint8Array): boolean;
+    static find_moves(hand: Uint8Array, e1: number, e2: number): Int32Array;
     /**
-     * Retorna o valor que ficará na nova extremidade após a jogada.
+     * PHASE 3: HARDCORE AI SEARCH (Minimax with Alpha-Beta Pruning)
+     * hand: [v1, v2, ...]
+     * extremes: [e1, e2]
+     * returns: [best_tile_idx, best_side]
      */
-    static get_new_extreme(tile: Tile, current_extreme: number): number;
+    static think(hand: Uint8Array, extremes: Uint8Array, difficulty: number): Int32Array;
+}
+
+export class Placement {
+    private constructor();
+    free(): void;
+    [Symbol.dispose](): void;
+    is_v: boolean;
+    v1: number;
+    v2: number;
+    x: number;
+    y: number;
 }
 
 export class Tile {
@@ -32,17 +47,30 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
     readonly __wbg_gamelogic_free: (a: number, b: number) => void;
+    readonly __wbg_get_placement_is_v: (a: number) => number;
+    readonly __wbg_get_placement_v1: (a: number) => number;
+    readonly __wbg_get_placement_v2: (a: number) => number;
+    readonly __wbg_get_placement_x: (a: number) => number;
+    readonly __wbg_get_placement_y: (a: number) => number;
     readonly __wbg_get_tile_v1: (a: number) => number;
     readonly __wbg_get_tile_v2: (a: number) => number;
+    readonly __wbg_placement_free: (a: number, b: number) => void;
+    readonly __wbg_set_placement_is_v: (a: number, b: number) => void;
+    readonly __wbg_set_placement_v1: (a: number, b: number) => void;
+    readonly __wbg_set_placement_v2: (a: number, b: number) => void;
+    readonly __wbg_set_placement_x: (a: number, b: number) => void;
+    readonly __wbg_set_placement_y: (a: number, b: number) => void;
     readonly __wbg_set_tile_v1: (a: number, b: number) => void;
     readonly __wbg_set_tile_v2: (a: number, b: number) => void;
     readonly __wbg_tile_free: (a: number, b: number) => void;
-    readonly gamelogic_calculate_hand_score: (a: number, b: number) => number;
-    readonly gamelogic_can_play: (a: number, b: number, c: number) => number;
-    readonly gamelogic_get_new_extreme: (a: number, b: number) => number;
+    readonly gamelogic_calculate_step: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number) => number;
+    readonly gamelogic_can_play: (a: number, b: number, c: number, d: number) => number;
+    readonly gamelogic_find_moves: (a: number, b: number, c: number, d: number) => [number, number];
+    readonly gamelogic_think: (a: number, b: number, c: number, d: number, e: number) => [number, number];
     readonly tile_new: (a: number, b: number) => number;
     readonly __wbindgen_externrefs: WebAssembly.Table;
     readonly __wbindgen_malloc: (a: number, b: number) => number;
+    readonly __wbindgen_free: (a: number, b: number, c: number) => void;
     readonly __wbindgen_start: () => void;
 }
 
