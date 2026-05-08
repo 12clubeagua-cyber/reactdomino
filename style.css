@@ -335,44 +335,47 @@ body {
 
 .player-label {
   position: absolute;
-  color: var(--gold);
-  font-size: 0.7rem;
-  font-weight: bold;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   white-space: nowrap;
   pointer-events: none;
-  z-index: 5;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  z-index: 150; /* Garante que fique na frente das pecas (z-index 100) */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
 /* Jogador de Baixo: Horizontal, Esq -> Dir (Padrao) */
 .hand-0 .player-label {
-  bottom: 10px;
+  bottom: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, 50%);
 }
 
 /* Jogador da Direita: Vertical, Baixo -> Cima */
 .hand-3 .player-label {
-  right: 10px;
+  right: 50%;
   top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
+  transform: translate(50%, -50%) rotate(-90deg);
   transform-origin: center;
 }
 
 /* Jogador do Topo: Horizontal, Dir -> Esq */
 .hand-2 .player-label {
-  top: 10px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%) rotate(180deg);
+  transform: translate(-50%, -50%) rotate(180deg);
 }
 
 /* Jogador da Esquerda: Vertical, Cima -> Baixo */
 .hand-1 .player-label {
-  left: 10px;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%) rotate(90deg);
+  transform: translate(-50%, -50%) rotate(90deg);
   transform-origin: center;
 }
 

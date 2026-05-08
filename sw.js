@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v136'; // v136: Fixed flying tile animation (strictly linear + no transitions)
+const CACHE_NAME = 'domino-felipe-v137'; // v137: High visibility player labels (black bg, white bold, front layer)
 
 const ASSETS = [
   '/',
