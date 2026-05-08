@@ -111,7 +111,7 @@ window.Animations.screenShake = function(intensity = 10, duration = 300) {
  * 3. ANIMACOES DE JOGADA (FLYING TILES)
  * Move a peca da mao do jogador ate a posicao exata na mesa.
  */
-window.animateTile = function(pIdx, targetData, onComplete) {
+window.animateTile = function(pIdx, targetData, onComplete, overrideStart) {
     const snakeEl = document.getElementById('snake');
     const containerEl = document.getElementById('board-container');
     
@@ -133,11 +133,17 @@ window.animateTile = function(pIdx, targetData, onComplete) {
 
     const localIdx = window.myPlayerIdx ?? 0;
     const viewIdx = (pIdx - localIdx + 4) % 4;
-    const handEl = document.getElementById(`hand-${viewIdx}`);
     
-    const hRect = handEl ? handEl.getBoundingClientRect() : { left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0 };
-    const startX = hRect.left + (hRect.width / 2);
-    const startY = hRect.top + (hRect.height / 2);
+    let startX, startY;
+    if (overrideStart) {
+        startX = overrideStart.x;
+        startY = overrideStart.y;
+    } else {
+        const handEl = document.getElementById(`hand-${viewIdx}`);
+        const hRect = handEl ? handEl.getBoundingClientRect() : { left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0 };
+        startX = hRect.left + (hRect.width / 2);
+        startY = hRect.top + (hRect.height / 2);
+    }
 
     const cRect = containerEl.getBoundingClientRect();
     const cam = window.currentCamera || { scale: 1, x: 0, y: 0 };
@@ -145,18 +151,20 @@ window.animateTile = function(pIdx, targetData, onComplete) {
     // Converte posicao logica para fisica (pixel na tela)
     const centerX = cRect.left + (cRect.width / 2);
     const centerY = cRect.top + (cRect.height / 2);
+    
+    // Formula corrigida: Primeiro aplica o offset logico, depois escala, depois centraliza no container
     const destX = centerX + ((targetData.x + cam.x) * cam.scale);
     const destY = centerY + ((targetData.y + cam.y) * cam.scale);
 
     const startTime = performance.now();
-    const duration = 400; // Voo rapido e linear
+    const duration = 500; // Voo suave
 
     function step(now) {
         const elapsed = now - startTime;
         const t = Math.min(elapsed / duration, 1);
         
-        // Linear easing por pedido do usuario
-        const ease = t; 
+        // Easing cubic-out para suavidade
+        const ease = 1 - Math.pow(1 - t, 3);
         
         const curX = startX + (destX - startX) * ease;
         const curY = startY + (destY - startY) * ease;

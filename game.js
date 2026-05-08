@@ -103,6 +103,10 @@ window.processTurn = function() {
         window.Dashboard.updateTurnIndicator(currentIdx);
     }
 
+    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawHands === 'function') {
+        window.Renderer.drawHands(); 
+    }
+
     if (isBot) {
         if (typeof window.botPlay === 'function') {
             window.botPlay(currentIdx);
@@ -118,8 +122,7 @@ window.processTurn = function() {
 
 window.playTile = function(pIdx, tIdx, side) {
     if (window.STATE.isOver || window.STATE.isBlocked) return;
-    window.STATE.isBlocked = true;
-
+    
     const tile = window.STATE.hands[pIdx][tIdx];
     if (!tile) return;
 
@@ -130,6 +133,18 @@ window.playTile = function(pIdx, tIdx, side) {
     }
 
     if (!placement) return;
+
+    window.STATE.isBlocked = true;
+
+    // Captura posicao inicial para a animacao antes de remover da mao
+    let startPos = null;
+    if (pIdx === (window.myPlayerIdx || 0)) {
+        const el = document.getElementById(`my-tile-${tIdx}`);
+        if (el) {
+            const rect = el.getBoundingClientRect();
+            startPos = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        }
+    }
 
     window.STATE.hands[pIdx].splice(tIdx, 1);
     window.STATE.handSize[pIdx]--;
@@ -161,7 +176,7 @@ window.playTile = function(pIdx, tIdx, side) {
                 window.Renderer.drawBoard(); 
             }
             window._completePlay(pIdx);
-        });
+        }, startPos);
     } else {
         if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawBoard === 'function') {
             window.Renderer.drawBoard(); 

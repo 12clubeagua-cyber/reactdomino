@@ -57,8 +57,14 @@ window.initDrag = function(e, tileIdx) {
     if (window.STATE?.isBlocked) return;
     draggedTile = e.target;
     
+    const rect = draggedTile.getBoundingClientRect();
+    draggedTile.style.width = `${rect.width}px`;
+    draggedTile.style.height = `${rect.height}px`;
+    draggedTile.style.left = `${rect.left}px`;
+    draggedTile.style.top = `${rect.top}px`;
     draggedTile.style.zIndex = '1000';
     draggedTile.style.position = 'fixed';
+    draggedTile.style.margin = '0';
 
     // Adiciona listeners apenas durante o arrasto
     window.addEventListener('mousemove', window.handleDrag);

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v133'; // v133: Fix piece disappearance and linear animation path.
+const CACHE_NAME = 'domino-felipe-v134'; // v134: Fix highlights, animation origin and remove rising effect.
 
 const ASSETS = [
   '/',

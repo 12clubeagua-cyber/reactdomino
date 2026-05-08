@@ -297,9 +297,9 @@ body {
 }
 
 #hand-0 .tile:hover {
-  transform: translateY(-10px) !important;
   z-index: 100;
   box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  border-color: var(--gold);
 }
 
 /* DESTAQUE DE PECAS JOGAVEIS */
@@ -311,8 +311,8 @@ body {
 }
 
 .playable:hover {
-  transform: translateY(-15px) scale(1.05) !important;
-  box-shadow: 0 15px 30px var(--gold-glow) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 10px 25px var(--gold-glow) !important;
   border-color: #fff !important;
 }
 
