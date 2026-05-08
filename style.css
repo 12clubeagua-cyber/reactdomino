@@ -293,8 +293,16 @@ body {
   position: relative !important;
   top: auto !important;
   left: auto !important;
-  transform: none !important;
+  transform: none; /* Removido o !important para permitir highlight */
   flex-shrink: 0;
+  transition: transform 0.2s ease-out, box-shadow 0.2s;
+}
+
+.playable {
+  transform: translateY(-15px) !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 15px var(--gold-glow) !important;
+  z-index: 100;
 }
 
 /* Forçamos todas as pecas na mao a serem verticais (tile-v) para ocupar 40x80 */

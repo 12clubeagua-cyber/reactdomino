@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v131'; // v131: Hand layout refactor (parallel tiles, edge alignment)
+const CACHE_NAME = 'domino-felipe-v132'; // v132: Playable tile highlight (pop-up effect)
 
 const ASSETS = [
   '/',
