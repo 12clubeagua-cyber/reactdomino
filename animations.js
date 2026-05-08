@@ -162,8 +162,8 @@ window.animateTile = function(pIdx, targetData, onComplete) {
         const elapsed = now - startTime;
         const t = Math.min(elapsed / duration, 1);
         
-        // Easing: Cubic Out (comeca rapido, termina suave)
-        const ease = 1 - Math.pow(1 - t, 3); 
+        // Easing: Linear (movimento direto em linha reta com velocidade constante)
+        const ease = t; 
         
         const curX = startX + (destX - startX) * ease;
         const curY = startY + (destY - startY) * ease;

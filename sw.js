@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v132'; // v132: Playable tile highlight (pop-up effect)
+const CACHE_NAME = 'domino-felipe-v133'; // v133: Linear flying animation (straight line, constant speed)
 
 const ASSETS = [
   '/',
