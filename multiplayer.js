@@ -121,24 +121,30 @@ window.connectToHost = function() {
 };
 
 // Separamos a criacao da conexao para reutilizar no loop de reconexao
-window._initiateConnection = function(roomCode) {
+window._initiateConnection = async function(roomCode) {
+    // OTIMIZACAO ES2024: Promise.withResolvers() simplifica o aguardo do evento 'open'
+    // Evita variaveis de controle externas e torna o fluxo linear.
+    const { promise, resolve, reject } = Promise.withResolvers();
+
     try {
         if (window.myPeer) window.myPeer.destroy();
         window.myPeer = new Peer({
             config: { 'iceServers': [{ urls: 'stun:stun.l.google.com:19302' }] }
         });
 
-        window.myPeer.on('open', () => {
-            // reliable: true garante que os pacotes de pecas nao se percam pelo caminho
-            const conn = window.myPeer.connect('domino-' + roomCode, { reliable: true });
-            window.setupClientEvents(conn);
-        });
+        window.myPeer.on('open', resolve);
+        window.myPeer.on('error', reject);
 
-        window.myPeer.on('error', (err) => {
-            window.mobileLog("Erro de rede: " + err.type, "red");
-        });
-    } catch (e) { 
-        alert("Erro ao conectar: " + e.message); 
+        // Aguarda a inicializacao do Peer antes de prosseguir com o connect
+        await promise;
+        
+        // reliable: true garante que os pacotes de pecas nao se percam pelo caminho
+        const conn = window.myPeer.connect('domino-' + roomCode, { reliable: true });
+        window.setupClientEvents(conn);
+        
+    } catch (err) { 
+        window.mobileLog("Erro de rede: " + (err.type || "PeerInit"), "red");
+        console.error("Falha na conexao P2P:", err);
     }
 };
 

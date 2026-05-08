@@ -156,7 +156,10 @@ window.calculateWeight = function(botIdx, tile, side) {
     const currentState = window.STATE || {};
     const hand = currentState.hands?.[botIdx] || [];
     
-    // Garantir que a personalidade seja extraida corretamente do STATE
+    // OTIMIZACAO ES2024: Agrupamos a mao por naipes apenas se o cache estiver invalido
+    // Como uma peca tem dois naipes, usamos um Map de frequencia
+    const handSuitFreq = window._getHandSuitFreq(botIdx, hand);
+    
     const personalities = currentState.botPersonalities || ['normal', 'normal', 'normal', 'normal'];
     const personality = personalities[botIdx] || 'normal';
     
@@ -187,7 +190,8 @@ window.calculateWeight = function(botIdx, tile, side) {
     }
 
     // --- 2. INTELIGENCIA DE NAIPE (ESTRATEGIA AVANCADA) ---
-    const countInHand = hand.filter(t => t[0] === nextExtreme || t[1] === nextExtreme).length;
+    // OTIMIZACAO: Busca no Map de frequencia em vez de filtrar o array (O(1) vs O(N))
+    const countInHand = handSuitFreq.get(nextExtreme) || 0;
     weight += (countInHand * 20); 
 
     // Bloqueio Estrategico (Baseado em projetos GitHub):
@@ -216,6 +220,26 @@ window.calculateWeight = function(botIdx, tile, side) {
     }
 
     return weight;
+};
+
+// Cache de frequencia de naipes para performance maxima
+window._handFreqCache = [null, null, null, null];
+window._getHandSuitFreq = function(pIdx, hand) {
+    const hash = hand.map(t => t.join('')).join('|');
+    if (window._handFreqCache[pIdx]?.hash === hash) {
+        return window._handFreqCache[pIdx].map;
+    }
+
+    const freq = new Map();
+    hand.forEach(t => {
+        freq.set(t[0], (freq.get(t[0]) || 0) + 1);
+        if (t[0] !== t[1]) {
+            freq.set(t[1], (freq.get(t[1]) || 0) + 1);
+        }
+    });
+    
+    window._handFreqCache[pIdx] = { hash, map: freq };
+    return freq;
 };
 
 // Cache de Sets de memoria para evitar reconstrucao a cada calculo

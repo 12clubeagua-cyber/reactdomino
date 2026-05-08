@@ -38,6 +38,12 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 
 ## 9. PERSONALIZACAO E REQUISITOS DO USUARIO
 ## 10. ANIMACAO E FEEDBACK VISUAL
+- **MODERNIZACAO ES2024 (NODE 24):**
+    1. **`Object.groupBy`:** Utilizado no `referee.js` para agrupar jogadores por time de forma declarativa, eliminando somas manuais e facilitando a expansao para novos modos de jogo.
+    2. **`Promise.withResolvers`:** Aplicado no `multiplayer.js` para gerenciar o handshake do PeerJS, tornando o fluxo assincrono linear e legivel (async/await) em vez de callback-hell.
+    3. **`toWellFormed()`:** Implementado no `names.js` para sanitizacao de nomes, garantindo integridade de Unicode e prevenindo bugs de renderizacao com emojis ou caracteres especiais mal-formados.
+    4. **Otimizacao de Frequencia (Map):** Migracao de filtros repetitivos para um `Map` de frequencia com cache no `bots.js`, reduzindo a complexidade de busca de O(N) para O(1) no calculo de pesos da IA.
+
 - **VOO DA PECA (FLYING TILE):** O trajeto DEVE ser em **LINHA RETA** absoluta.
     1. **CAUSA DO BUG (2026-05-08):** A classe `.tile` no CSS tinha `transition: transform 0.2s`, o que causava interferencia e suavizacao indesejada (curvas/atraso) nas atualizacoes feitas via `requestAnimationFrame`.
     2. **SOLUCAO:** Desativar explicitamente as transicoes no `.moving-proxy` via CSS e JS.

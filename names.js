@@ -67,8 +67,9 @@ window.NameManager = {
     set: (idx, name) => {
         if (typeof name !== 'string' || name.trim() === '') return;
         
-        // Limpeza: 10 caracteres, sem espacos nas bordas e em MAIUSCULO
-        const sanitized = name.trim().substring(0, 10).toUpperCase();
+        // OTIMIZACAO ES2024: toWellFormed() garante que nao existam pares substitutos (surrogates) solitarios
+        // Isso e essencial para seguranca de strings vindas de fontes externas (rede/input).
+        const sanitized = name.toWellFormed().trim().substring(0, 10).toUpperCase();
         window.PLAYER_NAMES[idx] = sanitized;
 
         // Se for o jogador local (cadeira 0), salva para o proximo acesso

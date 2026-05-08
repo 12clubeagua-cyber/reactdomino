@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v138'; // v138: Synchronized player labels (move with highlighted tiles)
+const CACHE_NAME = 'domino-felipe-v139'; // v139: ES2024 modernization (groupBy, withResolvers, toWellFormed, Map optimization)
 
 const ASSETS = [
   '/',

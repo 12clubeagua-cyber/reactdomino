@@ -39,8 +39,12 @@ window.Referee = {
             return { winTeam: -1, detail: "Erro na contagem.", isDraw: true, points: 0 };
         }
 
-        const sumA = window.Referee._sumHandPoints(hands[0]) + window.Referee._sumHandPoints(hands[2]);
-        const sumB = window.Referee._sumHandPoints(hands[1]) + window.Referee._sumHandPoints(hands[3]);
+        // OTIMIZACAO ES2024: Agrupamos os indices dos jogadores por time (0 ou 1)
+        // Isso torna a logica de soma de duplas muito mais limpa e flexivel.
+        const teams = Object.groupBy([0, 1, 2, 3], (pIdx) => (pIdx % 2));
+        
+        const sumA = teams[0].reduce((sum, idx) => sum + window.Referee._sumHandPoints(hands[idx]), 0);
+        const sumB = teams[1].reduce((sum, idx) => sum + window.Referee._sumHandPoints(hands[idx]), 0);
 
         let winTeam = -1;
         let detail = `Sua Dupla: ${sumA} pts | Oponentes: ${sumB} pts`;
