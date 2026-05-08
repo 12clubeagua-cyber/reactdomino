@@ -43,3 +43,10 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
     2. **PROIBIDO:** Math.sin, arcos, parabolas ou pulos.
     3. **EASING:** Cubic Out apenas na velocidade (acelera no inicio, desacelera no fim).
     4. **FLICKER:** A remocao do proxy DEVE ocorrer um frame apos o `onComplete`.
+- **LEGIBILIDADE DE NOMES (PLAYER LABELS):**
+    1. **COR:** Sempre usar `--gold` com `text-shadow` para contraste.
+    2. **ORIENTACAO MANDATORIA:**
+        - Baixo: Horizontal (Esq -> Dir).
+        - Direita: Vertical (Baixo -> Cima, rotate -90deg).
+        - Topo: Horizontal (Dir -> Esq, rotate 180deg).
+        - Esquerda: Vertical (Cima -> Baixo, rotate 90deg).
