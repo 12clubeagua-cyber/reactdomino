@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v143'; // v143: Repositioned hands and player labels to fit names underneath pieces
+const CACHE_NAME = 'domino-felipe-v144'; // v144: Added pass turn visual feedback (red flash twice) and win blink animation
 
 const ASSETS = [
   '/',

@@ -66,4 +66,11 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
         - Adicionado `margin` (30px) nas classes `.hand-x` para afastar das bordas.
         - Invertido o posicionamento das `.player-label` para o lado externo (ex: `top: 100%` para o jogador de baixo).
         - Ajustado o `translate` dos labels no estado `active-turn` para acompanhar a nova ancoragem.
+- **FEEDBACK DE PASSAR A VEZ (2026-05-08):**
+    1. **SINTOMA:** O sistema de passar a vez nao tinha feedback visual claro.
+    2. **SOLUCAO:** 
+        - Criada classe `.hand-passed` com animacao `passFlash` que pisca em vermelho 2 vezes (0.6s cada, total 1.2s).
+        - Adicionado pseudo-elemento `::after` com o texto "PASSOU!" para reforcar a acao.
+        - Sincronizado com `CONFIG.GAME.PASS_DISPLAY_TIME` (1200ms).
+
 
