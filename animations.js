@@ -156,21 +156,29 @@ window.animateTile = function(pIdx, targetData, onComplete) {
     const destY = (cRect.top + (cRect.height / 2))  + ((targetData.y + cam.y) * cam.scale);
 
     const startTime = performance.now();
-    const duration = 500; // Tempo de voo em ms
+    const duration = 600; // Tempo de voo levemente aumentado para fluidez
 
     // Motor de interpolacao frame a frame
     function step(now) {
         const elapsed = now - startTime;
         const t = Math.min(elapsed / duration, 1);
         
-        // Easing: Linear (movimento direto em linha reta com velocidade constante)
-        const ease = t; 
+        // Easing: Cubic Out (comeca rapido, termina suave)
+        const ease = 1 - Math.pow(1 - t, 3); 
+        
+        // Calculo da Parabola (Arco de voo)
+        // O pico do arco (pulo) ocorre em t=0.5
+        const jumpHeight = -150; // Sobe ate 150px
+        const arc = Math.sin(t * Math.PI) * jumpHeight;
         
         const curX = startX + (destX - startX) * ease;
-        const curY = startY + (destY - startY) * ease;
-        const curScale = 1 + (cam.scale - 1) * ease;
+        const curY = (startY + (destY - startY) * ease) + arc;
+        
+        // Escala: aumenta no meio do voo para dar profundidade
+        const peakScale = 1.4;
+        const curScale = (1 + (cam.scale - 1) * ease) + (Math.sin(t * Math.PI) * (peakScale - 1));
 
-        // PERFORMANCE: Usamos translate3d para forcar processamento na GPU e evitar Layout Recalculation
+        // PERFORMANCE: Usamos translate3d para forcar processamento na GPU
         proxy.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%) scale(${curScale})`;
 
         if (t < 1) {

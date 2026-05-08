@@ -37,4 +37,9 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 - **INCREMENTAL RENDERING:** O tabuleiro so renderiza as novas pecas (`_renderedTilesCount`), preservando o que ja estava no DOM.
 
 ## 9. PERSONALIZACAO E REQUISITOS DO USUARIO
-- **REMOCAO DE EFEITOS VISUAIS:** O efeito de faisca (sparkle) e particulas de impacto foi desativado a pedido do usuario. Para garantir a remocao completa sem quebrar a logica de chamada, as funcoes `spawnEffect` (renderer.js) e `spawnImpactParticles` (animations.js) foram mantidas mas com retorno imediato (`return`). Isso evita erros de "function not found" em modulos dependentes.
+## 10. ANIMACAO E FEEDBACK VISUAL
+- **VOO DA PECA (FLYING TILE):** NUNCA simplifique a animacao para movimento linear. O padrao exigido pelo usuario inclui:
+    1. **EASING:** Cubic Out (`1 - Math.pow(1 - t, 3)`) para suavidade.
+    2. **ARCO:** Pulo de -150px usando `Math.sin(t * Math.PI)` somado ao eixo Y.
+    3. **ESCALA:** Pulsacao ate 1.4x no meio do voo para simular profundidade.
+    4. **FLICKER:** A remocao do proxy DEVE ocorrer um frame apos o `onComplete`.
