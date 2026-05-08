@@ -1,65 +1,5 @@
 [
   {
-    "title": "40:17",
-    "id": "Hrg0MnyE2jM",
-    "link": "https://www.youtube.com/watch?v=Hrg0MnyE2jM",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "49:12",
-    "id": "cTVXKfYOYxo",
-    "link": "https://www.youtube.com/watch?v=cTVXKfYOYxo",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "1:30:08",
-    "id": "O68y0yRZL1Y",
-    "link": "https://www.youtube.com/watch?v=O68y0yRZL1Y",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "1:08:18",
-    "id": "IDnabc3DjYY",
-    "link": "https://www.youtube.com/watch?v=IDnabc3DjYY",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "25:17",
-    "id": "OkboNGQ9LU0",
-    "link": "https://www.youtube.com/watch?v=OkboNGQ9LU0",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "21:27",
-    "id": "O76ZfAIEukE",
-    "link": "https://www.youtube.com/watch?v=O76ZfAIEukE",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "43:55",
-    "id": "HEaIsKm-pao",
-    "link": "https://www.youtube.com/watch?v=HEaIsKm-pao",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "47:16",
-    "id": "Qjk-cSW-jk4",
-    "link": "https://www.youtube.com/watch?v=Qjk-cSW-jk4",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "48:28",
-    "id": "VKmPGmFY7H4",
-    "link": "https://www.youtube.com/watch?v=VKmPGmFY7H4",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
-    "title": "1:13:44",
-    "id": "sjrW74Hx5Po",
-    "link": "https://www.youtube.com/watch?v=sjrW74Hx5Po",
-    "essence": "Sem transcricao disponivel."
-  },
-  {
     "title": "1:35:44",
     "id": "-yGHG3pnHLg",
     "link": "https://www.youtube.com/watch?v=-yGHG3pnHLg",
@@ -86,18 +26,37 @@
   {
     "title": "1:39:10",
     "id": "EifK2a_5K_U",
-    "link": "https://www.youtube.com/watch?v=EifK2a_5K_U&pp=0gcJCQMLAYcqIYzv",
+    "link": "https://www.youtube.com/watch?v=EifK2a_5K_U",
     "essence": "Sem transcricao disponivel."
   },
   {
-    "title": "FABIO AKITA - Flow #588 (Abril 2026)",
-    "tags": ["AI Benchmarks", "Career 2026", "GPT-5.5", "Claude 4.7"],
-    "philosophy": "O mercado de programadores mediocres (juniors de bootcamp) morreu. Em 2026, ser senior e saber orquestrar IAs (como Claude Opus 4.7) mantendo o controle arquitetural e disciplina de testes. A IA e um espelho: se voce nao sabe aprender, ela nao vai te salvar.",
-    "takeaways": [
-      "Claude Opus 4.7 e o benchmark lider (97/100) em disciplina de testes e uso de APIs.",
-      "O 'Ponto de Virada' (Novembro 2025) permitiu que LLMs construissem sistemas inteiros, nao apenas funcoes.",
-      "A crise energetica e de hardware (CAPEX) e o maior gargalo para o crescimento da IA em 2027.",
-      "Misturar modelos (Planner/Executor) nao vale o overhead; prefira um modelo high-end em um bom harness."
-    ]
+    "title": "50:36",
+    "id": "SmYQcaP1Jgw",
+    "link": "https://www.youtube.com/watch?v=SmYQcaP1Jgw",
+    "essence": "Sem transcricao disponivel."
+  },
+  {
+    "title": "1:29:04",
+    "id": "Bfm3Ms2cTg0",
+    "link": "https://www.youtube.com/watch?v=Bfm3Ms2cTg0",
+    "essence": "Sem transcricao disponivel."
+  },
+  {
+    "title": "1:30:08",
+    "id": "O68y0yRZL1Y",
+    "link": "https://www.youtube.com/watch?v=O68y0yRZL1Y",
+    "essence": "Sem transcricao disponivel."
+  },
+  {
+    "title": "1:00:53",
+    "id": "yjhn2fjByNU",
+    "link": "https://www.youtube.com/watch?v=yjhn2fjByNU&pp=0gcJCQMLAYcqIYzv",
+    "essence": "Sem transcricao disponivel."
+  },
+  {
+    "title": "1:28:44",
+    "id": "uIflMYQnp8A",
+    "link": "https://www.youtube.com/watch?v=uIflMYQnp8A",
+    "essence": "Sem transcricao disponivel."
   }
 ]
