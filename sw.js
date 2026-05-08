@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v132'; // v132: Fix pieces lifting but not moving (isBlocked race condition).
+const CACHE_NAME = 'domino-felipe-v133'; // v133: Fix piece disappearance and linear animation path.
 
 const ASSETS = [
   '/',

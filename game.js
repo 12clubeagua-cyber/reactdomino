@@ -148,11 +148,6 @@ window.playTile = function(pIdx, tIdx, side) {
         window.Renderer.drawHands(); 
     }
 
-    if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.spawnEffect === 'function') {
-        const isDouble = tile[0] === tile[1];
-        window.Renderer.spawnEffect(placement.nP.x, placement.nP.y, isDouble ? 'impact' : 'sparkle');
-    }
-
     if (!window.STATE.positions.length) {
         window.STATE.extremes = [tile[0], tile[1]];
     } else {
@@ -161,8 +156,16 @@ window.playTile = function(pIdx, tIdx, side) {
     window.STATE.positions.push(placement.nP);
 
     if (typeof window.animateTile === 'function') {
-        window.animateTile(pIdx, placement.nP, () => window._completePlay(pIdx));
+        window.animateTile(pIdx, placement.nP, () => {
+            if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawBoard === 'function') {
+                window.Renderer.drawBoard(); 
+            }
+            window._completePlay(pIdx);
+        });
     } else {
+        if (typeof window.Renderer !== 'undefined' && typeof window.Renderer.drawBoard === 'function') {
+            window.Renderer.drawBoard(); 
+        }
         window._completePlay(pIdx);
     }
 };

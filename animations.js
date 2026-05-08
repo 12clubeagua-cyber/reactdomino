@@ -115,80 +115,64 @@ window.animateTile = function(pIdx, targetData, onComplete) {
     const snakeEl = document.getElementById('snake');
     const containerEl = document.getElementById('board-container');
     
-    // Se a interface falhar, aplica a jogada instantaneamente
     if (!snakeEl || !containerEl || !targetData) {
         if (typeof onComplete === 'function') onComplete();
         return;
     }
 
-    // Cria a peca 'fantasma' que fara o trajeto visual
     const proxy = document.createElement('div');
     proxy.className = `tile moving-proxy ${targetData.isV ? 'tile-v' : 'tile-h'}`;
     proxy.style.cssText = `z-index: 9999; position: fixed; pointer-events: none;`;
     
-    // Preenche a peca fantasma com os pontos de forma segura
     let pipsHTML = "";
     if (typeof window.Renderer !== 'undefined' && typeof window.Renderer._getPips === 'function') {
         pipsHTML = `<div class="half">${window.Renderer._getPips(targetData.v1)}</div><div class="half">${window.Renderer._getPips(targetData.v2)}</div>`;
-    } else if (typeof window.getPips === 'function') {
-        pipsHTML = `<div class="half">${window.getPips(targetData.v1)}</div><div class="half">${window.getPips(targetData.v2)}</div>`;
     }
     proxy.innerHTML = pipsHTML;
     document.body.appendChild(proxy);
 
-    // 1. Define o PONTO DE PARTIDA (Mao do Jogador)
     const localIdx = window.myPlayerIdx ?? 0;
-    const viewIdx = (pIdx - localIdx + 4) % 4; // Qual mao na tela representa esse jogador?
+    const viewIdx = (pIdx - localIdx + 4) % 4;
     const handEl = document.getElementById(`hand-${viewIdx}`);
     
-    // Se a mao nao for encontrada, parte do centro da tela
     const hRect = handEl ? handEl.getBoundingClientRect() : { left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0 };
     const startX = hRect.left + (hRect.width / 2);
     const startY = hRect.top + (hRect.height / 2);
 
-    // 2. Define o PONTO DE CHEGADA (Posicao logica traduzida para pixel e escala)
     const cRect = containerEl.getBoundingClientRect();
     const cam = window.currentCamera || { scale: 1, x: 0, y: 0 };
     
-    // A magica matematica: converte a posicao logica para a fisica atual da camera
-    const destX = (cRect.left + (cRect.width / 2)) + ((targetData.x + cam.x) * cam.scale);
-    const destY = (cRect.top + (cRect.height / 2))  + ((targetData.y + cam.y) * cam.scale);
+    // Converte posicao logica para fisica (pixel na tela)
+    const centerX = cRect.left + (cRect.width / 2);
+    const centerY = cRect.top + (cRect.height / 2);
+    const destX = centerX + ((targetData.x + cam.x) * cam.scale);
+    const destY = centerY + ((targetData.y + cam.y) * cam.scale);
 
     const startTime = performance.now();
-    const duration = 500; // Tempo de voo em ms
+    const duration = 400; // Voo rapido e linear
 
-    // Motor de interpolacao frame a frame
     function step(now) {
         const elapsed = now - startTime;
         const t = Math.min(elapsed / duration, 1);
         
-        // Easing: Cubic Out (comeca rapido, termina suave)
-        const ease = 1 - Math.pow(1 - t, 3); 
+        // Linear easing por pedido do usuario
+        const ease = t; 
         
         const curX = startX + (destX - startX) * ease;
         const curY = startY + (destY - startY) * ease;
         const curScale = 1 + (cam.scale - 1) * ease;
 
-        // PERFORMANCE: Usamos translate3d para forcar processamento na GPU e evitar Layout Recalculation
         proxy.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%) scale(${curScale})`;
 
         if (t < 1) {
             requestAnimationFrame(step); 
         } else {
             if (typeof window.playClack === 'function') window.playClack();
-            
-            // Trigger particulas no destino
-            if (typeof window.spawnImpactParticles === 'function') {
-                const isDouble = targetData.v1 === targetData.v2;
-                window.spawnImpactParticles(destX, destY, isDouble);
-            }
-
             if (typeof onComplete === 'function') onComplete();
             requestAnimationFrame(() => proxy.remove());
         }
     }
 
-    // Inicializa a posicao sem forcar layout
     proxy.style.left = "0px";
     proxy.style.top = "0px";
     proxy.style.transform = `translate3d(${startX}px, ${startY}px, 0) translate(-50%, -50%) scale(1)`;
@@ -199,93 +183,6 @@ window.animateTile = function(pIdx, targetData, onComplete) {
 /**
  * 4. EFEITOS ESPECIAIS (PARTICULAS E SHAKE)
  */
-
-// POOL DE PARTICULAS: Reutiliza elementos DOM para evitar GC jank (Best Practice 2026)
-window._particlePool = [];
-window._getParticleFromPool = function() {
-    if (window._particlePool.length > 0) {
-        const p = window._particlePool.pop();
-        p.style.display = 'block';
-        return p;
-    }
-    const p = document.createElement('div');
-    p.className = 'particle';
-    return p;
-};
-
-window._returnParticleToPool = function(p) {
-    p.style.display = 'none';
-    p.style.transform = '';
-    window._particlePool.push(p);
-};
-
-window.screenShake = function() {
-    const snakeEl = document.getElementById('snake');
-    if (!snakeEl) return;
-    
-    snakeEl.classList.remove('shake');
-    void snakeEl.offsetWidth; // Trigger reflow
-    snakeEl.classList.add('shake');
-    
-    if (window.HapticEngine) window.HapticEngine.vibrate('error');
-    
-    setTimeout(() => {
-        snakeEl.classList.remove('shake');
-    }, 500);
-};
-
-/**
- * Cria particulas de impacto (poeira/faiscas) no local da jogada.
- */
-window.spawnImpactParticles = function(x, y, isDouble = false) {
-    const count = isDouble ? 15 : 8;
-    const colors = isDouble ? ['#ffcc33', '#ffffff', '#ff5722'] : ['#a8b4a8', '#f0ede0'];
-    
-    for (let i = 0; i < count; i++) {
-        const p = window._getParticleFromPool();
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * (isDouble ? 6 : 4) + 2;
-        
-        p.style.width = `${size}px`;
-        p.style.height = `${size}px`;
-        p.style.background = color;
-        p.style.left = `${x}px`;
-        p.style.top = `${y}px`;
-        p.style.opacity = '1';
-        
-        if (!p.parentNode) document.body.appendChild(p);
-
-        const angle = Math.random() * Math.PI * 2;
-        const force = Math.random() * (isDouble ? 8 : 4) + 2;
-        const vx = Math.cos(angle) * force;
-        const vy = Math.sin(angle) * force;
-        
-        let curX = x;
-        let curY = y;
-        let opacity = 1;
-
-        const startTime = performance.now();
-        const duration = 600 + Math.random() * 400;
-
-        function step(now) {
-            const t = (now - startTime) / duration;
-            if (t >= 1) {
-                window._returnParticleToPool(p);
-                return;
-            }
-
-            curX += vx;
-            curY += vy + (t * 2); // Gravidade leve
-            opacity = 1 - t;
-
-            p.style.transform = `translate3d(${curX - x}px, ${curY - y}px, 0)`;
-            p.style.opacity = opacity;
-
-            requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-    }
-};
 
 window.spawnConfetti = function() {
     const colors = ['#FFD700', '#FFA500', '#FF4500', '#00FF00', '#00BFFF', '#FF1493'];
