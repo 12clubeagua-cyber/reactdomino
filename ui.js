@@ -52,6 +52,16 @@ window.AudioMenu = {
 };
 
 /**
+ * Alterna a exibicao do menu de opcoes (3 pontos)
+ */
+window.toggleOptionsMenu = function() {
+    const menu = document.getElementById('options-menu');
+    if (menu) {
+        menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'flex' : 'none';
+    }
+};
+
+/**
  * Exibe painel de emotes
  */
 window.showEmotePanel = function() {
@@ -60,7 +70,7 @@ window.showEmotePanel = function() {
         panel = document.createElement('div');
         panel.id = 'emote-panel';
         panel.className = 'glass';
-        panel.style.cssText = 'position:fixed; top:60px; right:10px; z-index:1000; padding:10px; display:grid; grid-template-columns:repeat(3, 1fr); gap:5px;';
+        panel.style.cssText = 'position:fixed; top:130px; right:170px; z-index:1002; padding:10px; display:grid; grid-template-columns:repeat(3, 1fr); gap:5px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);';
         
         const emotes = ["😂", "😠", "👍", "👎", "🤔", "🔥"];
         emotes.forEach(emo => {
@@ -72,6 +82,7 @@ window.showEmotePanel = function() {
                 window.Network.request({ type: 'emote', pIdx: window.myPlayerIdx, emote: emo });
                 window.Dashboard.showEmote(window.myPlayerIdx, emo);
                 panel.style.display = 'none';
+                document.getElementById('options-menu').style.display = 'none';
             };
             panel.appendChild(btn);
         });
@@ -93,7 +104,7 @@ window.showQuickChatPanel = function() {
         panel = document.createElement('div');
         panel.id = 'chat-panel';
         panel.className = 'glass';
-        panel.style.cssText = 'position:fixed; top:60px; right:10px; z-index:1000; padding:10px; display:grid; gap:5px;';
+        panel.style.cssText = 'position:fixed; top:130px; right:170px; z-index:1002; padding:10px; display:grid; gap:5px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);';
         
         const messages = ["Boa!", "Vamos!", "Desculpa", "Paciencia"];
         messages.forEach(msg => {
@@ -104,6 +115,7 @@ window.showQuickChatPanel = function() {
                 window.Network.request({ type: 'quick_chat', pIdx: window.myPlayerIdx, message: msg });
                 window.Dashboard.showQuickChat(window.myPlayerIdx, msg);
                 panel.style.display = 'none';
+                document.getElementById('options-menu').style.display = 'none';
             };
             panel.appendChild(btn);
         });

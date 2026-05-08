@@ -145,11 +145,12 @@
   </header>
 <div id="game-area" role="application">
     <div class="top-controls">
-        <div class="emote-chat-container">
-            <button id="btn-emote" class="btn-side" onclick="showEmotePanel()" aria-label="Enviar Emote">😀</button>
-            <button id="btn-chat" class="btn-side" onclick="showQuickChatPanel()" aria-label="Chat rapido">💬</button>
+        <button id="btn-menu" class="btn-side" onclick="toggleOptionsMenu()" aria-label="Mais opcoes">⋮</button>
+        <div id="options-menu">
+            <button id="btn-emote" class="btn-side" onclick="showEmotePanel()" aria-label="Enviar Emote">😀 Emotes</button>
+            <button id="btn-chat" class="btn-side" onclick="showQuickChatPanel()" aria-label="Chat rapido">💬 Chat</button>
+            <button id="btn-exit" class="btn-side" onclick="exitGame()" aria-label="Menu de jogo">🚪 Sair</button>
         </div>
-        <button id="btn-exit" onclick="exitGame()" aria-label="Menu de jogo">Menu</button>
     </div>
     <section id="hand-2" class="hand" aria-label="Mao do oponente 2"></section>
     <div id="mid-row">
