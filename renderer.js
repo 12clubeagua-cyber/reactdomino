@@ -156,7 +156,7 @@ window.Renderer = {
         const gameArea = window.Renderer._getEl('game-area');
         if (gameArea) {
             const targetScore = window.CONFIG?.GAME?.WIN_SCORE ?? 100;
-            const scores = window.STATE?.score || [0, 0];
+            const scores = window.STATE?.scores || [0, 0];
             const threshold = targetScore * 0.8;
             if (scores[0] >= threshold || scores[1] >= threshold) {
                 gameArea.classList.add('match-point-aura');
@@ -289,11 +289,15 @@ window.Renderer = {
      */
     _checkLocalInteraction: function() {
         const myIdx = window.myPlayerIdx ?? 0;
-        const isMyTurn = (window.STATE?.current === myIdx && !window.STATE?.isOver && !window.STATE?.isBlocked);
+        const state = window.STATE;
+        if (!state) return;
+
+        const isMyTurn = (state.current === myIdx && !state.isOver && !state.isBlocked);
         
         if (isMyTurn && typeof window.getMoves === 'function') {
-            const moves = window.getMoves(window.STATE.hands[myIdx]);
-            if (moves.length > 0 && typeof window.highlight === 'function') {
+            const myHand = state.hands ? state.hands[myIdx] : [];
+            const moves = window.getMoves(myHand);
+            if (moves && moves.length > 0 && typeof window.highlight === 'function') {
                 window.highlight(moves);
             }
         }
