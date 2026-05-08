@@ -88,5 +88,16 @@
     "id": "EifK2a_5K_U",
     "link": "https://www.youtube.com/watch?v=EifK2a_5K_U&pp=0gcJCQMLAYcqIYzv",
     "essence": "Sem transcricao disponivel."
+  },
+  {
+    "title": "FABIO AKITA - Flow #588 (Abril 2026)",
+    "tags": ["AI Benchmarks", "Career 2026", "GPT-5.5", "Claude 4.7"],
+    "philosophy": "O mercado de programadores mediocres (juniors de bootcamp) morreu. Em 2026, ser senior e saber orquestrar IAs (como Claude Opus 4.7) mantendo o controle arquitetural e disciplina de testes. A IA e um espelho: se voce nao sabe aprender, ela nao vai te salvar.",
+    "takeaways": [
+      "Claude Opus 4.7 e o benchmark lider (97/100) em disciplina de testes e uso de APIs.",
+      "O 'Ponto de Virada' (Novembro 2025) permitiu que LLMs construissem sistemas inteiros, nao apenas funcoes.",
+      "A crise energetica e de hardware (CAPEX) e o maior gargalo para o crescimento da IA em 2027.",
+      "Misturar modelos (Planner/Executor) nao vale o overhead; prefira um modelo high-end em um bom harness."
+    ]
   }
 ]
