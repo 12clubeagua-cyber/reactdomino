@@ -329,21 +329,46 @@ body {
 
 .player-label {
   position: absolute;
-  color: var(--text-dim);
-  font-size: 0.6rem;
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
   white-space: nowrap;
   pointer-events: none;
   z-index: 5;
-  transform: rotate(90deg);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
 
-/* Posicionamento dos nomes colados no limite da tela e virados */
-.hand-0 .player-label { bottom: 2px; left: -30px; } /* Sua mão (baixo) */
-.hand-2 .player-label { top: 2px; right: -30px; }  /* Oponente topo */
-.hand-1 .player-label { left: 2px; top: -30px; }   /* Oponente esquerda */
-.hand-3 .player-label { right: 2px; bottom: -30px; } /* Oponente direita */
+/* Jogador de Baixo: Horizontal, Esq -> Dir (Padrao) */
+.hand-0 .player-label {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Jogador da Direita: Vertical, Baixo -> Cima */
+.hand-3 .player-label {
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: center;
+}
+
+/* Jogador do Topo: Horizontal, Dir -> Esq */
+.hand-2 .player-label {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+/* Jogador da Esquerda: Vertical, Cima -> Baixo */
+.hand-1 .player-label {
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center;
+}
 
 /* CABECALHO */
 header {
