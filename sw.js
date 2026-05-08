@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v133'; // v133: Linear flying animation (straight line, constant speed)
+const CACHE_NAME = 'domino-felipe-v134'; // v134: Rotated player names at screen edges
 
 const ASSETS = [
   '/',

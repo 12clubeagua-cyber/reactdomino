@@ -206,6 +206,12 @@ window.Renderer = {
             const rack = document.createElement('div');
             rack.className = 'tiles-rack';
             
+            // C) Rótulo do Jogador (Nome)
+            const label = document.createElement('div');
+            label.className = 'player-label';
+            const playerName = typeof window.NameManager !== 'undefined' ? window.NameManager.get(i) : `Jogador ${i}`;
+            label.textContent = playerName;
+            
             const isMe = (i == myIdx);
             const handData = window.STATE?.hands?.[i] || [];
             const canShow = isMe || isOver || reveal;
@@ -227,6 +233,7 @@ window.Renderer = {
             
             container.innerHTML = '';
             container.appendChild(rack);
+            container.appendChild(label);
         }
 
         window.Renderer._checkLocalInteraction();

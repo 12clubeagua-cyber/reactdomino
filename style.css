@@ -327,6 +327,24 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 
+.player-label {
+  position: absolute;
+  color: var(--text-dim);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  transform: rotate(90deg);
+}
+
+/* Posicionamento dos nomes colados no limite da tela e virados */
+.hand-0 .player-label { bottom: 2px; left: -30px; } /* Sua mão (baixo) */
+.hand-2 .player-label { top: 2px; right: -30px; }  /* Oponente topo */
+.hand-1 .player-label { left: 2px; top: -30px; }   /* Oponente esquerda */
+.hand-3 .player-label { right: 2px; bottom: -30px; } /* Oponente direita */
+
 /* CABECALHO */
 header {
   height: 60px;
