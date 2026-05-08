@@ -171,7 +171,7 @@ window.startMatch = function(isRestoring = false) {
 
     // --- Logica de Rede (Host) ---
     if (window.netMode === 'host') {
-        if (typeof window.Network !== 'undefined' && window.Network.isHost()) {
+        if (typeof window.Network !== 'undefined' && window.Network.isHost) {
             
             // Reune os nomes para enviar aos clientes
             let finalNames = {};
@@ -179,19 +179,12 @@ window.startMatch = function(isRestoring = false) {
                 finalNames = window.NameManager.getAll();
             }
             
-            // Envia comando game_start INDIVIDUALMENTE para cada cliente (para passar o yourIdx correto)
-            if (Array.isArray(window.connectedClients)) {
-                window.connectedClients.forEach(conn => {
-                    if (conn && conn.open) {
-                        conn.send({
-                            type: 'game_start',
-                            yourIdx: conn.assignedIdx,
-                            names: finalNames,
-                            targetScore: window.STATE ? window.STATE.targetScore : 3
-                        });
-                    }
-                });
-            }
+            // O Servidor Go agora cuida da distribuicao (broadcast)
+            window.Network.request({
+                type: 'game_start',
+                names: finalNames,
+                targetScore: window.STATE ? window.STATE.targetScore : 3
+            });
 
             // O Host roda a funcao de inicio apos um breve delay
             setTimeout(doStartRound, 600);
@@ -201,9 +194,6 @@ window.startMatch = function(isRestoring = false) {
     } else if (window.netMode === 'offline') {
         doStartRound();
     }
-    
-    // NOTA: Se netMode === 'client', ele nao roda o `doStartRound`. Ele apenas 
-    // esconde a tela inicial e aguarda o Host enviar o pacote `state_update` com as pecas!
 };
 
 /**
@@ -211,9 +201,9 @@ window.startMatch = function(isRestoring = false) {
  */
 
 window.cancelHosting = function() {
-    window.ResourceManager.cleanup();
-    window.connectedClients = [];
+    if (window.Network && window.Network.socket) {
+        window.Network.socket.close();
+    }
     window.netMode = 'offline';
-    localStorage.removeItem('domino_host_id'); // Garante novo codigo na proxima vez
     window.goToStep('step-mode');
 };

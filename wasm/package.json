@@ -1,0 +1,15 @@
+{
+  "name": "domino-core-wasm",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "domino_core_wasm_bg.wasm",
+    "domino_core_wasm.js",
+    "domino_core_wasm.d.ts"
+  ],
+  "main": "domino_core_wasm.js",
+  "types": "domino_core_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

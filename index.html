@@ -185,6 +185,21 @@
 </div>
 
 <!-- SCRIPTS (A ordem abaixo garante o funcionamento da camera e interacoes) -->
+<!-- 0. Wasm Engine (Phase 1: Mastering the Machine) -->
+<script type="module">
+    import init, { GameLogic, Tile } from './wasm/domino_core_wasm.js';
+    async function run() {
+        try {
+            await init();
+            window.WasmCore = { GameLogic, Tile };
+            console.log("Wasm Engine (Rust) Initialized successfully.");
+        } catch (e) {
+            console.error("Failed to load Wasm Engine:", e);
+        }
+    }
+    run();
+</script>
+
 <!-- 1. Dados e Configuracoes Base -->
 <script src="config.js" defer></script>
 <script src="state.js" defer></script>
