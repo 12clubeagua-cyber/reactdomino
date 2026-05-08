@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v139'; // v139: ES2024 modernization (groupBy, withResolvers, toWellFormed, Map optimization)
+const CACHE_NAME = 'domino-felipe-v140'; // v140: UI Refinement - Repositioned player labels to be outside hand areas
 
 const ASSETS = [
   '/',

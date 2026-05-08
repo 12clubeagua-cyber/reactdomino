@@ -11,51 +11,27 @@
   "mcpServers": {
     "github": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN"
       }
     },
-    "gitlab": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-gitlab"],
-      "env": {
-        "GITLAB_PERSONAL_ACCESS_TOKEN": "YOUR_GITLAB_TOKEN",
-        "GITLAB_SITE_URL": "https://gitlab.com"
-      }
-    },
-    "google-maps": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-google-maps"],
-      "env": {
-        "GOOGLE_MAPS_API_KEY": "YOUR_GOOGLE_MAPS_API_KEY"
-      }
-    },
-    "slack": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-slack"],
-      "env": {
-        "SLACK_BOT_TOKEN": "YOUR_SLACK_BOT_TOKEN"
-      }
-    },
-    "postgres": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres"],
-      "env": {
-        "DATABASE_URL": "postgresql://localhost/mydb"
-      }
-    },
-    "everything": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything"]
-    },
     "fetch": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-fetch"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch"
+      ]
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
     }
   }
 }
