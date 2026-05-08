@@ -54,12 +54,44 @@ window.AudioMenu = {
 /**
  * Alterna a exibicao do menu de opcoes (3 pontos)
  */
-window.toggleOptionsMenu = function() {
+window.toggleOptionsMenu = function(event) {
+    if (event) event.stopPropagation(); // Evita que o clique no botao feche o menu imediatamente pelo listener global
     const menu = document.getElementById('options-menu');
     if (menu) {
         menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'flex' : 'none';
     }
 };
+
+/**
+ * Fecha todos os menus de opcoes abertos
+ */
+window.closeAllMenus = function() {
+    const menus = ['options-menu', 'emote-panel', 'chat-panel'];
+    menus.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+};
+
+/**
+ * Listener global para fechar menus ao clicar fora
+ */
+document.addEventListener('click', (e) => {
+    const optionsBtn = document.querySelector('.options-trigger'); // Assumindo que o botao tem essa classe ou ID similar
+    const optionsMenu = document.getElementById('options-menu');
+    const emotePanel = document.getElementById('emote-panel');
+    const chatPanel = document.getElementById('chat-panel');
+
+    // Se clicar fora do menu de opcoes e dos paineis (e nao for o botao de abrir), fecha tudo
+    if (optionsMenu && optionsMenu.style.display === 'flex') {
+        if (!optionsMenu.contains(e.target) && (!optionsBtn || !optionsBtn.contains(e.target))) {
+            window.closeAllMenus();
+        }
+    } else if ((emotePanel && emotePanel.style.display === 'grid' && !emotePanel.contains(e.target)) ||
+               (chatPanel && chatPanel.style.display === 'grid' && !chatPanel.contains(e.target))) {
+        window.closeAllMenus();
+    }
+});
 
 /**
  * Exibe painel de emotes

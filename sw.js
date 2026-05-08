@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v141'; // v141: Removed emoji selection screen during onboarding
+const CACHE_NAME = 'domino-felipe-v142'; // v142: Added "click-outside to close" logic for options menu and panels
 
 const ASSETS = [
   '/',
