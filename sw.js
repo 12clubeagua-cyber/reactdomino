@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v129'; // v129: Particle Pooling, Geometry Refinements (Rule of 6), and A11Y Enhancements
+const CACHE_NAME = 'domino-felipe-v130'; // v130: Sparkle effect removed by user request
 
 const ASSETS = [
   '/',

@@ -36,6 +36,5 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 - **PARTICLE POOLING:** Implementado sistema de reaproveitamento de elementos DOM para efeitos visuais (`spawnEffect`). Isso reduz a carga no coletor de lixo e mantem a fluidez em dispositivos mobile.
 - **INCREMENTAL RENDERING:** O tabuleiro so renderiza as novas pecas (`_renderedTilesCount`), preservando o que ja estava no DOM.
 
-## 8. ACESSIBILIDADE AVANCADA (renderer.js / ui.js)
-- **ARIA-LIVE DINAMICO:** O sistema de anuncios agora cria um elemento `aria-live="polite"` automaticamente se o gestor de acessibilidade estiver ausente.
-- **HIERARQUIA DE FOCO:** Botoes de ajuste (Audio/Temas) agora possuem IDs e labels ARIA explicitos para facilitar o uso por tecnologias assistivas.
+## 9. PERSONALIZACAO E REQUISITOS DO USUARIO
+- **REMOCAO DE EFEITOS VISUAIS:** O efeito de faisca (sparkle) e particulas de impacto foi desativado a pedido do usuario. Para garantir a remocao completa sem quebrar a logica de chamada, as funcoes `spawnEffect` (renderer.js) e `spawnImpactParticles` (animations.js) foram mantidas mas com retorno imediato (`return`). Isso evita erros de "function not found" em modulos dependentes.

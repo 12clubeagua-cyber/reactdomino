@@ -238,6 +238,7 @@ window.screenShake = function() {
  * Cria particulas de impacto (poeira/faiscas) no local da jogada.
  */
 window.spawnImpactParticles = function(x, y, isDouble = false) {
+    return; // Efeito de faisca desativado por solicitacao
     const count = isDouble ? 15 : 8;
     const colors = isDouble ? ['#ffcc33', '#ffffff', '#ff5722'] : ['#a8b4a8', '#f0ede0'];
     

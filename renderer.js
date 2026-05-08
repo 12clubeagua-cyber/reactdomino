@@ -53,6 +53,7 @@ window.Renderer = {
      * Sistema de Particle Pooling para efeitos visuais (Performance O(1)).
      */
     spawnEffect: function(x, y, type = 'sparkle') {
+        return; // Efeito de faisca desativado por solicitacao
         let p = window.Renderer._particlePool.find(el => el.style.display === 'none');
         
         if (!p) {
