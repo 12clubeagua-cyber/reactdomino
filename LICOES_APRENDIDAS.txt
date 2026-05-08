@@ -48,6 +48,7 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
 
 ## 10. INTERATIVIDADE E FEEDBACK VISUAL (input.js / style.css)
 - **TYPOS EM CHAMADAS DE API:** O erro de clique ("clico e nada acontece") foi causado por uma chamada a `window.play` em vez de `window.playTile`. Sempre verifique se o nome da funcao exportada no `game.js` coincide exatamente com a chamada no `input.js`.
+- **CORRIDA DE ESTADO (ISBLOCKED):** O erro de peca que "so levanta mas nao vai pra mesa" ocorre quando o `input.js` define `window.STATE.isBlocked = true` imediatamente antes de chamar `window.playTile`. Como a `playTile` verifica esse mesmo flag para evitar duplo-clique, ela aborta a execucao. A solucao e deixar que a `playTile` gerencie o bloqueio sozinha ou garantir que o flag seja resetado antes da chamada em fluxos assincronos (como o Side Picker). Corrigido em 8 de Maio de 2026.
 - **HIGHLIGHT DE PECAS JOGAVEIS:** O feedback visual para pecas que podem ser jogadas e CRITICO para a experiencia do usuario. A classe `.playable` deve ser definida no CSS com animacoes de pulso (`@keyframes`) e mudancas de estado no `:hover` para indicar claramente que o elemento e interativo.
 
 ## 11. REFATORACAO E LIMPEZA (DEBT TECH)

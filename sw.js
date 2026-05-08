@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v131'; // v131: Fix unresponsive clicks and implement playable piece highlights.
+const CACHE_NAME = 'domino-felipe-v132'; // v132: Fix pieces lifting but not moving (isBlocked race condition).
 
 const ASSETS = [
   '/',
