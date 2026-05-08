@@ -12,6 +12,7 @@
 - **Ordem de Carregamento:** Respeite rigorosamente a ordem no `index.html`.
 
 ## 2. Arquitetura e Regras de Jogo
+- **Modo de Jogo Unico:** O sistema suporta APENAS o modo de jogo classico (4 jogadores, duplas fixas, Double-Six). Proibido implementar variacoes ou novos modos de jogo para evitar scope creep e complexidade desnecessaria.
 - **Estado (window.STATE):** Fonte unica de verdade. Imutabilidade deve ser respeitada em loops de renderizacao.
 - **Multiplayer (Network.js):** Host e a autoridade absoluta. O `broadcastState` deve filtrar dados sensiveis (Blind Hands).
 - **IA (bots.js):** Decisoes baseadas em pesos. O modo 'hard' deve antecipar jogadas para bloqueio.
