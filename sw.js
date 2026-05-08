@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v135'; // v135: Fix animation curves and camera auto-zoom stability.
+const CACHE_NAME = 'domino-felipe-v136'; // v136: Compact UI mode, responsive alerts and playable highlights.
 
 const ASSETS = [
   '/',
