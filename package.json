@@ -1,0 +1,14 @@
+{
+  "name": "reactdomino",
+  "version": "1.0.0",
+  "description": "Hardcore Domino Game with Rust/Wasm and Go",
+  "scripts": {
+    "test:rust": "cd domino-core-wasm && cargo test",
+    "test:go": "cd domino-server-go && go test ./...",
+    "test:js": "npx playwright test",
+    "test": "npm run test:rust && npm run test:go && npm run test:js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  }
+}

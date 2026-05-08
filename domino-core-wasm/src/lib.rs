@@ -115,3 +115,24 @@ impl GameLogic {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_can_play() {
+        // Peca [1,2] pode jogar se os extremos forem 1 ou 2
+        assert!(GameLogic::can_play(1, 2, 1, 6));
+        assert!(GameLogic::can_play(1, 2, 6, 2));
+        assert!(!GameLogic::can_play(1, 2, 3, 4));
+    }
+
+    #[test]
+    fn test_find_moves() {
+        let hand = vec![1, 2, 3, 4, 5, 6]; // Pecas [1,2], [3,4], [5,6]
+        let moves = GameLogic::find_moves(&hand, 2, 0); // Extremos 2 e 0
+        // Deve encontrar a peca 0 ([1,2]) no lado 0
+        assert_eq!(moves, vec![0, 0]);
+    }
+}
