@@ -264,29 +264,29 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 8px;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: var(--radius);
+  padding: 2px;
+  background: none;
+  border-radius: 0;
   z-index: 20;
 }
 
-.hand-horiz { min-height: 100px; }
-.hand-side { width: 100px; height: 100%; }
+.hand-horiz { min-height: 80px; }
+.hand-side { width: 80px; height: 100%; }
 
 .tiles-rack {
   display: flex;
   flex-wrap: nowrap; /* Garante que fiquem paralelas em uma linha */
   justify-content: center;
-  gap: 4px; /* Reduz o gap para caber mais pecas */
-  transform: scale(0.75); /* Aumenta um pouco o tamanho ja que o gap diminuiu */
+  gap: 2px; /* Reduz o gap para caber mais pecas */
+  transform: scale(0.85); /* Aumenta um pouco o tamanho ja que o gap diminuiu */
   transform-origin: center top;
 }
 
 .hand-side .tiles-rack {
   flex-direction: column;
   flex-wrap: wrap; /* Permite colunas se a altura for pequena */
-  max-height: 80%; /* Evita colidir com o nome do jogador */
-  transform: scale(0.6); /* Reduz escala para caber 7 pecas nas laterais */
+  max-height: 90%; /* Evita colidir com o nome do jogador */
+  transform: scale(0.65); /* Reduz escala para caber 7 pecas nas laterais */
   gap: 2px;
 }
 
@@ -314,6 +314,8 @@ body {
   box-shadow: 0 0 15px var(--gold-glow) !important;
   cursor: pointer;
   animation: playable-pulse 1.5s infinite ease-in-out;
+  transform: translateY(-20px) !important;
+  z-index: 100 !important;
 }
 
 .playable:hover {
@@ -341,9 +343,25 @@ header {
 .score-block { display: flex; flex-direction: column; }
 .score-name { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; }
 .score-val { font-size: 1.5rem; color: var(--gold); font-weight: 900; }
-#game-status { font-weight: bold; color: var(--gold); letter-spacing: 1px; }
+#game-status { 
+  font-weight: bold; 
+  color: var(--gold); 
+  letter-spacing: 1px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45vw;
+  text-align: center;
+}
 
 /* FEEDBACK VISUAL */
+#flash-alert {
+    max-width: 90vw;
+    white-space: normal !important;
+    text-align: center;
+    line-height: 1.2;
+}
+
 .thinking-bubble {
     position: absolute;
     background: white;

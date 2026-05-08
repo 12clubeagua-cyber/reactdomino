@@ -54,6 +54,6 @@
 - **SEMPRE** prefira a execucao direta via `npx -y @modelcontextprotocol/server-[nome]` ou utilize `pip` em ambientes virtuais.
 - Caso ocorra erro de "command deprecated", interrompa a tentativa e valide a documentacao oficial no repositorio `modelcontextprotocol/servers`.
 ---
-**Status Atual:** Estavel (v131). Correcao de inputs (playTile) e implementacao de highlights para pecas jogaveis.
-**Foco:** Refinamento de performance e expansao de recursos de acessibilidade.
+**Status Atual:** Estavel (v136). Refinamento de UI (Modo Compacto), alertas responsivos e ajuste de destaque para pecas jogaveis.
+**Foco:** Monitoramento de estabilidade e preparacao para novos recursos de acessibilidade.
 ---

@@ -40,7 +40,7 @@ window.showFlashAlert = function(text, duration = 1500) {
     if (!alertEl) {
         alertEl = document.createElement('div');
         alertEl.id = 'flash-alert';
-        alertEl.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:99999; background:rgba(0,0,0,0.85); color:var(--gold); padding:20px 40px; border-radius:50px; font-size:2rem; font-weight:900; pointer-events:none; border:2px solid var(--gold); box-shadow:0 0 50px var(--gold-glow); display:none; white-space:nowrap;';
+        alertEl.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:99999; background:rgba(0,0,0,0.85); color:var(--gold); padding:20px 40px; border-radius:50px; font-size:2rem; font-weight:900; pointer-events:none; border:2px solid var(--gold); box-shadow:0 0 50px var(--gold-glow); display:none; white-space:normal; text-align:center; max-width:90vw;';
         document.body.appendChild(alertEl);
     }
     

@@ -51,7 +51,7 @@ window.updateCamera = function() {
         ? window.getSnakeBounds() 
         : { minX: -100, maxX: 100, minY: -100, maxY: 100, centerX: 0, centerY: 0 };
 
-    const padding = 100; // Margem maior para as pecas maiores
+    const padding = 40; // Margem reduzida para a mesa parecer maior e diminuir zoom out
     const viewW = boardBox.clientWidth;
     const viewH = boardBox.clientHeight;
 
