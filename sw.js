@@ -1,4 +1,4 @@
-const CACHE_NAME = 'domino-felipe-v142'; // v142: Added "click-outside to close" logic for options menu and panels
+const CACHE_NAME = 'domino-felipe-v143'; // v143: Repositioned hands and player labels to fit names underneath pieces
 
 const ASSETS = [
   '/',

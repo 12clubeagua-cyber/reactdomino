@@ -60,3 +60,10 @@ Sempre que um bug for corrigido, este arquivo DEVE ser atualizado com a causa ra
         - Direita: Vertical (Baixo -> Cima, rotate -90deg).
         - Topo: Horizontal (Dir -> Esq, rotate 180deg).
         - Esquerda: Vertical (Cima -> Baixo, rotate 90deg).
+- **POSICIONAMENTO DE MAOS E NOMES (2026-05-08):**
+    1. **PEDIDO:** Mover as pecas para "frente" (centro do board) para caber o nome "em baixo" (entre a peca e a borda).
+    2. **SOLUCAO:** 
+        - Adicionado `margin` (30px) nas classes `.hand-x` para afastar das bordas.
+        - Invertido o posicionamento das `.player-label` para o lado externo (ex: `top: 100%` para o jogador de baixo).
+        - Ajustado o `translate` dos labels no estado `active-turn` para acompanhar a nova ancoragem.
+
